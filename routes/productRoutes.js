@@ -8,7 +8,8 @@ const router = express.Router();
 const storage = multer.memoryStorage(); // Store file in memory
 const upload = multer({ storage });
 
-// all request goes through ======localhots:8080/api/
+// all request goes through ======localhots:port/api/
+
 router.post("/add-product", upload.single("image"), async (req, res) => {
   try {
     if (!req.file) {
@@ -45,44 +46,6 @@ router.post("/add-product", upload.single("image"), async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
-
-
-// ✅ Route to render the edit form
-router.get("/edit-product/:id", async (req, res) => {
-  try {
-    const product = await Product.findById(req.params.id);
-    if (!product) {
-      return res.status(404).send("Product not found");
-    }
-    res.render("editProduct", { product }); // Render EJS form with product data
-  } catch (error) {
-    res.status(500).send("Server Error");
-  }
-});
-
-
-
-// Update Product Route
-router.post("/update-product/:id", async (req, res) => {
-  try {
-    const { name, category, originalPrice, discount } = req.body;
-    const finalPrice = Math.round(originalPrice - (originalPrice * discount) / 100);
-
-    await Product.findByIdAndUpdate(req.params.id, {
-      name,
-      category,
-      originalPrice,
-      discount,
-      finalPrice,
-    });
-
-    res.redirect("/products"); // Redirect back to product list
-  } catch (error) {
-    console.error("Error updating product:", error);
-    res.status(500).send("Server Error");
-  }
-});
-
 
 // DELETE Product by ID
 router.delete("/products/:id", async (req, res) => {

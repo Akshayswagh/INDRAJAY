@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <%- include('../partials/head'); %>
+  <style>
+    /* Base Styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      color: #333;
+    }
+    
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 15px;
+    }
+    
+    /* Contact Page Styles */
+    .contact-page {
+      padding: 2rem 0;
+    }
+    
+    .contact-page h1 {
+      color: #2c3e50;
+      margin-bottom: 0.5rem;
+      text-align: center;
+      font-size: clamp(1.8rem, 4vw, 2.5rem);
+    }
+    
+    .contact-page .subtitle {
+      color: #7f8c8d;
+      text-align: center;
+      margin-bottom: 2rem;
+      font-size: clamp(1rem, 2vw, 1.2rem);
+    }
+    
+    .contact-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      margin: 2rem 0;
+    }
+    
+    .contact-info, 
+    .contact-form {
+      flex: 1;
+      min-width: 100%;
+      background: #f9f9f9;
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    .contact-info h2, 
+    .contact-form h2 {
+      color: #2c3e50;
+      margin-bottom: 1.2rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid #3498db;
+      font-size: 1.4rem;
+    }
+    
+    .info-item {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 1.2rem;
+    }
+    
+    .info-item i {
+      color: #3498db;
+      font-size: 1.2rem;
+      margin-right: 1rem;
+      margin-top: 0.2rem;
+      min-width: 20px;
+    }
+    
+    .info-item p {
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+    
+    .form-group {
+      margin-bottom: 1.2rem;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: #2c3e50;
+      font-size: 0.95rem;
+    }
+    
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 0.7rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 0.95rem;
+      transition: border 0.3s;
+    }
+    
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: #3498db;
+      outline: none;
+    }
+    
+    .form-group textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+    
+    .submit-btn {
+      background: #3498db;
+      color: white;
+      border: none;
+      padding: 0.8rem 1.5rem;
+      font-size: 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+      width: 100%;
+    }
+    
+    .submit-btn:hover {
+      background: #2980b9;
+      transform: translateY(-2px);
+    }
+    
+    .map-container {
+      margin-top: 2rem;
+    }
+    
+    .map-container h2 {
+      color: #2c3e50;
+      margin-bottom: 1rem;
+      font-size: 1.4rem;
+    }
+    
+    .map-container iframe {
+      width: 100%;
+      height: 300px;
+      border: none;
+      border-radius: 8px;
+    }
+    
+    /* Responsive Breakpoints */
+    @media (min-width: 576px) {
+      .contact-info, 
+      .contact-form {
+        min-width: calc(50% - 1rem);
+      }
+      
+      .submit-btn {
+        width: auto;
+      }
+    }
+    
+    @media (min-width: 768px) {
+      .contact-page {
+        padding: 3rem 0;
+      }
+      
+      .contact-info, 
+      .contact-form {
+        padding: 2rem;
+      }
+      
+      .map-container iframe {
+        height: 400px;
+      }
+    }
+    
+    @media (min-width: 992px) {
+      .contact-container {
+        margin: 3rem 0;
+      }
+      
+      .info-item p {
+        font-size: 1.05rem;
+      }
+      
+      .form-group label {
+        font-size: 1rem;
+      }
+      
+      .form-group input,
+      .form-group select,
+      .form-group textarea {
+        font-size: 1rem;
+        padding: 0.8rem;
+      }
+      
+      .map-container iframe {
+        height: 450px;
+      }
+    }
+    
+    /* Accessibility Improvements */
+    .submit-btn:focus {
+      outline: 2px solid #2c3e50;
+      outline-offset: 2px;
+    }
+    
+    /* Reduced motion preference */
+    @media (prefers-reduced-motion: reduce) {
+      .submit-btn {
+        transition: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <%- include('../partials/navbar', {activePage: 'contact'}); %>
+
+  <main class="container contact-page">
+    <h1>Contact Indrajay Enterprises</h1>
+    <p class="subtitle">Procurement Solutions for Your Business Needs</p>
+
+    <div class="contact-container">
+      <div class="contact-info">
+        <h2>Our Office</h2>
+        <div class="info-item">
+          <i class="fas fa-map-marker-alt"></i>
+          <p>123 Industrial Area, MIDC<br>Mumbai, Maharashtra 400001</p>
+        </div>
+        <div class="info-item">
+          <i class="fas fa-phone"></i>
+          <p>+91 98765 43210</p>
+        </div>
+        <div class="info-item">
+          <i class="fas fa-envelope"></i>
+          <p>procurement@indrajayenterprises.com</p>
+        </div>
+        <div class="info-item">
+          <i class="fas fa-clock"></i>
+          <p>Monday - Friday: 9:00 AM to 6:00 PM<br>Saturday: 10:00 AM to 2:00 PM</p>
+        </div>
+      </div>
+
+      <div class="contact-form">
+        <h2>Send Us a Message</h2>
+        <form action="/contact" method="POST">
+          <div class="form-group">
+            <label for="name">Full Name*</label>
+            <input type="text" id="name" name="name" required>
+          </div>
+          <div class="form-group">
+            <label for="company">Company Name</label>
+            <input type="text" id="company" name="company">
+          </div>
+          <div class="form-group">
+            <label for="email">Email*</label>
+            <input type="email" id="email" name="email" required>
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone Number*</label>
+            <input type="tel" id="phone" name="phone" required>
+          </div>
+          <div class="form-group">
+            <label for="subject">Subject*</label>
+            <select id="subject" name="subject" required>
+              <option value="">Select a subject</option>
+              <option value="procurement">Procurement Inquiry</option>
+              <option value="partnership">Business Partnership</option>
+              <option value="careers">Careers</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="message">Message*</label>
+            <textarea id="message" name="message" rows="5" required></textarea>
+          </div>
+          <button type="submit" class="submit-btn">Send Message</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="map-container">
+      <h2>Find Us on Map</h2>
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3771.715559603253!2d72.84421431537736!3d19.04380525796775!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7c8df6c1df45d%3A0x6a6b6b6b6b6b6b6b!2sMumbai%2C%20Maharashtra!5e0!3m2!1sen!2sin!4v1620000000000!5m2!1sen!2sin"
+        width="100%"
+        height="450"
+        style="border:0;"
+        allowfullscreen=""
+        loading="lazy"
+        aria-label="Location map of Indrajay Enterprises">
+      </iframe>
+    </div>
+  </main>
+
+  <%- include('../partials/footer'); %>
+  <%- include('../partials/scripts'); %>
+</body>
+</html>
