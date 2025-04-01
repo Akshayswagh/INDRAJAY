@@ -1,21 +1,31 @@
 const express = require("express");
-const dotenv = require("dotenv");
+const dotenv = require("dotenv").config();
 // const expressLayouts = require('express-ejs-layouts');
 const connectDB = require("./config/db");
 const cors = require("cors");
-const productRoutes = require("./routes/productRoutes");
-const Product = require("./models/Product");
-const path = require("path");
-const { title } = require("process");
 
-dotenv.config();
+const productRoutes = require("./routes/productRoutes");
+const authRoutes = require("./routes/authRoutes");
+const userRoutes = require("./routes/userRoutes");
+const Product = require("./models/Product");
+
+const path = require("path");
+
 connectDB();
+
 const app = express();
+
+// Middleware
 app.use(express.json());
+
 app.use(cors());
 app.use(express.static("public")); // Optional for styling
 app.use(express.urlencoded({ extended: true }));
+
+// Routes
 app.use("/api", productRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/users", userRoutes);
 
 // Set up EJS and layouts
 app.set("view engine", "ejs");
