@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Sign In to Your Account</title>
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Animate.css -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+    <style>
+      :root {
+        --accent-color: #0d6efd;
+        --secondary-color: #6c757d;
+        --text-dark: #212529;
+      }
+
+      body {
+        background-color: #f8f9fa;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      .card {
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        border: none;
+      }
+
+      /* Password visibility toggle */
+      .password-toggle {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: var(--secondary-color);
+        z-index: 5;
+      }
+
+      .password-toggle:hover {
+        color: var(--accent-color);
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 768px) {
+        .password-tooltip {
+          width: 200px;
+          font-size: 0.8rem;
+        }
+      }
+
+      /* Form validation styles */
+      .is-valid {
+        border-color: #28a745 !important;
+      }
+
+      .is-invalid {
+        border-color: #dc3545 !important;
+      }
+
+      .invalid-feedback {
+        display: none;
+        color: #dc3545;
+        font-size: 0.875em;
+      }
+
+      /* Divider style */
+      .divider {
+        display: flex;
+        align-items: center;
+        margin: 1rem 0;
+        color: #6c757d;
+      }
+
+      .divider::before,
+      .divider::after {
+        content: "";
+        flex: 1;
+        border-bottom: 1px solid #dee2e6;
+      }
+
+      .divider::before {
+        margin-right: 0.5rem;
+      }
+
+      .divider::after {
+        margin-left: 0.5rem;
+      }
+
+      /* Success Modal Styles */
+      .modal-success {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1050;
+        animation: fadeIn 0.3s ease;
+      }
+
+      .modal-success-content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: white;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        width: 90%;
+        max-width: 400px;
+        overflow: hidden;
+        animation: slideDown 0.4s ease;
+      }
+
+      .modal-success-header {
+        background-color: #f47321;
+        color: white;
+        padding: 20px;
+        text-align: center;
+      }
+
+      .modal-success-body {
+        padding: 30px;
+        text-align: center;
+      }
+
+      .modal-success-icon {
+        font-size: 60px;
+        color: #28a745;
+        margin-bottom: 20px;
+        animation: bounceIn 0.6s ease;
+      }
+
+      .modal-success-footer {
+        padding: 15px;
+        text-align: center;
+        border-top: 1px solid #eee;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      @keyframes slideDown {
+        from {
+          transform: translate(-50%, -60%);
+          opacity: 0;
+        }
+        to {
+          transform: translate(-50%, -50%);
+          opacity: 1;
+        }
+      }
+
+      @keyframes bounceIn {
+        0% {
+          transform: scale(0.5);
+          opacity: 0;
+        }
+        50% {
+          transform: scale(1.2);
+        }
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+
+      /* Remember me checkbox */
+      .form-check-input:checked {
+        background-color: #f47321;
+        border-color: #f47321;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row justify-content-center align-items-center min-vh-100">
+        <div class="col-md-8 col-lg-6 col-xl-5">
+          <div class="card animate__animated animate__fadeInUp">
+            <div class="card-body p-4 p-md-5">
+              <div class="text-center mb-4">
+                <i
+                  class="fas fa-user-circle fa-4x mb-3"
+                  style="color: #f47321"
+                ></i>
+                <h2 class="fw-bold">Welcome Back</h2>
+                <p class="text-muted">Sign in to access your account</p>
+              </div>
+
+              <form
+                action="/api/auth/login"
+                method="post"
+                id="loginForm"
+                class="needs-validation"
+                novalidate
+              >
+                <!-- Email Input -->
+                <div class="form-floating mb-3">
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="email"
+                    placeholder="name@example.com"
+                    required
+                  />
+                  <label for="email">Email address</label>
+                  <div class="invalid-feedback">
+                    Please provide a valid email.
+                  </div>
+                </div>
+
+                <!-- Password Input -->
+                <div class="form-floating mb-3 position-relative">
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="password"
+                    placeholder="Password"
+                    required
+                  />
+                  <label for="password">Password</label>
+                  <span
+                    class="password-toggle"
+                    aria-label="Toggle password visibility"
+                  >
+                    <i class="far fa-eye"></i>
+                  </span>
+                  <div class="invalid-feedback">
+                    Please enter your password.
+                  </div>
+                </div>
+
+                <!-- Remember Me & Forgot Password -->
+                <div class="d-flex justify-content-between mb-4">
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="remember"
+                    />
+                    <label class="form-check-label" for="remember">
+                      Remember me
+                    </label>
+                  </div>
+                  <div>
+                    <a href="forgot-password.html" class="text-decoration-none">
+                      Forgot password?
+                    </a>
+                  </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button
+                  type="submit"
+                  class="btn btn-primary btn-lg w-100 mb-3"
+                  style="background-color: #f47321"
+                >
+                  <span class="btn-text">Sign In</span>
+                  <span class="btn-loader d-none"
+                    ><i class="fas fa-spinner fa-spin"></i
+                  ></span>
+                </button>
+
+
+
+                <!-- Sign Up Link -->
+                <div class="text-center">
+                  <p class="mb-0">
+                    Don't have an account?
+                    <a href="/registerUser" class="fw-bold text-decoration-none"
+                      >Register</a
+                    >
+                  </p>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal-success" id="successModal">
+      <div class="modal-success-content">
+        <div class="modal-success-header">
+          <h4 class="mb-0">Welcome Back!</h4>
+        </div>
+        <div class="modal-success-body">
+          <div class="modal-success-icon">
+            <i class="fas fa-check-circle"></i>
+          </div>
+          <h5 class="mb-3">Signed In Successfully</h5>
+          <p class="text-muted">
+            You're now being redirected to your dashboard.
+          </p>
+        </div>
+        <div class="modal-success-footer">
+          <button
+            type="button"
+            class="btn btn-primary"
+            id="successModalClose"
+            style="background-color: #f47321; border: none"
+          >
+            Continue
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Initialize form validation
+        initFormValidation();
+
+        // Initialize password visibility toggles
+        initPasswordToggles();
+      });
+
+      function initFormValidation() {
+        const form = document.getElementById("loginForm");
+
+        form.addEventListener(
+          "submit",
+          function (event) {
+            event.preventDefault();
+
+            // Show loading state
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const btnText = submitBtn.querySelector(".btn-text");
+            const btnLoader = submitBtn.querySelector(".btn-loader");
+
+            btnText.classList.add("d-none");
+            btnLoader.classList.remove("d-none");
+
+            if (!form.checkValidity()) {
+              event.stopPropagation();
+              btnText.classList.remove("d-none");
+              btnLoader.classList.add("d-none");
+            } else {
+              // Simulate form submission
+              setTimeout(() => {
+                // Show success modal
+                const successModal = document.getElementById("successModal");
+                successModal.style.display = "block";
+
+                // Close button functionality
+                document
+                  .getElementById("successModalClose")
+                  .addEventListener("click", function () {
+                    successModal.style.display = "none";
+                    btnText.classList.remove("d-none");
+                    btnLoader.classList.add("d-none");
+                    // Here you would typically redirect to dashboard
+                    window.location.href = "dashboard.html";
+                  });
+
+                // Also close modal when clicking outside
+                successModal.addEventListener("click", function (e) {
+                  if (e.target === successModal) {
+                    successModal.style.display = "none";
+                    btnText.classList.remove("d-none");
+                    btnLoader.classList.add("d-none");
+                    // Here you would typically redirect to dashboard
+                    window.location.href = "dashboard.html";
+                  }
+                });
+
+                // Auto-redirect after 3 seconds
+                setTimeout(() => {
+                  window.location.href = "dashboard.html";
+                }, 3000);
+              }, 1500);
+            }
+
+            form.classList.add("was-validated");
+          },
+          false
+        );
+      }
+
+      function initPasswordToggles() {
+        const passwordFields = document.querySelectorAll(
+          'input[type="password"]'
+        );
+
+        passwordFields.forEach((field) => {
+          const toggle = field.nextElementSibling;
+
+          toggle.addEventListener("click", function () {
+            if (field.type === "password") {
+              field.type = "text";
+              this.innerHTML = '<i class="far fa-eye-slash"></i>';
+            } else {
+              field.type = "password";
+              this.innerHTML = '<i class="far fa-eye"></i>';
+            }
+          });
+        });
+      }
+    </script>
+  </body>
+</html>

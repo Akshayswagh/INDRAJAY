@@ -40,6 +40,9 @@ app.use((err, req, res, next) => {
   });
 });
 
+
+
+
 // Routes
 
 // add products
@@ -105,6 +108,16 @@ app.get("/", async (req, res) => {
 // Complete Meal
 app.get("/completeMeal", async (req, res) => {
   res.render("client/completeMeal"); // pass products to EJS
+});
+
+// register user 
+app.get("/registerUser", async (req, res) => {
+  res.render("client/registerUser", { title: "Register User | Indrajay Enterprises" });
+});
+
+// log in
+app.get("/loginUser", async (req, res) => {
+  res.render("client/loginUser", { title: "Login User | Indrajay Enterprises" });
 });
 
 // all products

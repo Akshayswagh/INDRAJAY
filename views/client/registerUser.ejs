@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('../partials/head'); %>
+    <link rel="stylesheet" href="/css/registerUser.css" />
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Animate.css -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+  </head>
+  <body>
+    <%- include('../partials/navbar'); %>
+
+    <div class="container">
+      <div class="row justify-content-center align-items-center min-vh-100">
+        <div class="col-md-8 col-lg-6 col-xl-5">
+          <div class="card animate__animated animate__fadeInUp">
+            <div class="card-body p-4 p-md-5">
+              <div class="text-center mb-4">
+                <i
+                  class="fas fa-user-plus fa-4x mb-3"
+                  style="color: #f47321"
+                ></i>
+                <h2 class="fw-bold">Join Us Today</h2>
+                <p class="text-muted">
+                  Create your account in just a few steps
+                </p>
+              </div>
+
+              <form
+                action="/api/auth/register"
+                method="POST"
+                id="signupForm"
+                class="needs-validation"
+                novalidate
+              >
+                <!-- Personal Information -->
+                <div class="mb-4">
+                  <h5 class="mb-3 text-muted">Personal Information</h5>
+
+                  <div class="form-floating mb-3">
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="name"
+                      name="name"
+                      placeholder="John Doe"
+                      required
+                    />
+                    <label for="name">Full Name</label>
+                    <div class="invalid-feedback">
+                      Please provide your full name.
+                    </div>
+                  </div>
+
+                  <div class="form-floating mb-3">
+                    <input
+                      type="email"
+                      class="form-control"
+                      id="email"
+                      name="email"
+                      placeholder="name@example.com"
+                      required
+                    />
+                    <label for="email">Email address</label>
+                    <div class="invalid-feedback">
+                      Please provide a valid email.
+                    </div>
+                  </div>
+
+                  <div class="form-floating mb-3">
+                    <input
+                      type="tel"
+                      class="form-control"
+                      id="phone"
+                      name="contactNumber"
+                      placeholder="1234567890"
+                      required
+                      pattern="[0-9]{10}"
+                      maxlength="10"
+                    />
+                    <label for="phone">Mobile No</label>
+                    <div class="invalid-feedback">
+                      Please provide a valid 10-digit Mobile No.
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Company Information (Optional) -->
+                <div class="mb-4">
+                  <h5 class="mb-3 text-muted">Company Information</h5>
+                  <div class="form-floating mb-3">
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="companyName"
+                      name="firmName"
+                      placeholder="Company Name"
+                    />
+                    <label for="companyName">Company Name</label>
+                  </div>
+                </div>
+
+                <!-- Address Information -->
+                <div class="mb-4">
+                  <h5 class="mb-3 text-muted">Address Information</h5>
+                  <div class="form-floating mb-3">
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="address-line1"
+                      name="address"
+                      placeholder="Street address"
+                      required
+                    />
+                    <label for="address-line1">Street Address</label>
+                    <div class="invalid-feedback">
+                      Please provide your street address.
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Account Security -->
+                <div class="mb-4">
+                  <h5 class="mb-3 text-muted">Account Security</h5>
+
+                  <div class="form-floating mb-3 position-relative">
+                    <input
+                      type="password"
+                      class="form-control"
+                      id="password"
+                      name="password"
+                      placeholder="Password"
+                      required
+                      pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                      aria-describedby="passwordHelp"
+                    />
+                    <label for="password">Password</label>
+                    <span
+                      class="password-toggle"
+                      aria-label="Toggle password visibility"
+                    >
+                      <i class="far fa-eye"></i>
+                    </span>
+                    <div class="invalid-feedback" id="passwordHelp">
+                      Password must contain at least 8 characters with
+                      uppercase, lowercase, and a number.
+                    </div>
+                  </div>
+                 
+
+                  <div class="form-check mb-4">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="terms"
+                      required
+                    />
+                    <label class="form-check-label" for="terms">
+                      I agree to the
+                      <a href="#" class="text-decoration-none"
+                        >Terms of Service</a
+                      >
+                      and
+                      <a href="#" class="text-decoration-none"
+                        >Privacy Policy</a
+                      >
+                    </label>
+                    <div class="invalid-feedback">
+                      You must agree before submitting.
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button
+                  type="submit"
+                  class="btn btn-primary btn-lg w-100 mb-3"
+                  style="background-color: #f47321"
+                >
+                  <span class="btn-text">Create Account</span>
+                  <span class="btn-loader d-none"
+                    ><i class="fas fa-spinner fa-spin"></i
+                  ></span>
+                </button>
+
+                <!-- Login Link -->
+                <div class="text-center">
+                  <p class="mb-0">
+                    Already have an account?
+                    <a href="/loginUser" class="fw-bold text-decoration-none"
+                      >Log In</a
+                    >
+                  </p>
+                </div>
+              </form>
+              <!-- Response Message -->
+              <div
+                id="responseMessage"
+                class="alert d-none mt-3"
+                role="alert"
+              ></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal-success" id="successModal">
+      <div class="modal-success-content">
+        <div class="modal-success-header">
+          <h4 class="mb-0">Success!</h4>
+        </div>
+        <div class="modal-success-body">
+          <div class="modal-success-icon">
+            <i class="fas fa-check-circle"></i>
+          </div>
+          <h5 class="mb-3">Account Created Successfully</h5>
+          <p class="text-muted">
+            Thank you for joining us! Your account has been created
+            successfully.
+          </p>
+        </div>
+        <div class="modal-success-footer">
+          <button
+            type="button"
+            class="btn btn-primary"
+            id="successModalClose"
+            style="background-color: #f47321; border: none"
+          >
+            Continue
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <%- include('../partials/footer'); %> <%- include('../partials/scripts'); %>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById("signupForm");
+
+        // Ensure role input exists with correct value
+        const roleInput =
+          document.getElementById("roleInput") ||
+          (function () {
+            const input = document.createElement("input");
+            input.type = "hidden";
+            input.name = "role";
+            input.id = "roleInput";
+            input.value = "user"; // Use the exact value your backend expects
+            form.appendChild(input);
+            return input;
+          })();
+
+        const fieldsToValidate = [
+          "name",
+          "email",
+          "contactNumber",
+          "address",
+          "password",
+          "terms",
+        ];
+
+        function validateField(field) {
+          if (!field.checkValidity()) {
+            field.classList.add("is-invalid");
+            return false;
+          } else {
+            field.classList.remove("is-invalid");
+            return true;
+          }
+        }
+
+        function handleServerErrors(result) {
+          const responseBox = document.getElementById("responseMessage");
+
+          if (result.errors) {
+            result.errors.forEach((error) => {
+              const field = form.elements[error.field];
+              if (field) {
+                field.classList.add("is-invalid");
+                const errorElement =
+                  field
+                    .closest(".form-floating")
+                    ?.querySelector(".invalid-feedback") ||
+                  field
+                    .closest(".form-check")
+                    ?.querySelector(".invalid-feedback");
+
+                if (errorElement) {
+                  errorElement.textContent = error.message;
+                  errorElement.style.display = "block";
+                }
+              }
+            });
+
+            responseBox.className = "alert alert-danger mt-3";
+            responseBox.textContent = "Please fix the highlighted errors.";
+            responseBox.classList.remove("d-none");
+          } else {
+            responseBox.className = "alert alert-danger mt-3";
+            responseBox.textContent = result.message || "Registration failed!";
+            responseBox.classList.remove("d-none");
+          }
+        }
+
+        function showSuccessModal() {
+          const modal = document.getElementById("successModal");
+          modal.style.display = "block";
+
+          const closeBtn = document.getElementById("successModalClose");
+          closeBtn.addEventListener("click", function () {
+            modal.style.display = "none";
+          });
+        }
+
+        form.addEventListener("submit", async function (event) {
+          event.preventDefault();
+
+          const responseBox = document.getElementById("responseMessage");
+          responseBox.classList.add("d-none");
+
+          let isValid = true;
+          fieldsToValidate.forEach((fieldName) => {
+            const field = form.elements[fieldName];
+            if (field && !validateField(field)) {
+              isValid = false;
+            }
+          });
+
+          if (!isValid) {
+            form.classList.add("was-validated");
+            return;
+          }
+
+          const submitBtn = form.querySelector('button[type="submit"]');
+          const btnText = submitBtn.querySelector(".btn-text");
+          const btnLoader = submitBtn.querySelector(".btn-loader");
+
+          btnText.classList.add("d-none");
+          btnLoader.classList.remove("d-none");
+
+          try {
+            const formData = new FormData(form);
+            const response = await fetch("/api/auth/register", {
+              method: "POST",
+              body: formData,
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+              showSuccessModal();
+              form.reset();
+              form.classList.remove("was-validated");
+
+              responseBox.className = "alert alert-success mt-3";
+              responseBox.textContent =
+                result.message || "Account created successfully!";
+              responseBox.classList.remove("d-none");
+            } else {
+              handleServerErrors(result);
+            }
+          } catch (error) {
+            console.error("Error:", error);
+            responseBox.className = "alert alert-danger mt-3";
+            responseBox.textContent = "An unexpected error occurred.";
+            responseBox.classList.remove("d-none");
+          } finally {
+            btnText.classList.remove("d-none");
+            btnLoader.classList.add("d-none");
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

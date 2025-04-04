@@ -1,0 +1,229 @@
+:root {
+  --accent-color: #0d6efd;
+  --secondary-color: #6c757d;
+  --text-dark: #212529;
+}
+
+body {
+  background-color: #f8f9fa;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.card {
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  border: none;
+}
+
+/* Password Strength Meter */
+.password-strength {
+  height: 0;
+  overflow: hidden;
+  transition: height 0.3s ease;
+}
+
+.password-strength.active {
+  height: 30px;
+}
+
+.progress-bar {
+  transition: width 0.5s ease;
+}
+
+.strength-text {
+  font-size: 0.75rem;
+  margin-top: 3px;
+}
+
+/* Password Tooltip */
+.password-tooltip {
+  position: absolute;
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.3s ease;
+  pointer-events: none;
+  width: 220px;
+}
+
+.password-tooltip.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.password-tooltip ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.password-tooltip li {
+  position: relative;
+  padding-left: 20px;
+  margin-bottom: 8px;
+  font-size: 0.85rem;
+  color: var(--text-dark);
+}
+
+.password-tooltip li:before {
+  content: "✗";
+  position: absolute;
+  left: 0;
+  color: #dc3545;
+}
+
+.password-tooltip li.valid:before {
+  content: "✓";
+  color: #28a745;
+}
+
+/* Password visibility toggle */
+.password-toggle {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: var(--secondary-color);
+  z-index: 5;
+}
+
+.password-toggle:hover {
+  color: var(--accent-color);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .password-tooltip {
+    width: 200px;
+    font-size: 0.8rem;
+  }
+}
+
+/* Form validation styles */
+.is-valid {
+  border-color: #28a745 !important;
+}
+
+.is-invalid {
+  border-color: #dc3545 !important;
+}
+
+.invalid-feedback {
+  display: none;
+  color: #dc3545;
+  font-size: 0.875em;
+}
+
+/* Divider style */
+.divider {
+  display: flex;
+  align-items: center;
+  margin: 1rem 0;
+  color: #6c757d;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.divider::before {
+  margin-right: 0.5rem;
+}
+
+.divider::after {
+  margin-left: 0.5rem;
+}
+
+/* Success Modal Styles */
+.modal-success {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1050;
+  animation: fadeIn 0.3s ease;
+}
+
+.modal-success-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 400px;
+  overflow: hidden;
+  animation: slideDown 0.4s ease;
+}
+
+.modal-success-header {
+  background-color: #f47321;
+  color: white;
+  padding: 20px;
+  text-align: center;
+}
+
+.modal-success-body {
+  padding: 30px;
+  text-align: center;
+}
+
+.modal-success-icon {
+  font-size: 60px;
+  color: #28a745;
+  margin-bottom: 20px;
+  animation: bounceIn 0.6s ease;
+}
+
+.modal-success-footer {
+  padding: 15px;
+  text-align: center;
+  border-top: 1px solid #eee;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    transform: translate(-50%, -60%);
+    opacity: 0;
+  }
+  to {
+    transform: translate(-50%, -50%);
+    opacity: 1;
+  }
+}
+
+@keyframes bounceIn {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

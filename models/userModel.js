@@ -19,6 +19,7 @@ const userSchema = new mongoose.Schema(
     contactNumber: {
       type: String,
       trim: true,
+      required:true,
     },
 
     // Fields specific to vendors
@@ -51,10 +52,10 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
       minlength: 8,
-      maxlength: 12,
+      
       validate: {
         validator: function (value) {
-          return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,12}$/.test(
+          return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/.test(
             value
           );
         },
