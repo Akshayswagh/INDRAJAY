@@ -95,6 +95,47 @@ app.post("/update-product/:id", async (req, res) => {
   }
 });
 
+
+// auth routes
+// register user 
+app.get("/register-user", async (req, res) => {
+  res.render("client/register-user", { title: "User Register | Indrajay Enterprises" });
+});
+
+// log in user
+app.get("/login-user", async (req, res) => {
+  res.render("client/login-user", { title: "User Login | Indrajay Enterprises" });
+});
+
+// register vendor 
+app.get("/register-vendor", async (req, res) => {
+  res.render("client/register-vendor", { title: "Vendor Register | Indrajay Enterprises" });
+});
+
+// log in vendor
+app.get("/login-vendor", async (req, res) => {
+  res.render("client/login-vendor", { title: "Vendor Login | Indrajay Enterprises" });
+});
+
+// Admin auth Routes
+// register admin
+app.get("/register-admin", async (req, res) => {
+  res.render("admin/register-admin", { title: "Admin Register | Indrajay Enterprises" });
+});
+
+// log in admin
+app.get("/login-admin", async (req, res) => {
+  res.render("admin/login-admin", { title: "Admin Login | Indrajay Enterprises" });
+});
+
+
+
+
+
+
+
+
+
 // Home Page Rendering
 app.get("/", async (req, res) => {
   try {
@@ -105,20 +146,20 @@ app.get("/", async (req, res) => {
   }
 });
 
+
+
+
+
+
+
+
+
 // Complete Meal
 app.get("/completeMeal", async (req, res) => {
   res.render("client/completeMeal"); // pass products to EJS
 });
 
-// register user 
-app.get("/registerUser", async (req, res) => {
-  res.render("client/registerUser", { title: "Register User | Indrajay Enterprises" });
-});
 
-// log in
-app.get("/loginUser", async (req, res) => {
-  res.render("client/loginUser", { title: "Login User | Indrajay Enterprises" });
-});
 
 // all products
 app.get("/product", async (req, res) => {
@@ -142,7 +183,7 @@ app.get("/contact", (req, res) => {
 
 // 404 page
 app.get("*", (req, res) => {
-  res.render("client/404.ejs");
+  res.render("client/404.ejs",{ title: "404 - Page Not Found | Indrajay Enterprises" });
 });
 
 const PORT = process.env.PORT || 5000;

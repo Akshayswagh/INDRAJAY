@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Registration - Join Us Today</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+
+    <%- include('../partials/head'); %>
+    <style>
+      /* Base Styles */
+      :root {
+        --primary-color: #f47321;
+        --primary-hover: #e0661b;
+        --text-color: #333;
+        --muted-text: #6c757d;
+        --border-color: #ced4da;
+        --error-color: #dc3545;
+        --success-color: #28a745;
+        --background: #f8f9fa;
+        --white: #ffffff;
+        --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        --card-padding: 2rem;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        color: var(--text-color);
+        background-color: var(--background);
+      }
+
+      /* Layout */
+      .page-container {
+        width: 100%;
+        /* padding: 20px; */
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .form-container {
+        width: 100%;
+        max-width: 540px;
+        margin: 0 auto;
+      }
+
+      .form-card {
+        background: var(--white);
+        border-radius: 8px;
+        box-shadow: var(--shadow);
+        overflow: hidden;
+        animation: fadeInUp 0.5s ease;
+      }
+
+      .form-content {
+        padding: 1.5rem;
+      }
+
+      /* Form Elements */
+      .form-section {
+        margin-bottom: 1.5rem;
+      }
+
+      .section-title {
+        color: var(--muted-text);
+        margin-bottom: 1rem;
+        font-size: 1.1rem;
+        font-weight: 500;
+      }
+
+      .input-group {
+        position: relative;
+        margin-bottom: 1rem;
+      }
+
+      .form-input {
+        width:100%;
+        padding: 1rem;
+        font-size: 1rem;
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        transition: border-color 0.2s;
+      }
+
+      .form-input:focus {
+        border-color: var(--primary-color);
+        outline: none;
+      }
+
+      .input-label {
+        position: absolute;
+        top: 1rem;
+        left: 1rem;
+        color: var(--muted-text);
+        transition: all 0.2s ease;
+        pointer-events: none;
+        background: var(--white);
+        padding: 0 0.2rem;
+      }
+
+      .form-input:focus + .input-label,
+      .form-input:not(:placeholder-shown) + .input-label {
+        top: -0.5rem;
+        left: 0.8rem;
+        font-size: 0.8rem;
+        color: var(--primary-color);
+      }
+
+      .password-wrapper {
+        position: relative;
+      }
+
+      .password-toggle {
+        position: absolute;
+        top: 50%;
+        right: 10px;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: var(--muted-text);
+      }
+
+      /* Checkbox */
+      .checkbox-group {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1.5rem;
+      }
+
+      .checkbox-input {
+        margin-right: 0.5rem;
+      }
+
+      /* Button */
+      .submit-button {
+        width: 100%;
+        padding: 0.8rem;
+        background-color: var(--primary-color);
+        color: var(--white);
+        border: none;
+        border-radius: 4px;
+        font-size: 1.1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        margin-bottom: 1.5rem;
+      }
+
+      .submit-button:hover {
+        background-color: var(--primary-hover);
+      }
+
+      .button-content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      /* Form Header */
+      .form-header {
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+
+      .form-icon {
+        font-size: 3.5rem;
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+      }
+
+      .form-title {
+        font-size: 1.75rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+      }
+
+      .form-subtitle {
+        color: var(--muted-text);
+      }
+
+      /* Footer Links */
+      .form-footer {
+        text-align: center;
+      }
+
+      .footer-link {
+        color: var(--primary-color);
+        text-decoration: none;
+        font-weight: 600;
+      }
+
+      .footer-link:hover {
+        text-decoration: underline;
+      }
+
+      /* Message Box */
+      .message-box {
+        padding: 1rem;
+        border-radius: 4px;
+        margin-top: 1.5rem;
+        display: none;
+      }
+
+      .error-message {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+      }
+
+      .success-message {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+      }
+
+      /* Modal */
+      .modal-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .modal-content {
+        background-color: var(--white);
+        border-radius: 8px;
+        width: 90%;
+        max-width: 400px;
+        overflow: hidden;
+        animation: fadeInUp 0.3s ease;
+      }
+
+      .modal-header {
+        padding: 1rem;
+        background-color: var(--primary-color);
+        color: var(--white);
+      }
+
+      .modal-body {
+        padding: 1.5rem;
+        text-align: center;
+      }
+
+      .modal-icon {
+        font-size: 3rem;
+        color: var(--success-color);
+        margin-bottom: 1rem;
+      }
+
+      .modal-footer {
+        padding: 1rem;
+        display: flex;
+        justify-content: center;
+      }
+
+      .modal-button {
+        padding: 0.5rem 1.5rem;
+        background-color: var(--primary-color);
+        color: var(--white);
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      /* Animations */
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      .spinner {
+        animation: spin 1s linear infinite;
+      }
+
+      /* Utility Classes */
+      .hidden {
+        display: none;
+      }
+
+      /* Responsive */
+      @media (max-width: 576px) {
+        .form-content {
+          padding: 1.5rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <%- include('../partials/navbar'); %>
+    <div class="page-container">
+      <div class="form-container">
+        <div class="form-card animate__animated animate__fadeInUp">
+          <div class="form-content">
+            <div class="form-header">
+              <div class="form-icon">
+                <i class="fas fa-user-shield"></i>
+              </div>
+              <h1 class="form-title">Admin Registration</h1>
+              <p class="form-subtitle">
+                Create your admin account in just a few steps
+              </p>
+            </div>
+
+            <form id="adminRegisterForm" novalidate>
+              <!-- Hidden role field for admin -->
+              <input type="hidden" name="role" value="admin" />
+
+              <!-- Personal Information -->
+              <div class="form-section">
+                <h2 class="section-title">Admin Information</h2>
+
+                <div class="input-group">
+                  <input
+                    type="text"
+                    id="registerName"
+                    name="name"
+                    class="form-input"
+                    placeholder=" "
+                    required
+                    minlength="2"
+                    maxlength="50"
+                    pattern="^[a-zA-Z ]+$"
+                  />
+                  <label for="registerName" class="input-label"
+                    >Full Name</label
+                  >
+                </div>
+
+                <div class="input-group">
+                  <input
+                    type="email"
+                    id="registerEmail"
+                    name="email"
+                    class="form-input"
+                    placeholder=" "
+                    required
+                    pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                  />
+                  <label for="registerEmail" class="input-label"
+                    >Email address</label
+                  >
+                </div>
+
+                <div class="input-group">
+                  <input
+                    type="tel"
+                    id="registerPhone"
+                    name="contactNumber"
+                    class="form-input"
+                    placeholder=" "
+                    required
+                    pattern="[0-9]{10}"
+                    maxlength="10"
+                    oninput="this.value = this.value.replace(/[^0-9]/g, '');"
+                  />
+                  <label for="registerPhone" class="input-label"
+                    >Phone Number</label
+                  >
+                </div>
+              </div>
+
+              <!-- Account Security -->
+              <div class="form-section">
+                <h2 class="section-title">Account Security</h2>
+
+                <div class="input-group password-wrapper">
+                  <input
+                    type="password"
+                    id="registerPassword"
+                    name="password"
+                    class="form-input"
+                    placeholder=" "
+                    required
+                    minlength="8"
+                    pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$"
+                  />
+                  <label for="registerPassword" class="input-label"
+                    >Password</label
+                  >
+                  <span
+                    class="password-toggle"
+                    aria-label="Toggle password visibility"
+                  >
+                    <i class="far fa-eye"></i>
+                  </span>
+                </div>
+              </div>
+
+              <!-- Submit Button -->
+              <button type="submit" class="submit-button">
+                <div class="button-content">
+                  <span class="button-text">Register</span>
+                  <span class="button-loader hidden">
+                    <i class="fas fa-spinner spinner"></i>
+                  </span>
+                </div>
+              </button>
+
+              <!-- Login Link -->
+              <div class="form-footer">
+                <p>
+                  Already have an account?
+                  <a href="/admin-login" class="footer-link">Login here</a>
+                </p>
+              </div>
+            </form>
+
+            <!-- Response Message -->
+            <div id="responseMessage" class="message-box" role="alert"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal-overlay" id="successModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4>Success!</h4>
+        </div>
+        <div class="modal-body">
+          <div class="modal-icon">
+            <i class="fas fa-check-circle"></i>
+          </div>
+          <h5>Admin Account Created</h5>
+          <p>Your admin account has been created successfully.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="modal-button" id="successModalClose">
+            Continue
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <%- include('../partials/footer'); %> <%- include('../partials/scripts'); %>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById("adminRegisterForm");
+        const responseBox = document.getElementById("responseMessage");
+        const passwordToggle = document.querySelector(".password-toggle");
+        const passwordInput = document.getElementById("registerPassword");
+        const successModal = document.getElementById("successModal");
+        const submitBtn = form.querySelector('button[type="submit"]');
+        const btnText = submitBtn.querySelector(".button-text");
+        const btnLoader = submitBtn.querySelector(".button-loader");
+
+        // Password toggle functionality
+        passwordToggle.addEventListener("click", function () {
+          const icon = this.querySelector("i");
+          const type = passwordInput.type === "password" ? "text" : "password";
+          passwordInput.type = type;
+          icon.classList.toggle("fa-eye");
+          icon.classList.toggle("fa-eye-slash");
+        });
+
+        // Form validation and submission
+        const fieldsToValidate = ["name", "email", "contactNumber", "password"];
+
+        function validateField(field) {
+          return field.checkValidity();
+        }
+
+        function handleServerErrors(result) {
+          responseBox.className = "message-box error-message";
+          responseBox.textContent = result.message || "Registration failed!";
+          responseBox.style.display = "block";
+        }
+
+        function showSuccessModal() {
+          successModal.style.display = "flex";
+        }
+
+        form.addEventListener("submit", async function (event) {
+          event.preventDefault();
+          responseBox.style.display = "none";
+
+          let isValid = true;
+          fieldsToValidate.forEach((fieldName) => {
+            const field = form.elements[fieldName];
+            if (field && !validateField(field)) {
+              isValid = false;
+            }
+          });
+
+          if (!isValid) return;
+
+          btnText.style.display = "none";
+          btnLoader.style.display = "block";
+
+          try {
+            const response = await fetch("/api/auth/register", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                name: form.elements.name.value,
+                email: form.elements.email.value,
+                contactNumber: form.elements.contactNumber.value,
+                password: form.elements.password.value,
+                role: "admin",
+              }),
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+              showSuccessModal();
+              form.reset();
+              responseBox.className = "message-box success-message";
+              responseBox.textContent = "Admin account created successfully!";
+              responseBox.style.display = "block";
+              setTimeout(() => (responseBox.style.display = "none"), 3000);
+            } else {
+              handleServerErrors(result);
+              setTimeout(() => (responseBox.style.display = "none"), 3000);
+            }
+          } catch (error) {
+            console.error("Error:", error);
+            responseBox.className = "message-box error-message";
+            responseBox.textContent = "An unexpected error occurred.";
+            responseBox.style.display = "block";
+            setTimeout(() => (responseBox.style.display = "none"), 3000);
+          } finally {
+            btnText.style.display = "block";
+            btnLoader.style.display = "none";
+          }
+        });
+
+        // Redirect on success modal close
+        document
+          .getElementById("successModalClose")
+          .addEventListener("click", function () {
+            successModal.style.display = "none";
+            window.location.href = "/login-admin";
+          });
+      });
+    </script>
+  </body>
+</html>

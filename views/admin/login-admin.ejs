@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('../partials/head'); %>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AdminLogin</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <style>
+      /* Base Styles */
+      :root {
+        --primary-color: #f47321;
+        --primary-hover: #e0661b;
+        --text-color: #333;
+        --muted-text: #6c757d;
+        --success-color: #28a745;
+        --border-color: #ced4da;
+        --error-color: #dc3545;
+        --background: #f8f9fa;
+        --white: #ffffff;
+        --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        color: var(--text-color);
+        background-color: var(--background);
+      }
+
+      /* Layout */
+      .login-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: calc(100vh - 40px);
+      }
+
+      .login-card {
+        width: 100%;
+        max-width: 450px;
+        background: var(--white);
+        border-radius: 8px;
+        box-shadow: var(--shadow);
+        padding: 2.5rem;
+        animation: fadeInUp 0.5s ease;
+      }
+
+      .login-header {
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+
+      .login-icon {
+        font-size: 3.5rem;
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+      }
+
+      .login-title {
+        font-size: 1.75rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+      }
+
+      .login-subtitle {
+        color: var(--muted-text);
+      }
+
+      /* Form Elements */
+      .form-group {
+        margin-bottom: 1.5rem;
+        position: relative;
+      }
+
+      .form-input {
+        width: 100%;
+        padding: 1rem;
+        font-size: 1rem;
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        transition: border-color 0.2s;
+      }
+
+      .form-input:focus {
+        border-color: var(--primary-color);
+        outline: none;
+      }
+
+      .form-label {
+        position: absolute;
+        top: 1rem;
+        left: 1rem;
+        color: var(--muted-text);
+        transition: all 0.2s;
+        pointer-events: none;
+        background: var(--white);
+        padding: 0 0.2rem;
+      }
+
+      .form-input:focus + .form-label,
+      .form-input:not(:placeholder-shown) + .form-label {
+        top: -0.5rem;
+        left: 0.8rem;
+        font-size: 0.8rem;
+        color: var(--primary-color);
+      }
+
+      .password-wrapper {
+        position: relative;
+      }
+
+      .password-toggle {
+        position: absolute;
+        top: 50%;
+        right: 10px;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: var(--muted-text);
+      }
+
+      /* Options Row */
+      .options-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+      }
+
+      .checkbox-container {
+        display: flex;
+        align-items: center;
+      }
+
+      .checkbox-input {
+        margin-right: 0.5rem;
+      }
+
+      /* Button */
+      .submit-button {
+        width: 100%;
+        padding: 0.8rem;
+        background-color: var(--primary-color);
+        color: var(--white);
+        border: none;
+        border-radius: 4px;
+        font-size: 1.1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        margin-bottom: 1.5rem;
+      }
+
+      .submit-button:hover {
+        background-color: var(--primary-hover);
+      }
+
+      .button-content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      /* Footer Links */
+      .login-footer {
+        text-align: center;
+      }
+
+      .footer-link {
+        color: var(--primary-color);
+        text-decoration: none;
+        font-weight: 600;
+      }
+
+      .footer-link:hover {
+        text-decoration: underline;
+      }
+
+      /* Message Box */
+      .message-box {
+        padding: 1rem;
+        border-radius: 4px;
+        margin-top: 1.5rem;
+        display: none;
+      }
+
+      .error-message {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+      }
+
+      .success-message {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+      }
+      /* Animations */
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      .spinner {
+        animation: spin 1s linear infinite;
+      }
+
+      /* Error State */
+      .input-error {
+        border-color: var(--error-color);
+      }
+
+      /* Responsive */
+      @media (max-width: 480px) {
+        .login-card {
+          padding: 1.5rem;
+        }
+
+        .options-row {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <%- include('../partials/navbar'); %>
+    <div class="login-container">
+      <div class="login-card">
+        <div class="login-header">
+          <div class="login-icon">
+            <i class="fas fa-sign-in-alt"></i>
+          </div>
+          <h1 class="login-title">Admin Login</h1>
+          <p class="login-subtitle">Sign in to access your account</p>
+        </div>
+
+        <form id="loginForm" action="/api/auth/login" method="POST">
+          <input type="hidden" name="role" value="admin" />
+
+          <div class="form-group">
+            <input
+              type="email"
+              id="email"
+              name="email"
+              class="form-input"
+              placeholder=" "
+              required
+            />
+            <label for="email" class="form-label">Email address</label>
+          </div>
+
+          <div class="form-group">
+            <div class="password-wrapper">
+              <input
+                type="password"
+                id="password"
+                name="password"
+                class="form-input"
+                placeholder=" "
+                required
+              />
+              <label for="password" class="form-label">Password</label>
+              <span class="password-toggle">
+                <i class="far fa-eye"></i>
+              </span>
+            </div>
+          </div>
+
+          <div class="options-row">
+            <div class="checkbox-container">
+              <input
+                type="checkbox"
+                id="remember"
+                name="remember"
+                class="checkbox-input"
+              />
+              <label for="remember">Remember me</label>
+            </div>
+            <a href="/forgot-password" class="footer-link">Forgot password?</a>
+          </div>
+
+          <button type="submit" class="submit-button">
+            <div class="button-content">
+              <span class="button-text">Sign In</span>
+              <span class="button-loader" style="display: none">
+                <i class="fas fa-spinner spinner"></i>
+              </span>
+            </div>
+          </button>
+
+          <div class="login-footer">
+            <p>
+              Don't have an account?
+              <a href="/register-admin" class="footer-link">Register</a>
+            </p>
+          </div>
+        </form>
+
+        <div
+          id="responseMessage"
+          class="message-box error-message"
+          role="alert"
+        ></div>
+      </div>
+    </div>
+
+    <%- include('../partials/footer'); %> <%- include('../partials/scripts'); %>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById("loginForm");
+        const responseBox = document.getElementById("responseMessage");
+        const passwordToggle = document.querySelector(".password-toggle");
+        const passwordInput = document.getElementById("password");
+        const submitButton = document.querySelector(".submit-button");
+        const buttonText = document.querySelector(".button-text");
+        const buttonLoader = document.querySelector(".button-loader");
+
+        // Toggle password visibility
+        passwordToggle.addEventListener("click", function () {
+          const icon = this.querySelector("i");
+          const type = passwordInput.type === "password" ? "text" : "password";
+          passwordInput.type = type;
+          icon.classList.toggle("fa-eye");
+          icon.classList.toggle("fa-eye-slash");
+        });
+
+        // Form submission
+        form.addEventListener("submit", async function (e) {
+          e.preventDefault();
+
+          // Clear previous errors
+          responseBox.style.display = "none";
+          document.querySelectorAll(".input-error").forEach((el) => {
+            el.classList.remove("input-error");
+          });
+
+          // Show loading state
+          buttonText.style.display = "none";
+          buttonLoader.style.display = "block";
+
+          try {
+            const formData = new FormData(form);
+            const payload = {
+              email: formData.get("email"),
+              password: formData.get("password"),
+              role: formData.get("role"),
+
+              remember: formData.get("remember") === "on",
+            };
+
+            const response = await fetch("/api/auth/login", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(payload),
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+              // Show success message
+              responseBox.textContent = "Login successful! Redirecting...";
+              responseBox.classList.add("success-message");
+              responseBox.style.display = "block";
+
+              // Successful login - redirect
+              //   window.location.href = "/";
+
+              // Auto-hide after 3 seconds
+              setTimeout(() => {
+                responseBox.style.display = "none";
+              }, 3000);
+            } else {
+              // Show error message
+              responseBox.textContent =
+                result.message || "Login failed. Please try again.";
+              responseBox.style.display = "block";
+              // Auto-hide after 3 seconds
+              setTimeout(() => {
+                responseBox.style.display = "none";
+              }, 3000);
+
+              // Highlight error field if specified
+              if (result.field === "email") {
+                document.getElementById("email").classList.add("input-error");
+              } else if (result.field === "password") {
+                document
+                  .getElementById("password")
+                  .classList.add("input-error");
+              }
+            }
+          } catch (error) {
+            console.error("Error:", error);
+            responseBox.textContent =
+              "An unexpected error occurred. Please try again later.";
+            responseBox.style.display = "block";
+
+            // Auto-hide after 3 seconds
+            setTimeout(() => {
+              responseBox.style.display = "none";
+            }, 3000);
+          } finally {
+            // Hide loading state
+            buttonText.style.display = "block";
+            buttonLoader.style.display = "none";
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
