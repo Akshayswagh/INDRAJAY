@@ -1,4 +1,6 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcryptjs");
+
 const userSchema = new mongoose.Schema(
   {
     email: {
@@ -19,7 +21,7 @@ const userSchema = new mongoose.Schema(
     contactNumber: {
       type: String,
       trim: true,
-      required:true,
+      required: true,
     },
 
     // Fields specific to vendors
@@ -52,7 +54,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
       minlength: 8,
-      
+
       validate: {
         validator: function (value) {
           return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/.test(
@@ -73,5 +75,23 @@ const userSchema = new mongoose.Schema(
   },
   { timestamps: true } // Enables createdAt and updatedAt timestamps
 );
+
+// Add password changed timestamp
+userSchema.add({
+  passwordChangedAt: Date,
+});
+
+// Password hashing middleware (you already have this)
+userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) return next();
+
+  this.password = await bcrypt.hash(this.password, 12);
+
+  // Only update passwordChangedAt if it's not a new user
+  if (!this.isNew) {
+    this.passwordChangedAt = Date.now() - 1000; // Subtract 1s to ensure token was created after
+  }
+  next();
+});
 
 module.exports = mongoose.model("User", userSchema);

@@ -1,12 +1,12 @@
 const express = require("express");
-const dotenv = require("dotenv").config();
-// const expressLayouts = require('express-ejs-layouts');
+// const dotenv = require("dotenv").config();
 const connectDB = require("./config/db");
 const cors = require("cors");
 
 const productRoutes = require("./routes/productRoutes");
 const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
+const PasswordResetToken = require("./models/PasswordResetToken");
 const Product = require("./models/Product");
 
 const path = require("path");
@@ -39,9 +39,6 @@ app.use((err, req, res, next) => {
     error: err.message || "Internal Server Error",
   });
 });
-
-
-
 
 // Routes
 
@@ -97,44 +94,94 @@ app.post("/update-product/:id", async (req, res) => {
 
 
 // auth routes
-// register user 
+// register user
 app.get("/register-user", async (req, res) => {
-  res.render("client/register-user", { title: "User Register | Indrajay Enterprises" });
+  res.render("client/register-user", {
+    title: "User Register | Indrajay Enterprises",
+  });
 });
 
 // log in user
 app.get("/login-user", async (req, res) => {
-  res.render("client/login-user", { title: "User Login | Indrajay Enterprises" });
+  res.render("client/login-user", {
+    title: "User Login | Indrajay Enterprises",
+  });
 });
 
-// register vendor 
+// register vendor
 app.get("/register-vendor", async (req, res) => {
-  res.render("client/register-vendor", { title: "Vendor Register | Indrajay Enterprises" });
+  res.render("client/register-vendor", {
+    title: "Vendor Register | Indrajay Enterprises",
+  });
 });
 
 // log in vendor
 app.get("/login-vendor", async (req, res) => {
-  res.render("client/login-vendor", { title: "Vendor Login | Indrajay Enterprises" });
+  res.render("client/login-vendor", {
+    title: "Vendor Login | Indrajay Enterprises",
+  });
 });
 
 // Admin auth Routes
 // register admin
 app.get("/register-admin", async (req, res) => {
-  res.render("admin/register-admin", { title: "Admin Register | Indrajay Enterprises" });
+  res.render("admin/register-admin", {
+    title: "Admin Register | Indrajay Enterprises",
+  });
 });
 
 // log in admin
 app.get("/login-admin", async (req, res) => {
-  res.render("admin/login-admin", { title: "Admin Login | Indrajay Enterprises" });
+  res.render("admin/login-admin", {
+    title: "Admin Login | Indrajay Enterprises",
+  });
 });
 
+// password forgot
+app.get("/forgot-password", async (req, res) => {
+  res.render("client/forgot-password", {
+    title: "Password forgot| Indrajay Enterprises",
+  });
+});
 
+// Serve reset password page 
+app.get("/reset-password/:token", async (req, res) => {
+  try {
+    const token = req.params.token;
 
+    // Check if token exists and is valid
+    const tokenDoc = await PasswordResetToken.findOne({ token }).populate(
+      "userId"
+    ); 
 
+    if (!tokenDoc) {
+      return res.render("client/reset-password", {
+        title: "Reset Password | Indrajay Enterprises",
+        valid: false,
+      });
+    }
 
+    // Check if token has expired
+    const valid = new Date(tokenDoc.expiresAt) > new Date();
 
+    if (!valid) {
+      // Optionally delete expired tokens
+      await PasswordResetToken.deleteOne({ _id: tokenDoc._id });
+    }
 
-
+    res.render("client/reset-password", {
+      title: "Reset Password | Indrajay Enterprises",
+      valid,
+      token: valid ? token : null,
+    });
+  } catch (error) {
+    console.error("Password reset error:", error);
+    res.render("client/reset-password", {
+      title: "Reset Password | Indrajay Enterprises",
+      valid: false,
+    });
+  }
+});
 
 // Home Page Rendering
 app.get("/", async (req, res) => {
@@ -146,20 +193,10 @@ app.get("/", async (req, res) => {
   }
 });
 
-
-
-
-
-
-
-
-
 // Complete Meal
 app.get("/completeMeal", async (req, res) => {
   res.render("client/completeMeal"); // pass products to EJS
 });
-
-
 
 // all products
 app.get("/product", async (req, res) => {
@@ -183,7 +220,9 @@ app.get("/contact", (req, res) => {
 
 // 404 page
 app.get("*", (req, res) => {
-  res.render("client/404.ejs",{ title: "404 - Page Not Found | Indrajay Enterprises" });
+  res.render("client/404.ejs", {
+    title: "404 - Page Not Found | Indrajay Enterprises",
+  });
 });
 
 const PORT = process.env.PORT || 5000;
