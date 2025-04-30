@@ -5,50 +5,51 @@
     <%- include('../partials/head'); %>
     <style>
       .contact-hero {
-        background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+        background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+          url("https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80");
         background-size: cover;
         background-position: center;
         color: white;
         padding: 5rem 0;
         margin-bottom: 3rem;
       }
-      
+
       .contact-card {
         border-radius: 10px;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         transition: transform 0.3s ease;
         margin-bottom: 2rem;
         border: none;
       }
-      
+
       .contact-card:hover {
         transform: translateY(-5px);
       }
-      
+
       .contact-icon {
         font-size: 2.5rem;
         margin-bottom: 1rem;
         color: #2c3e50;
       }
-      
+
       .social-icon {
         font-size: 1.5rem;
         color: #2c3e50;
         margin: 0 10px;
         transition: color 0.3s ease;
       }
-      
+
       .social-icon:hover {
         color: #3498db;
       }
-      
+
       .address-box {
         background-color: #f8f9fa;
         border-left: 4px solid #3498db;
         padding: 1.5rem;
         margin-bottom: 2rem;
       }
-      
+
       .email-badge {
         background-color: #e3f2fd;
         color: #1976d2;
@@ -58,15 +59,15 @@
         margin: 0.5rem 0;
         font-size: 0.9rem;
       }
-      
+
       .section-title {
         position: relative;
         margin-bottom: 2rem;
         padding-bottom: 0.5rem;
       }
-      
+
       .section-title:after {
-        content: '';
+        content: "";
         position: absolute;
         left: 0;
         bottom: 0;
@@ -74,103 +75,312 @@
         height: 3px;
         background: #3498db;
       }
+
+      /* Contact Form Styles */
+      .contact-form {
+        background-color: #fff;
+        border-radius: 10px;
+        padding: 2rem;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        margin-bottom: 3rem;
+      }
+
+      .form-control {
+        height: 45px;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+        margin-bottom: 1.5rem;
+      }
+
+      textarea.form-control {
+        height: auto;
+        min-height: 120px;
+      }
+
+      .form-label {
+        font-weight: 600;
+        color: #2c3e50;
+        margin-bottom: 0.5rem;
+      }
+
+      .required-field::after {
+        content: "*";
+        color: #e74c3c;
+        margin-left: 4px;
+      }
+
+      .captcha-container {
+        background-color: #f8f9fa;
+        border-radius: 5px;
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+      }
+
+      .captcha-checkbox {
+        margin-right: 10px;
+      }
+
+      .submit-btn {
+        background-color: #3498db;
+        color: white;
+        border: none;
+        padding: 0.75rem 2rem;
+        border-radius: 5px;
+        font-weight: 600;
+        transition: background-color 0.3s ease;
+      }
+
+      .submit-btn:hover {
+        background-color: #2980b9;
+        color: white;
+      }
+
+      .submit-btn:disabled {
+        background-color: #95a5a6;
+        cursor: not-allowed;
+      }
     </style>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
   </head>
   <body>
     <%- include('../partials/navbar', {activePage: 'contact'}); %>
-    
+
     <!-- Hero Section -->
     <section class="contact-hero text-center">
       <div class="container">
         <h1 class="display-4">Contact Us</h1>
-        <p class="lead">We value your feedback as we are committed to continuously improving our products and services.</p>
+        <p class="lead">
+          We value your feedback as we are committed to continuously improving
+          our products and services.
+        </p>
       </div>
     </section>
-    
+
     <!-- Main Content -->
     <div class="container mb-5">
+      <!-- Contact Form Section -->
+      <div class="row mb-5">
+        <div class="col-lg-8 mx-auto">
+          <div class="contact-form">
+            <h2 class="section-title text-center">Send Us a Message</h2>
+            <form id="contactForm" action="/submit-form" novalidate>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="name" class="form-label required-field"
+                      >Full Name</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="name"
+                      name="name"
+                      required
+                    />
+                    <div class="invalid-feedback">Please enter your name</div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="email" class="form-label required-field"
+                      >Email Address</label
+                    >
+                    <input
+                      type="email"
+                      class="form-control"
+                      id="email"
+                      name="email"
+                      required
+                    />
+                    <div class="invalid-feedback">
+                      Please enter a valid email address
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="mobile" class="form-label required-field"
+                  >Mobile Number</label
+                >
+                <input
+                  type="tel"
+                  class="form-control"
+                  id="mobile"
+                  name="mobile"
+                  required
+                  pattern="^[0-9]{10}$"
+                  maxlength="10"
+                  inputmode="numeric"
+                />
+                <div class="invalid-feedback">
+                  Please enter a valid 10-digit mobile number
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="message" class="form-label required-field"
+                  >Your Message</label
+                >
+                <textarea
+                  class="form-control"
+                  id="message"
+                  name="message"
+                  required
+                ></textarea>
+                <div class="invalid-feedback">Please enter your message</div>
+              </div>
+
+              <div class="captcha-container justify-content-center">
+                <div
+                  class="g-recaptcha"
+                  data-sitekey="6LfGdSkrAAAAAKeR6ArDJTiyjaMFtVn9q5Yc7qh1"
+                ></div>
+              </div>
+
+              <div class="text-center">
+                <button type="submit" class="submit-btn" disabled>
+                  Send Message
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
       <div class="row">
         <!-- Contact Info -->
         <div class="col-lg-6">
           <div class="address-box">
             <h3 class="section-title">Indrajay Enterprises</h3>
             <p>
-              <i class="fas fa-map-marker-alt mr-2"></i> 
-              Plot No. B-25, At-Firangai Nagar, Kurkumbh, Dist-Pune 413802, Maharashtra, India.
+              <i class="fas fa-map-marker-alt mr-2"></i>
+              Plot No. B-25, At-Firangai Nagar, Kurkumbh, Dist-Pune 413802,
+              Maharashtra, India.
             </p>
             <p><i class="fas fa-id-card mr-2"></i> GSTN: 27BCZPR6552A2Z2</p>
             <p><i class="fab fa-whatsapp mr-2"></i> WhatsApp: 9314314300</p>
           </div>
-          
+
           <h3 class="section-title">Connect With Us</h3>
           <div class="d-flex justify-content-center mb-4">
-            <a href="https://www.facebook.com/connectije" target="_blank" class="social-icon"><i class="fab fa-facebook"></i></a>
-            <a href="https://x.com/connectije" target="_blank" class="social-icon"><i class="fab fa-twitter"></i></a>
-            <a href="https://www.instagram.com/connectije" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a>
-            <a href="https://www.youtube.com/@connectije" target="_blank" class="social-icon"><i class="fab fa-youtube"></i></a>
+            <a
+              href="https://www.facebook.com/connectije"
+              target="_blank"
+              class="social-icon"
+              ><i class="fab fa-facebook"></i
+            ></a>
+            <a
+              href="https://x.com/connectije"
+              target="_blank"
+              class="social-icon"
+              ><i class="fab fa-twitter"></i
+            ></a>
+            <a
+              href="https://www.instagram.com/connectije"
+              target="_blank"
+              class="social-icon"
+              ><i class="fab fa-instagram"></i
+            ></a>
+            <a
+              href="https://www.youtube.com/@connectije"
+              target="_blank"
+              class="social-icon"
+              ><i class="fab fa-youtube"></i
+            ></a>
           </div>
           <p class="text-center">
-            <a href="https://whatsapp.com/channel/0029VbAFloL1Hspq3mU1OV3V" target="_blank" class="btn btn-success">
+            <a
+              href="https://whatsapp.com/channel/0029VbAFloL1Hspq3mU1OV3V"
+              target="_blank"
+              class="btn btn-success"
+            >
               <i class="fab fa-whatsapp mr-2"></i> Follow on WhatsApp Channel
             </a>
           </p>
         </div>
-        
+
         <!-- Email Contacts -->
         <div class="col-lg-6">
           <h3 class="section-title">Email Contacts</h3>
-          
+
           <div class="row">
             <div class="col-md-6 mb-4">
               <div class="contact-card card h-100">
                 <div class="card-body text-center">
                   <div class="contact-icon"><i class="fas fa-headset"></i></div>
                   <h5>Customer Support</h5>
-                  <a href="mailto:customercare@connectije.com" class="email-badge">customercare@connectije.com</a>
-                  <p class="text-muted small">For any Enquiry/Complaints/Feedback/Support</p>
+                  <a
+                    href="mailto:customercare@connectije.com"
+                    class="email-badge"
+                    >customercare@connectije.com</a
+                  >
+                  <p class="text-muted small">
+                    For any Enquiry/Complaints/Feedback/Support
+                  </p>
                 </div>
               </div>
             </div>
-            
+
             <div class="col-md-6 mb-4">
               <div class="contact-card card h-100">
                 <div class="card-body text-center">
-                  <div class="contact-icon"><i class="fas fa-handshake"></i></div>
+                  <div class="contact-icon">
+                    <i class="fas fa-handshake"></i>
+                  </div>
                   <h5>Vendor Support</h5>
-                  <a href="mailto:vendor@connectije.com" class="email-badge">vendor@connectije.com</a>
-                  <p class="text-muted small">For vendor registration and support</p>
+                  <a href="mailto:vendor@connectije.com" class="email-badge"
+                    >vendor@connectije.com</a
+                  >
+                  <p class="text-muted small">
+                    For vendor registration and support
+                  </p>
                 </div>
               </div>
             </div>
-            
+
             <div class="col-md-6 mb-4">
               <div class="contact-card card h-100">
                 <div class="card-body text-center">
                   <div class="contact-icon"><i class="fas fa-taxi"></i></div>
                   <h5>Transport Services</h5>
-                  <a href="mailto:booking@connectije.com" class="email-badge">booking@connectije.com</a>
-                  <p class="text-muted small">For Cab/Travel/Transport/logistics</p>
+                  <a href="mailto:booking@connectije.com" class="email-badge"
+                    >booking@connectije.com</a
+                  >
+                  <p class="text-muted small">
+                    For Cab/Travel/Transport/logistics
+                  </p>
                 </div>
               </div>
             </div>
-            
+
             <div class="col-md-6 mb-4">
               <div class="contact-card card h-100">
                 <div class="card-body text-center">
-                  <div class="contact-icon"><i class="fas fa-briefcase"></i></div>
+                  <div class="contact-icon">
+                    <i class="fas fa-briefcase"></i>
+                  </div>
                   <h5>Business Communications</h5>
-                  <a href="mailto:corp@connectije.com" class="email-badge">corp@connectije.com</a>
+                  <a href="mailto:corp@connectije.com" class="email-badge"
+                    >corp@connectije.com</a
+                  >
                   <p class="text-muted small">For business communications</p>
                 </div>
               </div>
             </div>
-            
+
             <div class="col-12">
               <div class="contact-card card">
                 <div class="card-body text-center">
-                  <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+                  <div class="contact-icon">
+                    <i class="fas fa-envelope"></i>
+                  </div>
                   <h5>General Inquiries</h5>
-                  <a href="mailto:info@connectije.com" class="email-badge">info@connectije.com</a>
+                  <a href="mailto:info@connectije.com" class="email-badge"
+                    >info@connectije.com</a
+                  >
                   <p class="text-muted small">For any other communications</p>
                 </div>
               </div>
@@ -179,21 +389,62 @@
         </div>
       </div>
     </div>
-    
+
     <!-- Map Section -->
     <div class="container-fluid p-0 mb-5">
-      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3784.441483078819!2d74.0438573153676!3d18.45347407592643!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2eac85230ba47%3A0x871eddd0a8a0a108!2sKurkumbh%2C%20Maharashtra%20413802!5e0!3m2!1sen!2sin!4v1623830284393!5m2!1sen!2sin" 
-              width="100%" 
-              height="450" 
-              style="border:0;" 
-              allowfullscreen="" 
-              loading="lazy"></iframe>
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3784.441483078819!2d74.0438573153676!3d18.45347407592643!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2eac85230ba47%3A0x871eddd0a8a0a108!2sKurkumbh%2C%20Maharashtra%20413802!5e0!3m2!1sen!2sin!4v1623830284393!5m2!1sen!2sin"
+        width="100%"
+        height="450"
+        style="border: 0"
+        allowfullscreen=""
+        loading="lazy"
+      ></iframe>
     </div>
-    
-    <%- include('../partials/footer'); %>
-    <%- include('../partials/scripts'); %>
-    
+
+    <%- include('../partials/footer'); %> <%- include('../partials/scripts'); %>
+
     <!-- Font Awesome for icons -->
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script
+      src="https://kit.fontawesome.com/a076d05399.js"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- Form Validation Script (non-functional as requested) -->
+    <script>
+      document.getElementById("mobile").addEventListener("input", function (e) {
+        this.value = this.value.replace(/[^0-9]/g, "").slice(0, 10);
+      });
+
+      // This script is for visual demonstration only and won't actually submit the form
+      document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById("contactForm");
+        const submitBtn = form.querySelector(".submit-btn");
+
+        // Simple validation for demonstration
+        form.addEventListener("input", function () {
+          let isValid = true;
+          const requiredFields = form.querySelectorAll("[required]");
+
+          requiredFields.forEach((field) => {
+            if (
+              !field.value.trim() ||
+              (field.id === "captcha" && !field.checked)
+            ) {
+              isValid = false;
+            }
+          });
+
+          submitBtn.disabled = !isValid;
+        });
+
+        // Prevent actual form submission
+        form.addEventListener("submit", function (e) {
+          e.preventDefault();
+          alert("submited");
+          return false;
+        });
+      });
+    </script>
   </body>
 </html>

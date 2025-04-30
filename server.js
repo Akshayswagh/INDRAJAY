@@ -2,6 +2,7 @@ const express = require("express");
 // const dotenv = require("dotenv").config();
 const connectDB = require("./config/db");
 const cors = require("cors");
+const axios = require("axios");
 
 const productRoutes = require("./routes/productRoutes");
 const authRoutes = require("./routes/authRoutes");
@@ -38,6 +39,38 @@ app.use((err, req, res, next) => {
   res.status(err.status || 500).json({
     error: err.message || "Internal Server Error",
   });
+});
+
+app.post("/submit-form", async (req, res) => {
+  const token = req.body["g-recaptcha-response"];
+
+  if (!token) {
+    return res.status(400).send("Please complete the reCAPTCHA");
+  }
+
+  try {
+    const response = await axios.post(
+      `https://www.google.com/recaptcha/api/siteverify`,
+      null,
+      {
+        params: {
+          secret: process.env.SECRET_KEY,
+          response: token,
+        },
+      }
+    );
+
+    const data = response.data;
+
+    if (data.success) {
+      return res.send("✅ CAPTCHA verified, form submitted successfully!");
+    } else {
+      return res.status(400).send("❌ CAPTCHA verification failed");
+    }
+  } catch (err) {
+    console.error("Error verifying reCAPTCHA:", err);
+    return res.status(500).send("Server error during CAPTCHA verification");
+  }
 });
 
 // Routes
@@ -92,7 +125,6 @@ app.post("/update-product/:id", async (req, res) => {
   }
 });
 
-
 // auth routes
 // register user
 app.get("/register-user", async (req, res) => {
@@ -144,7 +176,7 @@ app.get("/forgot-password", async (req, res) => {
   });
 });
 
-// Serve reset password page 
+// Serve reset password page
 app.get("/reset-password/:token", async (req, res) => {
   try {
     const token = req.params.token;
@@ -152,7 +184,7 @@ app.get("/reset-password/:token", async (req, res) => {
     // Check if token exists and is valid
     const tokenDoc = await PasswordResetToken.findOne({ token }).populate(
       "userId"
-    ); 
+    );
 
     if (!tokenDoc) {
       return res.render("client/reset-password", {
