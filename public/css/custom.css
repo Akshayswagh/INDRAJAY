@@ -1,35 +1,232 @@
-/* here is custom css for all of the pages */
+  .responsive {
+    display: flex;
+    align-items: center;
+  }
 
-/* navbar */
-@media (max-width: 1200px) {
-  .social {
+  .top-row {
+    padding: 1rem 3rem;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  nav {
+    background: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    position: relative;
+  }
+
+  .navbar {
+    display: flex;
+    padding: 0.5rem 3.5rem;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 100%;
+    margin: 0 auto;
+    background-color: #f47321;
+  }
+
+  .logo img {
+    width: 300px;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    transition: color 0.3s;
+  }
+
+  .nav-links a:hover {
+    color: #007bff;
+  }
+
+  /* Dropdown Menu */
+  .dropdown {
+    position: relative;
+  }
+
+  .dropdown-menu {
+    display: none;
+    position: absolute;
+    background: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    padding: 0.5rem;
+    top: 50px;
+    left: 0;
+    min-width: 150px;
+  }
+
+  .dropdown:hover .dropdown-menu {
+    display: block;
+    text-decoration: none;
+    list-style: none;
+    min-width: 300px !important;
+  }
+
+  /* User Menu */
+  .user-menu {
+    position: relative;
+  }
+
+  .user-icon {
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    cursor: pointer;
+    padding: 0.5rem;
+  }
+
+  .user-dropdown {
+    display: none;
+    position: absolute;
+    right: 0;
+    background: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    min-width: 120px;
+    top: 70px;
+    z-index: 1000;
+    border-radius: 5px;
+  }
+
+  .user-dropdown a {
+    display: block;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    color: #333;
+  }
+
+  .user-dropdown a:hover {
+    background: #f8f9fa;
+  }
+
+  .user-menu:focus-within .user-dropdown {
+    display: block;
+  }
+
+  /* Hamburger Menu */
+  .hamburger {
+    display: none;
+    cursor: pointer;
+  }
+
+  .bar {
+    width: 25px;
+    height: 3px;
+    background: #333;
+    margin: 5px 0;
+  }
+
+  .logo {
+    display: block;
+  }
+  .logo-mobile {
     display: none;
   }
-}
 
-@media (max-width: 576px) {
-  .navbar-toggler-icon {
-    display: inline-block;
-  }
-}
+  @media (max-width: 768px) {
+    .navbar {
+      display: flex;
+      padding: 1rem 0rem;
+    }
 
-@media only screen and (max-width: 576px) {
-  .navbar {
-    background-color: var(--white);
-  }
-  .navbar-collapse {
-    background-color: var(--color1);
-    margin-top: 20px;
-    margin-left: -15px;
-    margin-right: -15px;
-  }
-}
+    .top-row {
+      display: none;
+    }
+    .logo-mobile img {
+      display: block;
+      width: 80px;
+      height: 60px;
+      margin-left: 1.5rem;
+    }
+    .logo-mobile {
+      display: block;
+    }
+    .logo {
+      display: none;
+    }
+    .hamburger {
+      display: block;
+    }
 
-/* vender registation form */
+    .responsive {
+      /* left: 2.5rem; */
+      position: relative;
+      gap: 0.5rem;
+    }
 
-@media only screen and (max-width: 400px) {
-  .form2 {
-    padding: 40px 30px 50px 20px !important;
-    border-radius: 10px;
+    .navbar {
+      background: #fff;
+    }
+    .nav-links {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: #fff;
+      flex-direction: column;
+      padding: 1rem 2rem;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .nav-links.active {
+      display: flex;
+      background-color: #f47321;
+      gap: 1rem;
+      padding: 20px;
+    }
+
+    .dropdown-menu {
+      position: static;
+      box-shadow: none;
+      padding-left: 1rem;
+    }
+
+    .dropdown-menu li {
+      padding: 0.3rem 0;
+    }
+
+    .user-menu {
+      margin-left: auto;
+      /* margin-right: 1rem; */
+    }
   }
-}
+  /* Add this to your existing CSS */
+  .top-contact {
+    background: #f8f9fa;
+    padding: 8px 2rem;
+    text-align: right;
+    font-size: 14px;
+  }
+
+  @media (max-width: 768px) {
+    .top-contact {
+      text-align: center;
+      padding: 8px 1rem;
+    }
+  }
+
+  .phone {
+    height: 30px;
+    margin-right: 0.5rem;
+  }
+
+  .top-phone {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .contact-info {
+    display: flex;
+    gap: 1rem;
+  }
+  .contact-text {
+    font-size: 1rem;
+  }

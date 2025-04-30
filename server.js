@@ -218,6 +218,11 @@ app.get("/contact", (req, res) => {
   res.render("client/contact.ejs", { title: "Contact | Indrajay Enterprises" });
 });
 
+// career page
+app.get("/career", (req, res) => {
+  res.render("client/career.ejs", { title: "Career | Indrajay Enterprises" });
+});
+
 // 404 page
 app.get("*", (req, res) => {
   res.render("client/404.ejs", {
