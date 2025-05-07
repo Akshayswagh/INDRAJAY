@@ -1,45 +1,40 @@
 const express = require("express");
-// const dotenv = require("dotenv").config();
+const fs = require("fs");
+const dotenv = require("dotenv").config();
 const connectDB = require("./config/db");
 const cors = require("cors");
 const axios = require("axios");
-
-const productRoutes = require("./routes/productRoutes");
+const path = require("path");
+const exportsRoutes = require("./routes/exportsRoutes");
 const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
 const PasswordResetToken = require("./models/PasswordResetToken");
-const Product = require("./models/Product");
-
-const path = require("path");
+const uploadPath = path.join(__dirname, "public", "uploads", "exports");
+const errorHandler = require("./middlewares/errorHandler");
 
 connectDB();
 
 const app = express();
+// if the image upload folder does not exists then it will create that
+if (!fs.existsSync(uploadPath)) {
+  fs.mkdirSync(uploadPath, { recursive: true });
+}
 
 // Middleware
 app.use(express.json());
-
 app.use(cors());
-app.use(express.static("public")); // Optional for styling
+app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 
 // Routes
-app.use("/api", productRoutes);
+app.use("/api/exports", exportsRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 
 // Set up EJS and layouts
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
-// app.use(expressLayouts);
-
-// Error Handler
-app.use((err, req, res, next) => {
-  console.error(err.message); // Logs only the error message
-  res.status(err.status || 500).json({
-    error: err.message || "Internal Server Error",
-  });
-});
+app.use("/public", express.static("public"));
 
 app.post("/submit-form", async (req, res) => {
   const token = req.body["g-recaptcha-response"];
@@ -81,49 +76,10 @@ app.get("/add-product", (req, res) => {
 });
 
 // all products
-app.get("/all-products", async (req, res) => {
-  try {
-    const products = await Product.find(); // Fetch products from MongoDB
-    res.render("admin/allProducts", { products }); // pass products to EJS
-  } catch (error) {
-    res.status(500).send("Failed to fetch products");
-  }
-});
 
 // Route to render the edit form
-app.get("/edit-product/:id", async (req, res) => {
-  try {
-    const product = await Product.findById(req.params.id);
-    if (!product) {
-      return res.status(404).send("Product not found");
-    }
-    res.render("admin/editProduct", { product }); // Render editProduct.ejs with product data
-  } catch (error) {
-    console.error("Error fetching product:", error);
-    res.status(500).send("Server Error");
-  }
-});
 
 // Update product route
-app.post("/update-product/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { name, category, originalPrice, discount, finalPrice } = req.body;
-
-    await Product.findByIdAndUpdate(id, {
-      name,
-      category,
-      originalPrice,
-      discount,
-      finalPrice,
-    });
-
-    res.redirect("/all-products"); // Redirect after update
-  } catch (error) {
-    console.error(error);
-    res.status(500).send("Server Error");
-  }
-});
 
 // auth routes
 // register user
@@ -218,8 +174,7 @@ app.get("/reset-password/:token", async (req, res) => {
 // Home Page Rendering
 app.get("/", async (req, res) => {
   try {
-    const products = await Product.find(); // Fetch products from MongoDB
-    res.render("client/home", { title: "Indrajay Enterprises", products });
+    res.render("client/home", { title: "Indrajay Enterprises" });
   } catch (error) {
     res.status(500).send("Failed to fetch products");
   }
@@ -228,16 +183,6 @@ app.get("/", async (req, res) => {
 // Complete Meal
 app.get("/completeMeal", async (req, res) => {
   res.render("client/completeMeal"); // pass products to EJS
-});
-
-// all products
-app.get("/product", async (req, res) => {
-  try {
-    const products = await Product.find(); // Fetch products from MongoDB
-    res.render("client/products", { products }); // pass products to EJS
-  } catch (error) {
-    res.status(500).send("Failed to fetch products");
-  }
 });
 
 // About page
@@ -261,6 +206,10 @@ app.get("*", (req, res) => {
     title: "404 - Page Not Found | Indrajay Enterprises",
   });
 });
+
+// Add this after all your routes
+// Global error handler - always at the end
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
