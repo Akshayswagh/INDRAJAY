@@ -180,9 +180,88 @@ app.get("/", async (req, res) => {
   }
 });
 
-// Complete Meal
-app.get("/completeMeal", async (req, res) => {
-  res.render("client/completeMeal"); // pass products to EJS
+// Fruits
+app.get("/fruits", async (req, res) => {
+  res.render("client/fruits", {
+    title: "Fruits & Vegetables | Indrajay Enterprises",
+  });
+});
+
+// Grains & cereals
+app.get("/grainsandcereals", async (req, res) => {
+  res.render("client/Grains&Sereals", {
+    title: "Grains & Cereals | Indrajay Enterprises",
+  });
+});
+
+// Oil seeds
+app.get("/oilseeds", async (req, res) => {
+  res.render("client/oilseeds", {
+    title: "Oil Seeds | Indrajay Enterprises",
+  });
+});
+
+// Pulses
+app.get("/pulses", async (req, res) => {
+  res.render("client/pulses", {
+    title: "Pulses | Indrajay Enterprises",
+  });
+});
+
+// Spises
+app.get("/spises", async (req, res) => {
+  res.render("client/spises", {
+    title: "Spises | Indrajay Enterprises",
+  });
+});
+
+// Jaggery
+app.get("/jaggery", async (req, res) => {
+  res.render("client/jaggery", {
+    title: "Jaggery | Indrajay Enterprises",
+  });
+});
+
+// Coconut
+app.get("/coconut", async (req, res) => {
+  res.render("client/coconut", {
+    title: "Coconut | Indrajay Enterprises",
+  });
+});
+
+// Nuts & Dry Fruits
+app.get("/nutsdryfruits", async (req, res) => {
+  res.render("client/nutsdryfruits", {
+    title: "Nuts & Dry Fruits | Indrajay Enterprises",
+  });
+});
+
+// Chemicals
+app.get("/chemicals", async (req, res) => {
+  res.render("client/chemicals", {
+    title: "Chemicals | Indrajay Enterprises",
+  });
+});
+
+// Wooden Pallets
+app.get("/woodenpalets", async (req, res) => {
+  res.render("client/woodenpalets", {
+    title: "Wooden Pallets | Indrajay Enterprises",
+  });
+});
+
+//  Packing Materials
+app.get("/packagingmaterials", async (req, res) => {
+  res.render("client/packagingmaterials", {
+    title: "Packing Materials | Indrajay Enterprises",
+  });
+});
+
+// Appearals & Garments
+app.get("/appearalsgarments", async (req, res) => {
+  res.render("client/appearalsgarments", {
+    title: "Appearals & Garments | Indrajay Enterprises",
+  });
 });
 
 // About page
