@@ -7,7 +7,7 @@
         --primary-hover: #f47321;
       }
 
-      .error-content{
+      .error-content {
         text-align: center;
         padding: 2rem;
       }
@@ -52,7 +52,7 @@
         h1 {
           font-size: 2rem;
         }
-        .user-icon{
+        .user-icon {
           display: none;
         }
       }
@@ -60,10 +60,10 @@
     <%- include('../partials/head'); %>
   </head>
   <body>
-    <%- include('../partials/nav2'); %>
+    <%- include('../partials/navbar'); %>
     <div class="error-content">
       <h2>404</h2>
-      <h1>Page Not Found</h1>
+      <h1><%= message || "Page Not Found" %></h1>
       <a href="/" class="home-link">Return to Homepage</a>
     </div>
     <%- include('../partials/footer'); %> <%- include('../partials/scripts'); %>

@@ -11,6 +11,7 @@ const userRoutes = require("./routes/userRoutes");
 const PasswordResetToken = require("./models/PasswordResetToken");
 const uploadPath = path.join(__dirname, "public", "uploads", "exports");
 const errorHandler = require("./middlewares/errorHandler");
+const Product = require("./models/Exports");
 
 connectDB();
 
@@ -182,86 +183,199 @@ app.get("/", async (req, res) => {
 
 // Fruits
 app.get("/fruits", async (req, res) => {
-  res.render("client/fruits", {
-    title: "Fruits & Vegetables | Indrajay Enterprises",
-  });
+  try {
+    const fruits = await Product.find({ category: "Fruits and Vegetables" });
+    res.render("client/fruits", {
+      title: "Fruits & Vegetables | Indrajay Enterprises",
+      fruits, // passing fruits to ejs template
+    });
+  } catch (err) {
+    console.log("error fetching fruits:", err);
+    res.status(500).send("Internal server Error");
+  }
 });
 
 // Grains & cereals
 app.get("/grainsandcereals", async (req, res) => {
-  res.render("client/Grains&Sereals", {
-    title: "Grains & Cereals | Indrajay Enterprises",
-  });
+  try {
+    const grainsandcereals = await Product.find({
+      category: "Grains & Cereals",
+    });
+
+    res.render("client/Grains&Sereals", {
+      title: "Grains & Cereals | Indrajay Enterprises",
+      grainsandcereals, // Passing products to the template
+    });
+  } catch (err) {
+    console.error("Error fetching products:", err);
+    res.status(500).send("Internal Server Error");
+  }
 });
 
 // Oil seeds
 app.get("/oilseeds", async (req, res) => {
-  res.render("client/oilseeds", {
-    title: "Oil Seeds | Indrajay Enterprises",
-  });
+  try {
+    const oilseeds = await Product.find({ category: "Oil Seeds" });
+    res.render("client/oilseeds", {
+      title: "Oil Seeds | Indrajay Enterprises",
+      oilseeds,
+    });
+  } catch (err) {
+    console.error("error fetching oilseeds:", err);
+    res.status(500).send("Internal server Error");
+  }
 });
 
 // Pulses
 app.get("/pulses", async (req, res) => {
-  res.render("client/pulses", {
-    title: "Pulses | Indrajay Enterprises",
-  });
+  try {
+    const pulses = await Product.find({ category: "Pulses" });
+    res.render("client/pulses", {
+      title: "Pulses | Indrajay Enterprises",
+      pulses,
+    });
+  } catch (err) {
+    console.error("Error fetching pulses:", err);
+    res.status(500).send("Internal server error");
+  }
 });
 
 // Spises
 app.get("/spises", async (req, res) => {
-  res.render("client/spises", {
-    title: "Spises | Indrajay Enterprises",
-  });
+  try {
+    const spises = await Product.find({ category: "Spises" });
+    res.render("client/spises", {
+      title: "Spises | Indrajay Enterprises",
+      spises,
+    });
+  } catch (err) {
+    console.error("Error fetching spices :", err);
+    res.status(500).send("Ineternal Server Error");
+  }
 });
 
 // Jaggery
 app.get("/jaggery", async (req, res) => {
-  res.render("client/jaggery", {
-    title: "Jaggery | Indrajay Enterprises",
-  });
+  try {
+    const jaggery = await Product.find({ category: "Jaggery" });
+
+    res.render("client/jaggery", {
+      title: "Jaggery | Indrajay Enterprises",
+      jaggery,
+    });
+  } catch (err) {
+    console.error("Error fetching Jaggery :", err);
+    res.status(500).send("Internal Server Error");
+  }
 });
 
 // Coconut
 app.get("/coconut", async (req, res) => {
-  res.render("client/coconut", {
-    title: "Coconut | Indrajay Enterprises",
-  });
+  try {
+    const coconut = await Product.find({ category: "Coconut" });
+    res.render("client/coconut", {
+      title: "Coconut | Indrajay Enterprises",
+      coconut,
+    });
+  } catch (err) {
+    console.error("Error fetching Coconut :", err);
+    res.status(500).send("Internal Server Error");
+  }
 });
 
 // Nuts & Dry Fruits
 app.get("/nutsdryfruits", async (req, res) => {
-  res.render("client/nutsdryfruits", {
-    title: "Nuts & Dry Fruits | Indrajay Enterprises",
-  });
+  try {
+    const nutsdryfruits = await Product.find({ category: "Nuts & Dry Fruits" });
+
+    res.render("client/nutsdryfruits", {
+      title: "Nuts & Dry Fruits | Indrajay Enterprises",
+      nutsdryfruits,
+    });
+  } catch (err) {
+    console.error("Error fetching Nuts & dryFruits :", err);
+    res.status(500).send("Internal Server Error");
+  }
 });
 
 // Chemicals
 app.get("/chemicals", async (req, res) => {
-  res.render("client/chemicals", {
-    title: "Chemicals | Indrajay Enterprises",
-  });
+  try {
+    const chemicals = await Product.find({ category: "Chemicals" });
+
+    res.render("client/chemicals", {
+      title: "Chemicals | Indrajay Enterprises",
+      chemicals,
+    });
+  } catch (err) {
+    console.error("Error fetching Chemicals :", err);
+    res.status(500).send("Internal Server Error");
+  }
 });
 
 // Wooden Pallets
 app.get("/woodenpalets", async (req, res) => {
-  res.render("client/woodenpalets", {
-    title: "Wooden Pallets | Indrajay Enterprises",
-  });
+  try {
+    const woodenpalets = await Product.find({ category: "Wooden Pallets" });
+
+    res.render("client/woodenpalets", {
+      title: "Wooden Pallets | Indrajay Enterprises",
+      woodenpalets,
+    });
+  } catch (err) {
+    console.error("Error fetching woodenpalets :", err);
+    res.status(500).send("Internal Server Error");
+  }
 });
 
 //  Packing Materials
 app.get("/packagingmaterials", async (req, res) => {
-  res.render("client/packagingmaterials", {
-    title: "Packing Materials | Indrajay Enterprises",
-  });
+  try {
+    const packagingmaterials = await Product.find({
+      category: "Packing Materials",
+    });
+    res.render("client/packagingmaterials", {
+      title: "Packing Materials | Indrajay Enterprises",
+      packagingmaterials,
+    });
+  } catch (err) {
+    console.error("Error fetching packaging matetials :", err);
+    res.status(500).send("Internal Server Error");
+  }
 });
 
 // Appearals & Garments
 app.get("/appearalsgarments", async (req, res) => {
-  res.render("client/appearalsgarments", {
-    title: "Appearals & Garments | Indrajay Enterprises",
-  });
+  try {
+    const appearalsgarments = await Product.find({
+      category: "Appearals & Garments",
+    });
+
+    res.render("client/appearalsgarments", {
+      title: "Appearals & Garments | Indrajay Enterprises",
+      appearalsgarments,
+    });
+  } catch (err) {
+    console.error("Error fetching appearals garments :", err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+// View Single Export
+app.get("/exports/view/:id", async (req, res) => {
+  try {
+    const exportItem = await Product.findById(req.params.id);
+    if (!exportItem) {
+      return res.status(404).redirect(`client/404?msg=Export+item+not+found`);
+    }
+    res.render("client/exportDetails", {
+      title: `${exportItem.category} | Indrajay Enterprises`,
+      exportItem,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).render("404", { message: "Internal Server Error" });
+  }
 });
 
 // About page
@@ -283,6 +397,7 @@ app.get("/career", (req, res) => {
 app.get("*", (req, res) => {
   res.render("client/404.ejs", {
     title: "404 - Page Not Found | Indrajay Enterprises",
+    message: req.query.msg,
   });
 });
 
