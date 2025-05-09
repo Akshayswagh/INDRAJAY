@@ -12,6 +12,8 @@ const PasswordResetToken = require("./models/PasswordResetToken");
 const uploadPath = path.join(__dirname, "public", "uploads", "exports");
 const errorHandler = require("./middlewares/errorHandler");
 const Product = require("./models/Exports");
+const careerRoutes = require("./routes/careerRoutes");
+const Career = require("./models/careerModel");
 
 connectDB();
 
@@ -29,6 +31,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Routes
 app.use("/api/exports", exportsRoutes);
+app.use("/api/careers", careerRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 
@@ -389,9 +392,50 @@ app.get("/contact", (req, res) => {
 });
 
 // career page
-app.get("/career", (req, res) => {
-  res.render("client/career.ejs", { title: "Career | Indrajay Enterprises" });
+app.get("/career", async (req, res) => {
+  try {
+    const careers = await Career.find().sort({ created_at: -1 });
+    res.render("client/career.ejs", {
+      title: "Career | Indrajay Enterprises",
+      careers,
+    });
+  } catch (err) {
+    console.error("Career fetch error:", err.message);
+    res.render("client/career.ejs", {
+      title: "Career | Indrajay Enterprises",
+      careers: null, // Or [] if you prefer an empty array
+    });
+  }
 });
+
+
+// ................................................start..Career tab routes on admin side..................
+// GET /careers – Render all job listings
+app.get("/careers", async (req, res) => {
+  try {
+    const careers = await Career.find().sort({ created_at: -1 });
+    res.render("careers/index", { careers });
+  } catch (err) {
+    res.status(500).send("Server error");
+  }
+});
+
+// GET /careers/create – Render create form
+app.get("/careers/create", (req, res) => {
+  res.render("#");
+});
+
+// GET /careers/:id – Render single job detail
+app.get("/careers/:id", async (req, res) => {
+  try {
+    const career = await Career.findById(req.params.id);
+    if (!career) return res.status(404).send("Job not found");
+    res.render("#", { career });
+  } catch (err) {
+    res.status(500).send("Server error");
+  }
+});
+// ......................................End.....Career tab routes on admin side.................................
 
 // 404 page
 app.get("*", (req, res) => {

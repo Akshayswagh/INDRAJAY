@@ -1,398 +1,472 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <title>Careers - Indrajay Enterprises</title>
     <%- include('../partials/head'); %>
     <style>
-        .career-hero {
-            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1521791136064-7986c2920216?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
-            background-size: cover;
-            background-position: center;
-            color: white;
-            padding: 5rem 0;
-            margin-bottom: 3rem;
-        }
-        
-        .career-form-container {
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            padding: 1.8rem;
-            margin-bottom: 3rem;
-        }
-        
-        .form-section-title {
-            color: #2c3e50;
-            border-bottom: 2px solid #3498db;
-            padding-bottom: 0.5rem;
-            margin-bottom: 1.5rem;
-            font-weight: 600;
-        }
-        
-        .form-label {
-            font-weight: 600;
-            color: #2c3e50;
-            margin-bottom: 0.5rem;
-        }
-        
-        .required-field::after {
-            content: '*';
-            color: #e74c3c;
-            margin-left: 4px;
-        }
-        
-        .form-control, .form-select {
-            height: 45px;
-            border-radius: 5px;
-            border: 1px solid #ddd;
-            margin-bottom: 1.5rem;
-        }
-        
-        textarea.form-control {
-            height: auto;
-            min-height: 120px;
-        }
-        
-        .phone-input-group {
-            display: flex;
-        }
-        
-        .area-code {
-            width: 100px;
-            margin-right: 15px;
-        }
-        
-        .phone-number {
-            flex-grow: 1;
-        }
-        
-        .file-upload {
-            position: relative;
-            overflow: hidden;
-            margin-bottom: 1.5rem;
-        }
-        
-        .file-upload-input {
-            position: absolute;
-            font-size: 100px;
-            opacity: 0;
-            right: 0;
-            top: 0;
-            cursor: pointer;
-        }
-        
-        .file-upload-label {
-            display: block;
-            padding: 0.75rem;
-            border: 1px dashed #3498db;
-            border-radius: 5px;
-            text-align: center;
-            color: #3498db;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .file-upload-label:hover {
-            background-color: #f0f7ff;
-        }
-        
-        .file-name {
-            font-size: 0.9rem;
-            color: #7f8c8d;
-            margin-top: 0.5rem;
-        }
-        
-        .submit-btn {
-            background-color: #3498db;
-            color: white;
-            border: none;
-            padding: 0.75rem 2rem;
-            border-radius: 5px;
-            font-weight: 600;
-            transition: background-color 0.3s ease;
-            width: 100%;
-        }
-        
-        .submit-btn:hover {
-            background-color: #2980b9;
-        }
-        
-        .job-openings {
-            background-color: #f8f9fa;
-            border-radius: 10px;
-            padding: 1rem;
-            margin-bottom: 3rem;
-        }
-        
-        .job-card {
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            transition: transform 0.3s ease;
-            border-left: 4px solid #3498db;
-        }
-        
-        .job-card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .job-title {
-            color: #2c3e50;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-        
-        .job-department {
-            color: #7f8c8d;
-            font-size: 0.9rem;
-            margin-bottom: 0.75rem;
-        }
-        
-        .job-description {
-            margin-bottom: 1rem;
-        }
-        
-        .apply-btn {
-            background-color: #2ecc71;
-            color: white;
-            border: none;
-            padding: 0.5rem 1.5rem;
-            border-radius: 5px;
-            font-weight: 500;
-            transition: background-color 0.3s ease;
-        }
-        
-        .apply-btn:hover {
-            background-color: #27ae60;
-            color: white;
-        }
+      .career-hero {
+        background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+          url("https://images.unsplash.com/photo-1521791136064-7986c2920216?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80");
+        background-size: cover;
+        background-position: center;
+        color: white;
+        padding: 5rem 0;
+        margin-bottom: 3rem;
+      }
+
+      .career-form-container {
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        padding: 1.8rem;
+        margin-bottom: 3rem;
+      }
+
+      .form-section-title {
+        color: #2c3e50;
+        border-bottom: 2px solid #3498db;
+        padding-bottom: 0.5rem;
+        margin-bottom: 1.5rem;
+        font-weight: 600;
+      }
+
+      .form-label {
+        font-weight: 600;
+        color: #2c3e50;
+        margin-bottom: 0.5rem;
+      }
+
+      .required-field::after {
+        content: "*";
+        color: #e74c3c;
+        margin-left: 4px;
+      }
+
+      .form-control,
+      .form-select {
+        height: 45px;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+        margin-bottom: 1.5rem;
+      }
+
+      textarea.form-control {
+        height: auto;
+        min-height: 120px;
+      }
+
+      .phone-input-group {
+        display: flex;
+      }
+
+      .area-code {
+        width: 100px;
+        margin-right: 15px;
+      }
+
+      .phone-number {
+        flex-grow: 1;
+      }
+
+      .file-upload {
+        position: relative;
+        overflow: hidden;
+        margin-bottom: 1.5rem;
+      }
+
+      .file-upload-input {
+        position: absolute;
+        font-size: 100px;
+        opacity: 0;
+        right: 0;
+        top: 0;
+        cursor: pointer;
+      }
+
+      .file-upload-label {
+        display: block;
+        padding: 0.75rem;
+        border: 1px dashed #3498db;
+        border-radius: 5px;
+        text-align: center;
+        color: #3498db;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .file-upload-label:hover {
+        background-color: #f0f7ff;
+      }
+
+      .file-name {
+        font-size: 0.9rem;
+        color: #7f8c8d;
+        margin-top: 0.5rem;
+      }
+
+      .submit-btn {
+        background-color: #3498db;
+        color: white;
+        border: none;
+        padding: 0.75rem 2rem;
+        border-radius: 5px;
+        font-weight: 600;
+        transition: background-color 0.3s ease;
+        width: 100%;
+      }
+
+      .submit-btn:hover {
+        background-color: #2980b9;
+      }
+
+      .job-openings {
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        padding: 1rem;
+        margin-bottom: 3rem;
+      }
+
+      .job-card {
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        transition: transform 0.3s ease;
+        border-left: 4px solid #3498db;
+      }
+
+      .job-card:hover {
+        transform: translateY(-5px);
+      }
+
+      .job-title {
+        color: #2c3e50;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+      }
+
+      .job-department {
+        color: #7f8c8d;
+        font-size: 0.9rem;
+        margin-bottom: 0.75rem;
+      }
+      .job-experiance {
+        color: #7f8c8d;
+        font-size: 0.9rem;
+        margin-bottom: 0.75rem;
+        font-weight: 500;
+      }
+
+      .job-description {
+        margin-bottom: 1rem;
+      }
+
+      .apply-btn {
+        background-color: #2ecc71;
+        color: white;
+        border: none;
+        padding: 0.5rem 1.5rem;
+        border-radius: 5px;
+        font-weight: 500;
+        transition: background-color 0.3s ease;
+      }
+
+      .apply-btn:hover {
+        background-color: #27ae60;
+        color: white;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <%- include('../partials/navbar', {activePage: 'careers'}); %>
-    
+
     <!-- Hero Section -->
     <section class="career-hero text-center">
-        <div class="container">
-            <h1 class="display-4">Join Our Team</h1>
-            <p class="lead">Build your career with Indrajay Enterprises</p>
-        </div>
+      <div class="container">
+        <h1 class="display-4">Join Our Team</h1>
+        <p class="lead">Build your career with Indrajay Enterprises</p>
+      </div>
     </section>
-    
+
     <!-- Main Content -->
     <div class="container mb-5">
-        <!-- Current Openings -->
-        <div class="job-openings">
-            <h2 class="section-title text-center mb-4">Current Job Openings</h2>
-            
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="job-card">
-                        <h3 class="job-title">Business Development Manager</h3>
-                        <div class="job-department">Sales & Marketing</div>
-                        <div class="job-description">
-                            <p>We're looking for an experienced Business Development Manager to lead our sales team and drive growth in domestic and international markets.</p>
-                        </div>
-                        <button class="apply-btn" onclick="applyForJob('Business Development Manager')">Apply Now</button>
-                    </div>
-                </div>
-                
-                <div class="col-md-6">
-                    <div class="job-card">
-                        <h3 class="job-title">Logistics Coordinator</h3>
-                        <div class="job-department">Operations</div>
-                        <div class="job-description">
-                            <p>Join our operations team to coordinate transportation, manage supply chain logistics, and ensure timely deliveries.</p>
-                        </div>
-                        <button class="apply-btn" onclick="applyForJob('Logistics Coordinator')">Apply Now</button>
-                    </div>
-                </div>
-                
-                <div class="col-md-6">
-                    <div class="job-card">
-                        <h3 class="job-title">Export Documentation Executive</h3>
-                        <div class="job-department">International Trade</div>
-                        <div class="job-description">
-                            <p>Manage export documentation and compliance for our international trade operations.</p>
-                        </div>
-                        <button class="apply-btn" onclick="applyForJob('Export Documentation Executive')">Apply Now</button>
-                    </div>
-                </div>
-                
-                <div class="col-md-6">
-                    <div class="job-card">
-                        <h3 class="job-title">Customer Support Representative</h3>
-                        <div class="job-department">Customer Service</div>
-                        <div class="job-description">
-                            <p>Provide exceptional support to our clients and handle inquiries across our business divisions.</p>
-                        </div>
-                        <button class="apply-btn" onclick="applyForJob('Customer Support Representative')">Apply Now</button>
-                    </div>
-                </div>
+      <!-- Current Openings -->
+      <div class="job-openings">
+        <h2 class="section-title text-center mb-4">Current Job Openings</h2>
+
+        <% if (careers && careers.length > 0) { %>
+        <div class="row">
+          <% careers.forEach(career => { %>
+
+          <div class="col-md-6">
+            <div class="job-card">
+              <h3 class="job-title"><%= career.role %></h3>
+              <div class="job-department"><%= career.domain %></div>
+              <div class="job-experiance">
+                Experince: <%= career.experience_required %>
+              </div>
+              <div class="job-description">
+                <p><%= career.description %></p>
+              </div>
+
+              <button
+                class="apply-btn"
+                onclick="applyForJob('<%= career.role %>')"
+              >
+                Apply Now
+              </button>
             </div>
+          </div>
+          <% }) %>
         </div>
-        
-        <!-- Application Form -->
-        <div class="career-form-container" id="applicationForm">
-            <h2 class="section-title text-center mb-4">Application Form</h2>
-            
-            <form id="careerForm" novalidate>
-                <!-- Personal Information Section -->
-                <h4 class="form-section-title">Personal Information</h4>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="firstName" class="form-label required-field">First Name</label>
-                            <input type="text" class="form-control" id="firstName" name="firstName" required>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="lastName" class="form-label required-field">Last Name</label>
-                            <input type="text" class="form-control" id="lastName" name="lastName" required>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="email" class="form-label required-field">Email Address</label>
-                            <input type="email" class="form-control" id="email" name="email" required>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="gender" class="form-label required-field">Gender</label>
-                            <select class="form-select" id="gender" name="gender" required>
-                                <option value="" selected disabled>Select Gender</option>
-                                <option value="male">Male</option>
-                                <option value="female">Female</option>
-                                <option value="other">Other</option>
-                                <option value="prefer-not-to-say">Prefer not to say</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="phone" class="form-label required-field">Phone Number</label>
-                    <div class="phone-input-group">
-                        <select class="form-select area-code" id="areaCode" name="areaCode" required>
-                            <option value="+91">+91 (India)</option>
-                            <option value="+1">+1 (USA)</option>
-                            <option value="+44">+44 (UK)</option>
-                            <option value="+971">+971 (UAE)</option>
-                            <option value="+65">+65 (Singapore)</option>
-                        </select>
-                        <input type="tel" class="form-control phone-number" id="phone" name="phone" required>
-                    </div>
-                </div>
-                
-                <!-- Position Information Section -->
-                <h4 class="form-section-title">Position Information</h4>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="position" class="form-label required-field">Applying for Position</label>
-                            <input type="text" class="form-control" id="position" name="position" required>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="startDate" class="form-label required-field">When can you start?</label>
-                            <select class="form-select" id="startDate" name="startDate" required>
-                                <option value="" selected disabled>Select Availability</option>
-                                <option value="immediately">Immediately</option>
-                                <option value="10-days">Within 10 days</option>
-                                <option value="20-days">Within 20 days</option>
-                                <option value="30-days">Within 30 days</option>
-                                <option value="negotiable">Negotiable</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Address Section -->
-                <h4 class="form-section-title">Address</h4>
-                <div class="form-group">
-                    <label for="address" class="form-label required-field">Full Address</label>
-                    <textarea class="form-control" id="address" name="address" required></textarea>
-                </div>
-                
-                <!-- Cover Letter Section -->
-                <h4 class="form-section-title">Cover Letter</h4>
-                <div class="form-group">
-                    <label for="coverLetter" class="form-label">Cover Letter (Optional)</label>
-                    <textarea class="form-control" id="coverLetter" name="coverLetter" placeholder="Tell us why you'd be a great fit for this position..."></textarea>
-                </div>
-                
-                <!-- Resume Upload Section -->
-                <h4 class="form-section-title">Resume Upload</h4>
-                <div class="form-group">
-                    <label class="form-label required-field">Upload Your Resume</label>
-                    <div class="file-upload">
-                        <input type="file" class="file-upload-input" id="resume" name="resume" accept=".pdf,.doc,.docx" required>
-                        <label for="resume" class="file-upload-label">
-                            <i class="fas fa-cloud-upload-alt mr-2"></i>Choose File
-                        </label>
-                        <div class="file-name" id="fileName">No file chosen</div>
-                    </div>
-                    <small class="text-muted">Accepted formats: PDF, DOC, DOCX (Max 5MB)</small>
-                </div>
-                
-                <!-- Submit Button -->
-                <div class="form-group mt-4">
-                    <button type="submit" class="submit-btn">Submit Application</button>
-                </div>
-            </form>
-        </div>
+        <% } else { %>
+        <p>No career openings available at the moment.</p>
+        <% } %>
+      </div>
+
+      <!-- Application Form -->
+      <div class="career-form-container" id="applicationForm">
+        <h2 class="section-title text-center mb-4">Application Form</h2>
+
+        <form id="careerForm" novalidate>
+          <!-- Personal Information Section -->
+          <h4 class="form-section-title">Personal Information</h4>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="firstName" class="form-label required-field"
+                  >First Name</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="firstName"
+                  name="firstName"
+                  required
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="lastName" class="form-label required-field"
+                  >Last Name</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="lastName"
+                  name="lastName"
+                  required
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="email" class="form-label required-field"
+                  >Email Address</label
+                >
+                <input
+                  type="email"
+                  class="form-control"
+                  id="email"
+                  name="email"
+                  required
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="gender" class="form-label required-field"
+                  >Gender</label
+                >
+                <select class="form-select" id="gender" name="gender" required>
+                  <option value="" selected disabled>Select Gender</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                  <option value="other">Other</option>
+                  <option value="prefer-not-to-say">Prefer not to say</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="phone" class="form-label required-field"
+              >Phone Number</label
+            >
+            <div class="phone-input-group">
+              <select
+                class="form-select area-code"
+                id="areaCode"
+                name="areaCode"
+                required
+              >
+                <option value="+91">+91 (India)</option>
+                <option value="+1">+1 (USA)</option>
+                <option value="+44">+44 (UK)</option>
+                <option value="+971">+971 (UAE)</option>
+                <option value="+65">+65 (Singapore)</option>
+              </select>
+              <input
+                type="tel"
+                class="form-control phone-number"
+                id="phone"
+                name="phone"
+                required
+              />
+            </div>
+          </div>
+
+          <!-- Position Information Section -->
+          <h4 class="form-section-title">Position Information</h4>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="position" class="form-label required-field"
+                  >Applying for Position</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="position"
+                  name="position"
+                  required
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="startDate" class="form-label required-field"
+                  >When can you start?</label
+                >
+                <select
+                  class="form-select"
+                  id="startDate"
+                  name="startDate"
+                  required
+                >
+                  <option value="" selected disabled>
+                    Select Availability
+                  </option>
+                  <option value="immediately">Immediately</option>
+                  <option value="10-days">Within 10 days</option>
+                  <option value="20-days">Within 20 days</option>
+                  <option value="30-days">Within 30 days</option>
+                  <option value="negotiable">Negotiable</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Address Section -->
+          <h4 class="form-section-title">Address</h4>
+          <div class="form-group">
+            <label for="address" class="form-label required-field"
+              >Full Address</label
+            >
+            <textarea
+              class="form-control"
+              id="address"
+              name="address"
+              required
+            ></textarea>
+          </div>
+
+          <!-- Cover Letter Section -->
+          <h4 class="form-section-title">Cover Letter</h4>
+          <div class="form-group">
+            <label for="coverLetter" class="form-label"
+              >Cover Letter (Optional)</label
+            >
+            <textarea
+              class="form-control"
+              id="coverLetter"
+              name="coverLetter"
+              placeholder="Tell us why you'd be a great fit for this position..."
+            ></textarea>
+          </div>
+
+          <!-- Resume Upload Section -->
+          <h4 class="form-section-title">Resume Upload</h4>
+          <div class="form-group">
+            <label class="form-label required-field">Upload Your Resume</label>
+            <div class="file-upload">
+              <input
+                type="file"
+                class="file-upload-input"
+                id="resume"
+                name="resume"
+                accept=".pdf,.doc,.docx"
+                required
+              />
+              <label for="resume" class="file-upload-label">
+                <i class="fas fa-cloud-upload-alt mr-2"></i>Choose File
+              </label>
+              <div class="file-name" id="fileName">No file chosen</div>
+            </div>
+            <small class="text-muted"
+              >Accepted formats: PDF, DOC, DOCX (Max 5MB)</small
+            >
+          </div>
+
+          <!-- Submit Button -->
+          <div class="form-group mt-4">
+            <button type="submit" class="submit-btn">Submit Application</button>
+          </div>
+        </form>
+      </div>
     </div>
-    
-    <%- include('../partials/footer'); %>
-    <%- include('../partials/scripts'); %>
-    
+
+    <%- include('../partials/footer'); %> <%- include('../partials/scripts'); %>
+
     <!-- Font Awesome for icons -->
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-    
+    <script
+      src="https://kit.fontawesome.com/a076d05399.js"
+      crossorigin="anonymous"
+    ></script>
+
     <!-- Form Script -->
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // File upload display
-            const fileInput = document.getElementById('resume');
-            const fileNameDisplay = document.getElementById('fileName');
-            
-            fileInput.addEventListener('change', function() {
-                if (this.files.length > 0) {
-                    fileNameDisplay.textContent = this.files[0].name;
-                } else {
-                    fileNameDisplay.textContent = 'No file chosen';
-                }
-            });
-            
-            // Form submission handling (non-functional as per request)
-            const form = document.getElementById('careerForm');
-            
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
-                alert('Thank you for your application! This is a demonstration form and no data will be submitted.');
-                form.reset();
-                fileNameDisplay.textContent = 'No file chosen';
-            });
+      document.addEventListener("DOMContentLoaded", function () {
+        // File upload display
+        const fileInput = document.getElementById("resume");
+        const fileNameDisplay = document.getElementById("fileName");
+
+        fileInput.addEventListener("change", function () {
+          if (this.files.length > 0) {
+            fileNameDisplay.textContent = this.files[0].name;
+          } else {
+            fileNameDisplay.textContent = "No file chosen";
+          }
         });
 
-        // New function to handle job application clicks
-        function applyForJob(jobTitle) {
-            // Set the position field value
-            document.getElementById('position').value = jobTitle;
-            
-            // Scroll to the application form
-            document.getElementById('applicationForm').scrollIntoView({
-                behavior: 'smooth'
-            });
-        }
+        // Form submission handling (non-functional as per request)
+        const form = document.getElementById("careerForm");
+
+        form.addEventListener("submit", function (e) {
+          e.preventDefault();
+          alert(
+            "Thank you for your application! This is a demonstration form and no data will be submitted."
+          );
+          form.reset();
+          fileNameDisplay.textContent = "No file chosen";
+        });
+      });
+
+      // New function to handle job application clicks
+      function applyForJob(jobTitle) {
+        // Set the position field value
+        document.getElementById("position").value = jobTitle;
+
+        // Scroll to the application form
+        document.getElementById("applicationForm").scrollIntoView({
+          behavior: "smooth",
+        });
+      }
     </script>
-</body>
+  </body>
 </html>
