@@ -1,13 +1,14 @@
 const express = require("express");
 const router = express.Router();
 const Export = require("../models/Exports");
-const upload = require("../config/multerConfig");
+const getMulterUploader = require("../config/multerConfig");
 const uploadPath = "/uploads/exports";
 const multer = require("multer");
 const handleError = require("../utils/handleError");
+const uploader = getMulterUploader("exports");
 
 // ADD - add exports
-router.post("/addExport", upload.single("image"), async (req, res, next) => {
+router.post("/addExport", uploader.single("image"), async (req, res) => {
   try {
     const { name, category, description } = req.body;
 
@@ -24,7 +25,7 @@ router.post("/addExport", upload.single("image"), async (req, res, next) => {
       });
     }
 
-    const imagePath = `${uploadPath}/${req.file.filename}`;
+    const imagePath = `/uploads/exports/${req.file.filename}`;
 
     const newExport = new Export({
       name,
@@ -78,7 +79,7 @@ router.get("/:id", async (req, res) => {
 });
 
 // UPDATE - Update export item
-router.put("/:id", upload.single("image"), async (req, res) => {
+router.put("/:id", uploader.single("image"), async (req, res) => {
   try {
     const { name, category, description } = req.body;
 
@@ -97,7 +98,7 @@ router.put("/:id", upload.single("image"), async (req, res) => {
     };
 
     if (req.file) {
-      updateData.image = `/uploads/${req.file.filename}`; // Adjust path if needed
+      updateData.image = `/uploads/careManagement/${req.file.filename}`; // Adjust path if needed
     }
 
     const updatedExport = await Export.findByIdAndUpdate(

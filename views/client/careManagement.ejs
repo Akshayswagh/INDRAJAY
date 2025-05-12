@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="/css/careManagement.css" />
+    <%- include('../partials/head'); %>
+  </head>
+  <body>
+    <%- include('../partials/navbar'); %>
+
+    <section class="caremanagement">
+      <div class="page-container">
+        <div class="page-heading">
+          <h1>Care & Management</h1>
+          <p>
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eveniet
+            sunt consequatur dolores
+          </p>
+        </div>
+
+        <div class="care-container">
+          <% if (care.length > 0) { %> <% care.forEach(careManagement => { %>
+          <a
+            href="/caremanegement/view/<%= careManagement._id %>"
+            class="care-link"
+          >
+            <div class="care-card">
+              <div class="care-image-container">
+                <img
+                  src="<%= careManagement.image %>"
+                  alt="<%= careManagement.title %>"
+                  class="care-image"
+                />
+              </div>
+              <div class="care-info">
+                <h3 class="care-name"><%= careManagement.title %></h3>
+              </div>
+            </div>
+          </a>
+          <% }) %> <% } else { %>
+          <p>No products Available in this category.</p>
+          <% } %>
+        </div>
+      </div>
+    </section>
+
+    <%- include('../partials/footer'); %> <%- include('../partials/scripts'); %>
+  </body>
+</html>

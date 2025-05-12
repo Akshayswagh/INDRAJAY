@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Events</title>
+    <%- include('../partials/head'); %>
+
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      body {
+        background-color: #f5f5f5;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      .container {
+        width: 90%;
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 0 15px;
+      }
+
+      h1 {
+        text-align: center;
+        margin-bottom: 2rem;
+        color: #2c3e50;
+      }
+
+      .events-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 2rem;
+      }
+
+      .event-card {
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .event-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .event-image {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+      }
+
+      .event-details {
+        padding: 1.5rem;
+      }
+
+      .event-title {
+        font-size: 1.3rem;
+        margin-bottom: 0.5rem;
+        color: #2c3e50;
+      }
+
+      .event-date {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0.5rem;
+        color: #ef8f28;
+        font-weight: 500;
+      }
+
+      .event-date i {
+        margin-right: 0.5rem;
+      }
+
+      .event-location {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+        color: #7f8c8d;
+      }
+
+      .event-location i {
+        margin-right: 0.5rem;
+      }
+
+      .event-description {
+        margin-bottom: 1.5rem;
+        color: #34495e;
+      }
+
+      .event-button {
+        display: inline-block;
+        padding: 0.6rem 1.2rem;
+        background-color: #3498db;
+        color: white;
+        text-decoration: none;
+        border-radius: 4px;
+        transition: background-color 0.3s ease;
+        cursor: pointer;
+        border: none;
+        font-size: 1rem;
+      }
+
+      .event-button:hover {
+        background-color: #2980b9;
+      }
+
+      /* Modal Styles */
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 100;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+      }
+
+      .modal-content {
+        background-color: #fefefe;
+        margin: 10% auto;
+        padding: 2rem;
+        border-radius: 8px;
+        width: 90%;
+        max-width: 500px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        animation: modalopen 0.3s;
+      }
+
+      @keyframes modalopen {
+        from {
+          opacity: 0;
+          transform: translateY(-50px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .close {
+        color: #aaa;
+        float: right;
+        font-size: 1.5rem;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      .close:hover {
+        color: #333;
+      }
+
+      .form-group {
+        margin-bottom: 1.5rem;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+      }
+
+      .form-group input,
+      .form-group select {
+        width: 100%;
+        padding: 0.8rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 1rem;
+      }
+
+      .submit-btn {
+        background-color: #3498db;
+        color: white;
+        padding: 0.8rem 1.5rem;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 1rem;
+        width: 100%;
+      }
+
+      .submit-btn:hover {
+        background-color: #2980b9;
+      }
+
+      /* Success Message */
+      .success-message {
+        display: none;
+        text-align: center;
+        padding: 2rem;
+      }
+
+      .success-message i {
+        font-size: 3rem;
+        color: #2ecc71;
+        margin-bottom: 1rem;
+      }
+
+      .success-message h3 {
+        color: #2ecc71;
+        margin-bottom: 1rem;
+      }
+
+      @media (max-width: 768px) {
+        .events-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .modal-content {
+          margin: 20% auto;
+          width: 95%;
+        }
+      }
+    </style>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    />
+  </head>
+  <body>
+    <%- include('../partials/navbar'); %>
+    <div class="container">
+      <h1>Upcoming Events</h1>
+
+      <div class="events-grid">
+        <!-- Event 1 -->
+        <div class="event-card">
+          <img
+            src="https://images.unsplash.com/photo-1469371670807-013ccf25f16a?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+            alt="Music Festival"
+            class="event-image"
+          />
+          <div class="event-details">
+            <h3 class="event-title">Summer Music Festival</h3>
+            <div class="event-date">
+              <i class="far fa-calendar-alt"></i>
+              July 22-24, 2023
+            </div>
+            <div class="event-date">
+              <!-- For solid clock icon -->
+              <i class="fas fa-clock"></i> 12:00 AM
+            </div>
+            <div class="event-location">
+              <i class="fas fa-map-marker-alt"></i>
+              Central Park, New York
+            </div>
+            <p class="event-description">
+              Experience three days of live music from top artists across
+              multiple genres in the heart of the city.
+            </p>
+            <button
+              class="event-button"
+              onclick="openModal('Summer Music Festival')"
+            >
+              Get Tickets
+            </button>
+          </div>
+        </div>
+
+        <!-- Event 2 -->
+        <div class="event-card">
+          <img
+            src="https://images.unsplash.com/photo-1469371670807-013ccf25f16a?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+            alt="Music Festival"
+            class="event-image"
+          />
+          <div class="event-details">
+            <h3 class="event-title">Summer Music Festival</h3>
+            <div class="event-date">
+              <i class="far fa-calendar-alt"></i>
+              July 22-24, 2023
+            </div>
+            <div class="event-date">
+              <!-- For solid clock icon -->
+              <i class="fas fa-clock"></i> 12:00 AM
+            </div>
+            <div class="event-location">
+              <i class="fas fa-map-marker-alt"></i>
+              Central Park, New York
+            </div>
+            <p class="event-description">
+              Experience three days of live music from top artists across
+              multiple genres in the heart of the city.
+            </p>
+            <button
+              class="event-button"
+              onclick="openModal('Summer Music Festival')"
+            >
+              Get Tickets
+            </button>
+          </div>
+        </div>
+
+        <!-- Add more events as needed -->
+      </div>
+    </div>
+
+    <!-- Registration Modal -->
+    <div id="registrationModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <div id="registrationForm">
+          <h2>Event Registration</h2>
+          <p
+            id="selectedEvent"
+            style="margin-bottom: 1.5rem; color: #3498db; font-weight: 500"
+          ></p>
+
+          <form id="regForm" onsubmit="submitForm(event)">
+            <div class="form-group">
+              <label for="name">Full Name</label>
+              <input type="text" id="name" required />
+            </div>
+
+            <div class="form-group">
+              <label for="email">Email Address</label>
+              <input type="email" id="email" required />
+            </div>
+
+            <div class="form-group">
+              <label for="phone">Phone Number</label>
+              <input type="tel" id="phone" required />
+            </div>
+
+            <div class="form-group">
+              <label for="tickets">Number of Tickets</label>
+              <select id="tickets" required>
+                <option value="">Select</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5+</option>
+              </select>
+            </div>
+
+            <button type="submit" class="submit-btn">
+              Submit Registration
+            </button>
+          </form>
+        </div>
+
+        <div id="successMessage" class="success-message">
+          <i class="fas fa-check-circle"></i>
+          <h3>Registration Successful!</h3>
+          <p>
+            Thank you for registering. We've sent a confirmation to your email.
+          </p>
+          <button class="event-button" onclick="closeModal()">Close</button>
+        </div>
+      </div>
+    </div>
+    <%- include('../partials/footer'); %>
+
+    <script>
+      // Open modal with selected event name
+      function openModal(eventName) {
+        const modal = document.getElementById("registrationModal");
+        document.getElementById(
+          "selectedEvent"
+        ).textContent = `Event: ${eventName}`;
+        modal.style.display = "block";
+        document.body.style.overflow = "hidden"; // Prevent scrolling
+      }
+
+      // Close modal
+      function closeModal() {
+        const modal = document.getElementById("registrationModal");
+        modal.style.display = "none";
+        document.body.style.overflow = "auto"; // Re-enable scrolling
+
+        // Reset form and hide success message
+        document.getElementById("regForm").reset();
+        document.getElementById("registrationForm").style.display = "block";
+        document.getElementById("successMessage").style.display = "none";
+      }
+
+      // Submit form
+      function submitForm(e) {
+        e.preventDefault();
+
+        // Here you would typically send the form data to a server
+        // For this example, we'll just show the success message
+
+        // Hide form and show success message
+        document.getElementById("registrationForm").style.display = "none";
+        document.getElementById("successMessage").style.display = "block";
+
+        // In a real application, you would:
+        // 1. Collect form data
+        // 2. Send to server via AJAX
+        // 3. Show success/error message based on response
+        // 4. Maybe clear the form
+      }
+
+      // Close modal when clicking outside
+      window.onclick = function (event) {
+        const modal = document.getElementById("registrationModal");
+        if (event.target == modal) {
+          closeModal();
+        }
+      };
+    </script>
+    <%- include('../partials/scripts'); %>
+  </body>
+</html>

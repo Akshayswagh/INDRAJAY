@@ -10,9 +10,12 @@ const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
 const PasswordResetToken = require("./models/PasswordResetToken");
 const uploadPath = path.join(__dirname, "public", "uploads", "exports");
-const errorHandler = require("./middlewares/errorHandler");
+// const errorHandler = require("./middlewares/errorHandler");
 const Product = require("./models/Exports");
 const careerRoutes = require("./routes/careerRoutes");
+const eventRoutes = require("./routes/eventRoutes");
+const careManagementRoutes = require("./routes/careManagementRoutes");
+careManagement = require("./models/careManagement");
 const Career = require("./models/careerModel");
 
 connectDB();
@@ -32,6 +35,8 @@ app.use(express.urlencoded({ extended: true }));
 // Routes
 app.use("/api/exports", exportsRoutes);
 app.use("/api/careers", careerRoutes);
+app.use("/api/events", eventRoutes);
+app.use("/api/care-management", careManagementRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 
@@ -408,7 +413,6 @@ app.get("/career", async (req, res) => {
   }
 });
 
-
 // ................................................start..Career tab routes on admin side..................
 // GET /careers – Render all job listings
 app.get("/careers", async (req, res) => {
@@ -435,6 +439,46 @@ app.get("/careers/:id", async (req, res) => {
     res.status(500).send("Server error");
   }
 });
+
+app.get("/events", (req, res) => {
+  res.render("client/events", {
+    title: "Events | Indrajay Enterprises",
+  });
+});
+
+app.get("/careManagement", async (req, res) => {
+  try {
+    const care = await careManagement.find().sort({ created_at: -1 });
+    res.render("client/careManagement", {
+      title: "Care Management | Indrajay Enterprises",
+      care,
+    });
+    // console.log(care)
+  } catch (err) {
+    res.status(500).send("Server error");
+  }
+});
+
+
+app.get("/caremanegement/view/:id", async (req, res) => {
+  try {
+    const care = await careManagement.findById(req.params.id);
+    if (!care) {
+      return res
+        .status(404)
+        .redirect(`client/404?msg=careManagement+item+not+found`);
+    }
+    res.render("client/DetailscareManagement", {
+      title: "Details Care Management | Indrajay Enterprises",
+      care,
+    });
+    // console.log(care);
+  } catch (err) {
+    res.status(500).send("Server error");
+    console.log(err)
+  }
+});
+
 // ......................................End.....Career tab routes on admin side.................................
 
 // 404 page
@@ -447,7 +491,7 @@ app.get("*", (req, res) => {
 
 // Add this after all your routes
 // Global error handler - always at the end
-app.use(errorHandler);
+// app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
