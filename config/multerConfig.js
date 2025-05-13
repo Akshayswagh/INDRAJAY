@@ -1,47 +1,40 @@
 const multer = require("multer");
-const path = require("path");
-const { v4: uuidv4 } = require("uuid"); // For generating truly unique names
-const fs = require("fs");
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
+const cloudinary = require("./cloudinaryConfig"); // your Cloudinary instance
+const { v4: uuidv4 } = require("uuid");
 
 const getMulterUploader = (folderName) => {
-  const uploadPath = path.join("public", "uploads", folderName);
-
-  // Create folder if it doesn't exist
-  if (!fs.existsSync(uploadPath)) {
-    fs.mkdirSync(uploadPath, { recursive: true });
-  }
-
-  // Configure Multer for image uploads
-  const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-      cb(null, uploadPath);
-    },
-    filename: (req, file, cb) => {
-      const ext = path.extname(file.originalname).toLowerCase();
-      const uniqueName = `${folderName}-${uuidv4()}${ext}`;
-      cb(null, uniqueName); // <-- This is required
+  const storage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {
+      folder: folderName,
+      format: async (req, file) => {
+        // Ensure the format is consistent
+        return file.mimetype.split("/")[1];
+      },
+      public_id: (req, file) => {
+        // Create a custom name like: events-uuid.ext
+        const ext = file.originalname.split(".").pop().toLowerCase();
+        return `${folderName}-${uuidv4()}.${ext}`;
+      },
     },
   });
 
-  const upload = multer({
-    storage: storage,
-    limits: { fileSize: 5 * 1024 * 1024 }, // 5 MB limit (optional)
+  return multer({
+    storage,
+    limits: { fileSize: 5 * 1024 * 1024 }, // 5 MB
     fileFilter: (req, file, cb) => {
       const allowedTypes = /jpeg|jpg|png|gif|webp/;
-      const extname = allowedTypes.test(
-        path.extname(file.originalname).toLowerCase()
-      );
+      const extname = allowedTypes.test(file.originalname.toLowerCase());
       const mimetype = allowedTypes.test(file.mimetype);
 
       if (extname && mimetype) {
-        return cb(null, true);
+        cb(null, true);
       } else {
         cb(new Error("Only images (jpeg, jpg, png, gif, webp) are allowed!"));
       }
     },
   });
-
-  return multer({ storage });
 };
 
 module.exports = getMulterUploader;

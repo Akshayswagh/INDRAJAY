@@ -25,7 +25,7 @@ router.post("/addExport", uploader.single("image"), async (req, res) => {
       });
     }
 
-    const imagePath = `/uploads/exports/${req.file.filename}`;
+    const imagePath = req.file.path; // full Cloudinary URL
 
     const newExport = new Export({
       name,

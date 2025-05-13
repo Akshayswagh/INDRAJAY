@@ -24,7 +24,7 @@ router.post("/", uploader.single("image"), async (req, res) => {
       return res.status(400).json({ msg: "Please enter all fields" });
     }
 
-    const imagePath = `/uploads/careManagement/${req.file.filename}`;
+const imagePath = req.file.path; // full Cloudinary URL
 
     const newEntry = new careManagement({
       title,

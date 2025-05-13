@@ -234,30 +234,30 @@
 
       <div class="events-grid">
         <!-- Event 1 -->
+
+        <% if (events.length > 0) { %> <% events.forEach(event => { %>
+
         <div class="event-card">
           <img
-            src="https://images.unsplash.com/photo-1469371670807-013ccf25f16a?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+            src="<%= event.image %>"
             alt="Music Festival"
             class="event-image"
           />
           <div class="event-details">
-            <h3 class="event-title">Summer Music Festival</h3>
+            <h3 class="event-title"><%= event.title %></h3>
             <div class="event-date">
               <i class="far fa-calendar-alt"></i>
-              July 22-24, 2023
+              <%= event.date.toISOString().split('T')[0];  %>
             </div>
             <div class="event-date">
               <!-- For solid clock icon -->
-              <i class="fas fa-clock"></i> 12:00 AM
+              <i class="fas fa-clock"></i> <%= event.time %>
             </div>
             <div class="event-location">
               <i class="fas fa-map-marker-alt"></i>
-              Central Park, New York
+              <%= event.venue %>
             </div>
-            <p class="event-description">
-              Experience three days of live music from top artists across
-              multiple genres in the heart of the city.
-            </p>
+            <p class="event-description"><%= event.description %></p>
             <button
               class="event-button"
               onclick="openModal('Summer Music Festival')"
@@ -267,41 +267,9 @@
           </div>
         </div>
 
-        <!-- Event 2 -->
-        <div class="event-card">
-          <img
-            src="https://images.unsplash.com/photo-1469371670807-013ccf25f16a?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
-            alt="Music Festival"
-            class="event-image"
-          />
-          <div class="event-details">
-            <h3 class="event-title">Summer Music Festival</h3>
-            <div class="event-date">
-              <i class="far fa-calendar-alt"></i>
-              July 22-24, 2023
-            </div>
-            <div class="event-date">
-              <!-- For solid clock icon -->
-              <i class="fas fa-clock"></i> 12:00 AM
-            </div>
-            <div class="event-location">
-              <i class="fas fa-map-marker-alt"></i>
-              Central Park, New York
-            </div>
-            <p class="event-description">
-              Experience three days of live music from top artists across
-              multiple genres in the heart of the city.
-            </p>
-            <button
-              class="event-button"
-              onclick="openModal('Summer Music Festival')"
-            >
-              Get Tickets
-            </button>
-          </div>
-        </div>
-
-        <!-- Add more events as needed -->
+        <% }) %> <% } else { %>
+        <p>No Events Available at this movement.</p>
+        <% } %>
       </div>
     </div>
 

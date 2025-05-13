@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Industrial Services - Min 1rem Fonts</title>
+    <%- include('../partials/head'); %>
+
+    <style>
+      /* Basic Reset & Root Variables */
+      :root {
+        --primary-color: #00796b; /* Dark Teal */
+        --secondary-color: #f39c12; /* Orange */
+        --accent-industrial: #34495e; /* A slightly industrial dark blue/grey */
+        --text-dark: #2c3e50;
+        --text-light: #5a6a7a;
+        --bg-light: #f8f9fa;
+        --bg-white: #ffffff;
+        --card-shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
+        --card-hover-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Roboto", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.7; /* Reset to a more standard line-height */
+        color: var(--text-dark);
+        background-color: var(--bg-light);
+        overflow-x: hidden;
+      }
+
+      /* --- Keyframe Animations (Reused) --- */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      @keyframes slideInFromBottom {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes underlineGrowPrimary {
+        from {
+          width: 0;
+        }
+        to {
+          width: 70px;
+        }
+      }
+
+      /* Container */
+      .industrial-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      /* Hero Section */
+      .industrial-hero {
+        padding: 70px 0 50px;
+        text-align: center;
+        background: linear-gradient(
+            rgba(255, 255, 255, 0.9),
+            rgba(255, 255, 255, 0.9)
+          ),
+          url("your-industrial-background-image.jpg") center center/cover
+            no-repeat;
+        background-color: var(--bg-white);
+        border-bottom: 1px solid #e0e0e0;
+        animation: fadeIn 0.9s ease-out;
+      }
+
+      .industrial-hero h1 {
+        font-size: clamp(2rem, 4.8vw, 3.2rem); /* Adjusted min up slightly */
+        color: var(--accent-industrial);
+        margin-bottom: 15px;
+        font-weight: 700;
+        opacity: 0;
+        animation: slideInFromBottom 0.7s ease-out 0.2s forwards;
+      }
+
+      .industrial-hero .tagline {
+        font-size: clamp(1rem, 2.2vw, 1.15rem); /* Min is 1rem */
+        color: var(--text-light);
+        max-width: 750px;
+        margin: 0 auto 25px auto;
+        line-height: 1.7;
+        opacity: 0;
+        animation: slideInFromBottom 0.7s ease-out 0.4s forwards;
+      }
+
+      .hero-cta-button {
+        display: inline-block;
+        background-color: var(--secondary-color);
+        color: var(--bg-white);
+        padding: 10px 28px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 1rem; /* Min is 1rem */
+        transition: background-color 0.3s ease, transform 0.3s ease;
+        opacity: 0;
+        animation: slideInFromBottom 0.7s ease-out 0.6s forwards;
+        box-shadow: 0 3px 8px rgba(52, 73, 94, 0.15);
+      }
+
+      .hero-cta-button:hover {
+        background-color: #e67e22;
+        transform: translateY(-2px);
+      }
+
+      /* Services Section */
+      .industrial-services-section {
+        padding: 60px 0;
+      }
+
+      .industrial-services-section .section-title {
+        text-align: center;
+        font-size: clamp(1.8rem, 4vw, 2.6rem); /* Adjusted min up slightly */
+        color: var(--text-dark);
+        margin-bottom: 15px;
+        font-weight: 700;
+        opacity: 0;
+        animation: slideInFromBottom 0.6s ease-out 0.2s forwards;
+        position: relative;
+      }
+
+      .industrial-services-section .section-title::after {
+        content: "";
+        display: block;
+        width: 0;
+        height: 3px;
+        background-color: var(--accent-industrial);
+        margin: 12px auto 0;
+        border-radius: 2px;
+        animation: underlineGrowPrimary 0.7s ease-out 0.8s forwards;
+      }
+
+      .industrial-services-section .section-subtitle {
+        text-align: center;
+        font-size: clamp(1rem, 1.8vw, 1.05rem); /* Min is 1rem */
+        color: var(--text-light);
+        max-width: 650px;
+        margin: 0 auto 40px auto;
+        opacity: 0;
+        animation: slideInFromBottom 0.6s ease-out 0.4s forwards;
+      }
+
+      .industrial-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+      }
+
+      .industrial-card {
+        background-color: var(--bg-white);
+        border-radius: 6px;
+        padding: 20px;
+        box-shadow: var(--card-shadow);
+        transition: transform 0.25s ease, box-shadow 0.25s ease,
+          border-left-color 0.25s ease;
+        width: calc(33.333% - 13.33px);
+        min-width: 270px;
+        display: flex;
+        flex-direction: column;
+        opacity: 0;
+        animation: slideInFromBottom 0.5s ease-out forwards;
+        border-left: 4px solid transparent;
+      }
+
+      /* Stagger card animations */
+      .industrial-card:nth-child(1) {
+        animation-delay: 0.7s;
+      }
+      .industrial-card:nth-child(2) {
+        animation-delay: 0.75s;
+      }
+      .industrial-card:nth-child(3) {
+        animation-delay: 0.8s;
+      }
+      .industrial-card:nth-child(4) {
+        animation-delay: 0.85s;
+      }
+      .industrial-card:nth-child(5) {
+        animation-delay: 0.9s;
+      }
+      .industrial-card:nth-child(6) {
+        animation-delay: 0.95s;
+      }
+      .industrial-card:nth-child(7) {
+        animation-delay: 1s;
+      }
+      .industrial-card:nth-child(8) {
+        animation-delay: 1.05s;
+      }
+      .industrial-card:nth-child(9) {
+        animation-delay: 1.1s;
+      }
+      .industrial-card:nth-child(10) {
+        animation-delay: 1.15s;
+      }
+      .industrial-card:nth-child(11) {
+        animation-delay: 1.2s;
+      }
+      .industrial-card:nth-child(12) {
+        animation-delay: 1.25s;
+      }
+      .industrial-card:nth-child(13) {
+        animation-delay: 1.3s;
+      }
+      .industrial-card:nth-child(14) {
+        animation-delay: 1.35s;
+      }
+      .industrial-card:nth-child(15) {
+        animation-delay: 1.4s;
+      }
+      .industrial-card:nth-child(16) {
+        animation-delay: 1.45s;
+      }
+      .industrial-card:nth-child(17) {
+        animation-delay: 1.5s;
+      }
+      .industrial-card:nth-child(18) {
+        animation-delay: 1.55s;
+      }
+      .industrial-card:nth-child(19) {
+        animation-delay: 1.6s;
+      }
+
+      .industrial-card:hover {
+        transform: translateY(-4px) scale(1.005);
+        box-shadow: var(--card-hover-shadow);
+        border-left-color: var(--secondary-color);
+      }
+
+      .industrial-card h3 {
+        font-size: 1.2rem; /* Slightly larger than 1.15rem for better hierarchy with 1rem p */
+        color: var(--accent-industrial);
+        margin-bottom: 10px;
+        font-weight: 600;
+        min-height: 2.4em; /* Ensure space, adjust as needed */
+      }
+
+      .industrial-card p {
+        color: var(--text-light);
+        font-size: 1rem; /* Min is 1rem */
+        flex-grow: 1;
+        margin-bottom: 12px;
+        line-height: 1.6; /* Good for 1rem text */
+      }
+
+      .industrial-card .details-link {
+        color: var(--primary-color);
+        text-decoration: none;
+        font-weight: 600;
+        align-self: flex-start;
+        transition: color 0.3s ease;
+        font-size: 1rem; /* Min is 1rem */
+      }
+
+      .industrial-card .details-link:hover {
+        color: var(--secondary-color);
+      }
+
+      /* Responsive Adjustments */
+      @media (max-width: 1100px) {
+        .industrial-card {
+          width: calc(50% - 10px);
+        }
+      }
+
+      @media (max-width: 768px) {
+        .industrial-hero {
+          padding: 50px 0 30px;
+        }
+        .industrial-services-section {
+          padding: 40px 0;
+        }
+        .industrial-card {
+          width: 100%;
+          min-width: unset;
+          animation-delay: 0.2s !important;
+        }
+        .industrial-services-section .section-title::after {
+          animation-delay: 0.5s;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .industrial-hero h1 {
+          font-size: 1.8rem;
+        } /* Was 1.6rem, kept slightly larger */
+        .industrial-hero .tagline {
+          font-size: 1rem;
+        } /* Min is 1rem, was 0.8rem */
+        .hero-cta-button {
+          font-size: 1rem;
+          padding: 10px 25px;
+        } /* Min is 1rem, adjusted padding slightly */
+        .industrial-services-section .section-title {
+          font-size: 1.6rem;
+        } /* Was 1.5rem, kept slightly larger */
+        .industrial-services-section .section-subtitle {
+          font-size: 1rem;
+        } /* Min is 1rem, was 0.75rem */
+        .industrial-card h3 {
+          font-size: 1.15rem;
+          min-height: 0;
+        } /* Was 1.05rem */
+        .industrial-card p {
+          font-size: 1rem;
+        } /* Min is 1rem, was 0.8rem */
+        .industrial-card .details-link {
+          font-size: 1rem;
+        } /* Min is 1rem, was 0.75rem */
+        .industrial-grid {
+          gap: 15px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Assume Navbar is above this -->
+    <%- include('../partials/navbar'); %>
+
+    <div class="industrial-hero">
+      <div class="industrial-container">
+        <h1>Comprehensive Industrial Services</h1>
+        <p class="tagline">
+          Powering your operations with expert solutions. We deliver
+          reliability, efficiency, and safety across a wide spectrum of
+          industrial needs.
+        </p>
+        <a href="#industrial-offerings" class="hero-cta-button"
+          >Explore Our Capabilities</a
+        >
+      </div>
+    </div>
+
+    <section id="industrial-offerings" class="industrial-services-section">
+      <div class="industrial-container">
+        <h2 class="section-title">Our Industrial Capabilities</h2>
+        <p class="section-subtitle">
+          From project inception to ongoing maintenance, our skilled teams
+          provide end-to-end support for your industrial infrastructure and
+          processes.
+        </p>
+
+        <div class="industrial-grid">
+          <div class="industrial-card">
+            <h3>Project Management</h3>
+            <p>
+              Overseeing industrial projects from planning through execution to
+              ensure on-time, on-budget, and high-quality delivery.
+            </p>
+            <a href="#" class="details-link">View Details →</a>
+          </div>
+          <div class="industrial-card">
+            <h3>Facility Management</h3>
+            <p>
+              Integrated services to optimize the functionality, comfort,
+              safety, and efficiency of your industrial environments.
+            </p>
+            <a href="#" class="details-link">View Details →</a>
+          </div>
+          <div class="industrial-card">
+            <h3>HR and Administrative Services</h3>
+            <p>
+              Streamlining human resources and administrative functions to
+              support your core industrial operations effectively.
+            </p>
+            <a href="#" class="details-link">View Details →</a>
+          </div>
+          <div class="industrial-card">
+            <h3>Construction Management and Supervision</h3>
+            <p>
+              Expert oversight of industrial construction projects, ensuring
+              adherence to standards, timelines, and safety protocols.
+            </p>
+            <a href="#" class="details-link">View Details →</a>
+          </div>
+          <div class="industrial-card">
+            <h3>Mechanical Assembly</h3>
+            <p>
+              Precision assembly of mechanical components and systems according
+              to engineering specifications and quality standards.
+            </p>
+            <a href="#" class="details-link">View Details →</a>
+          </div>
+          <div class="industrial-card">
+            <h3>Mechanical System Installation</h3>
+            <p>
+              Expert installation of complex mechanical systems, machinery, and
+              equipment for various industrial applications.
+            </p>
+            <a href="#" class="details-link">View Details →</a>
+          </div>
+          <div class="industrial-card">
+            <h3>Electrical Insulation</h3>
+            <p>
+              Specialized services for the installation and maintenance of
+              electrical insulation in industrial settings for safety and
+              efficiency.
+            </p>
+            <a href="#" class="details-link">View Details →</a>
+          </div>
+          <div class="industrial-card">
+            <h3>Pipeline Assembly</h3>
+            <p>
+              Construction and assembly of industrial pipelines for fluid and
+              gas transportation, adhering to stringent safety standards.
+            </p>
+            <a href="#" class="details-link">View Details →</a>
+          </div>
+          <div class="industrial-card">
+            <h3>Plant Relocation and Overhaul</h3>
+            <p>
+              Comprehensive services for relocating industrial plants and
+              overhauling existing facilities to enhance performance.
+            </p>
+            <a href="#" class="details-link">View Details →</a>
+          </div>
+          <div class="industrial-card">
+            <h3>Automation and Control</h3>
+            <p>
+              Designing and implementing automation solutions to improve
+              efficiency, productivity, and control in industrial processes.
+            </p>
+            <a href="#" class="details-link">View Details →</a>
+          </div>
+          <div class="industrial-card">
+            <h3>Fabrication and Manufacturing</h3>
+            <p>
+              Custom fabrication of metal components and manufacturing services
+              tailored to specific industrial requirements.
+            </p>
+            <a href="#" class="details-link">View Details →</a>
+          </div>
+          <div class="industrial-card">
+            <h3>Maintenance, Repair and Servicing</h3>
+            <p>
+              Proactive and reactive maintenance, repair, and servicing of
+              industrial equipment and facilities to ensure optimal uptime.
+            </p>
+            <a href="#" class="details-link">View Details →</a>
+          </div>
+          <div class="industrial-card">
+            <h3>Safety and Compliance</h3>
+            <p>
+              Ensuring adherence to industrial safety regulations and compliance
+              standards through audits, training, and system implementation.
+            </p>
+            <a href="#" class="details-link">View Details →</a>
+          </div>
+          <div class="industrial-card">
+            <h3>Energy and Utilities</h3>
+            <p>
+              Management and optimization of energy consumption and utility
+              services for industrial operations to reduce costs and impact.
+            </p>
+            <a href="#" class="details-link">View Details →</a>
+          </div>
+          <div class="industrial-card">
+            <h3>Housekeeping Services</h3>
+            <p>
+              Maintaining cleanliness and order in industrial environments to
+              ensure a safe, efficient, and productive workspace.
+            </p>
+            <a href="#" class="details-link">View Details →</a>
+          </div>
+          <div class="industrial-card">
+            <h3>Pest Control and Fumigation</h3>
+            <p>
+              Effective pest management and fumigation services tailored for
+              industrial facilities to protect assets and ensure hygiene.
+            </p>
+            <a href="#" class="details-link">View Details →</a>
+          </div>
+          <div class="industrial-card">
+            <h3>Calibration and Qualification</h3>
+            <p>
+              Precision calibration of industrial instruments and qualification
+              of equipment to meet regulatory and quality standards.
+            </p>
+            <a href="#" class="details-link">View Details →</a>
+          </div>
+          <div class="industrial-card">
+            <h3>HVAC Solutions</h3>
+            <p>
+              Design, installation, and maintenance of heating, ventilation, and
+              air conditioning systems for industrial applications.
+            </p>
+            <a href="#" class="details-link">View Details →</a>
+          </div>
+          <div class="industrial-card">
+            <h3>Manpower Solutions</h3>
+            <p>
+              Providing skilled and unskilled manpower to support various
+              industrial operations and project requirements.
+            </p>
+            <a href="#" class="details-link">View Details →</a>
+          </div>
+          <div class="industrial-card">
+            <h3>Security Services</h3>
+            <p>
+              Comprehensive security solutions including personnel,
+              surveillance, and access control for industrial sites and assets.
+            </p>
+            <a href="#" class="details-link">View Details →</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Assume Footer is below this -->
+
+    <%- include('../partials/footer'); %> <%- include('../partials/scripts'); %>
+  </body>
+</html>

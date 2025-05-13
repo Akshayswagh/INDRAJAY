@@ -55,7 +55,7 @@ router.post("/", uploader.single("image"), async (req, res) => {
         message: "Event image is required.",
       });
     }
-    const imagePath = `/uploads/events/${req.file.filename}`;
+    const imagePath = req.file.path; // full Cloudinary URL
     const eventData = {
       name: req.body.name,
       category: req.body.category,

@@ -1,0 +1,226 @@
+<%- include('../partials/head'); %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canteen Services - Body</title>
+
+    <style>
+        /* Basic Reset (optional, but good practice) */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333333; /* Dark grey for general text */
+            background-color: #f9f9f9; /* Light background for the page */
+        }
+
+        /* Canteen Page Body Specific Styles - Themed */
+        .canteen-page-body {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        .canteen-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .canteen-header h1 {
+            font-size: 2.8em;
+            color: #00796B; /* Dark Teal from logo */
+            margin-bottom: 10px;
+        }
+
+        .canteen-header .tagline {
+            font-size: 1.2em;
+            color: #555555; /* Medium grey */
+            font-style: italic;
+        }
+
+        .canteen-section {
+            margin-bottom: 40px;
+            padding: 25px;
+            background-color: #ffffff; /* White background for sections */
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .canteen-section h2 {
+            font-size: 2em;
+            color: #f39c12; /* Orange from navbar */
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+            position: relative;
+        }
+
+        .canteen-section h2::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background-color: #f39c12; /* Orange from navbar */
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+        }
+        
+        .intro-text {
+            font-size: 1.1em;
+            color: #444444;
+            margin-bottom: 20px;
+        }
+
+        .intro-text strong {
+            color: #00796B; /* Dark Teal for emphasis */
+        }
+
+        .services-grid, .options-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+        }
+
+        .service-item, .option-item {
+            background-color: #fdfdfd;
+            border: 1px solid #e7e7e7;
+            border-left: 5px solid #f39c12; /* Orange accent border */
+            padding: 20px;
+            border-radius: 6px;
+            flex: 1 1 300px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex; /* For better alignment if content varies */
+            flex-direction: column; /* Stack title and paragraph */
+        }
+        
+        .service-item:hover, .option-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .service-item h3, .option-item h3 {
+            font-size: 1.5em;
+            color: #00796B; /* Dark Teal for item titles */
+            margin-bottom: 10px;
+        }
+
+        .service-item p, .option-item p {
+            font-size: 1em;
+            color: #555555; /* Medium grey for item text */
+            flex-grow: 1; /* Allow paragraph to take available space */
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .canteen-header h1 {
+                font-size: 2.2em;
+            }
+            .canteen-section h2 {
+                font-size: 1.8em;
+            }
+            .service-item, .option-item {
+                flex-basis: calc(50% - 12.5px); /* Two items per row, accounting for gap */
+            }
+        }
+         @media (max-width: 600px) { /* Make them full width earlier */
+             .service-item, .option-item {
+                flex-basis: 100%;
+            }
+         }
+
+        @media (max-width: 480px) {
+            .canteen-header h1 {
+                font-size: 1.8em;
+            }
+            .canteen-section h2 {
+                font-size: 1.5em;
+            }
+            .service-item h3, .option-item h3 {
+                font-size: 1.3em;
+            }
+            .canteen-page-body {
+                padding: 20px 15px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+        <%- include('../partials/navbar'); %>
+
+    <!-- Assume Navbar is above this -->
+
+    <main class="canteen-page-body">
+        <header class="canteen-header">
+            <h1>Welcome to Our Canteen</h1>
+            <p class="tagline">Delicious Meals, Exceptional Service, Right Here!</p>
+        </header>
+
+        <section class="canteen-section facility-overview">
+            <h2>Our Facility</h2>
+            <p class="intro-text">
+                We pride ourselves on offering a <strong>Customised Canteen facility</strong>, meticulously designed to be a <strong>Comprehensive Canteen</strong> solution. Our goal is to provide a welcoming environment with a wide array of food choices to suit every palate and dietary need, including specialized options.
+            </p>
+        </section>
+
+        <section class="canteen-section meal-options-section">
+            <h2>Meal Options</h2>
+            <div class="options-grid">
+                <div class="option-item">
+                    <h3>Breakfast Options</h3>
+                    <p>Start your day energized with our diverse breakfast menu, featuring everything from hearty classics to light and healthy choices.</p>
+                </div>
+                <div class="option-item">
+                    <h3>Lunch Options</h3>
+                    <p>Refuel midday with our extensive lunch selections, offering balanced meals, quick bites, and delicious global flavors.</p>
+                </div>
+                <div class="option-item">
+                    <h3>Dinner Options</h3>
+                    <p>Unwind with our satisfying dinner offerings. We provide a range of wholesome and flavorful dishes to end your day perfectly.</p>
+                </div>
+                <div class="option-item">
+                    <h3>Snacks Options</h3>
+                    <p>For those in-between moments, grab a quick and tasty treat from our wide assortment of snacks and refreshments available all day.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="canteen-section additional-services-section">
+            <h2>Additional Services</h2>
+            <div class="services-grid">
+                <div class="service-item">
+                    <h3>Catering Services</h3>
+                    <p>Elevate your meetings, events, or special occasions with our professional catering. We offer customizable menus to fit your needs.</p>
+                </div>
+                <div class="service-item">
+                    <h3>Food Delivery Services</h3>
+                    <p>Enjoy the convenience of having your favorite canteen meals delivered directly to your workspace or designated campus locations.</p>
+                </div>
+                <div class="service-item">
+                    <h3>Beverage Services</h3>
+                    <p>Quench your thirst with our wide array of beverage choices, including freshly brewed coffee, teas, juices, and refreshing cold drinks.</p>
+                </div>
+                <div class="service-item"> <!-- New Item -->
+                    <h3>Special Dietary Services</h3>
+                    <p>We cater to various dietary requirements, including vegetarian, vegan, gluten-free, and allergen-specific meals. Please inquire for details.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+    <%- include('../partials/footer'); %>
+    <%- include('../partials/scripts'); %>
+
+
+    <!-- Assume Footer is below this -->
+</body>
+</html>

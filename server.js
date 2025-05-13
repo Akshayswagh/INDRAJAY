@@ -17,6 +17,7 @@ const eventRoutes = require("./routes/eventRoutes");
 const careManagementRoutes = require("./routes/careManagementRoutes");
 careManagement = require("./models/careManagement");
 const Career = require("./models/careerModel");
+const event = require("./models/Event");
 
 connectDB();
 
@@ -248,6 +249,7 @@ app.get("/pulses", async (req, res) => {
   }
 });
 
+
 // Spises
 app.get("/spises", async (req, res) => {
   try {
@@ -440,10 +442,21 @@ app.get("/careers/:id", async (req, res) => {
   }
 });
 
-app.get("/events", (req, res) => {
-  res.render("client/events", {
-    title: "Events | Indrajay Enterprises",
-  });
+app.get("/events", async (req, res) => {
+  try {
+    const events = await event.find().sort({ created_at: -1 });
+
+    res.render("client/events", {
+      title: "Events | Indrajay Enterprises",
+      events,
+    });
+  } catch (err) {
+    console.error("events fetch error:", err.message);
+    res.render("client/events", {
+      title: "events | Indrajay Enterprises",
+      careers: null, // Or [] if you prefer an empty array
+    });
+  }
 });
 
 app.get("/careManagement", async (req, res) => {
@@ -458,7 +471,6 @@ app.get("/careManagement", async (req, res) => {
     res.status(500).send("Server error");
   }
 });
-
 
 app.get("/caremanegement/view/:id", async (req, res) => {
   try {
@@ -475,11 +487,34 @@ app.get("/caremanegement/view/:id", async (req, res) => {
     // console.log(care);
   } catch (err) {
     res.status(500).send("Server error");
-    console.log(err)
+    console.log(err);
   }
 });
 
 // ......................................End.....Career tab routes on admin side.................................
+
+app.get("/canteen", (req, res) => {
+  res.render("client/canteen", {
+    title: "Canteen | Indrajay Enterprises",
+  });
+});
+app.get("/consultation", (req, res) => {
+  res.render("client/consultation", {
+    title: "Consultation | Indrajay Enterprises",
+  });
+});
+
+app.get("/is", (req, res) => {
+  res.render("client/is", {
+    title: "Industrial Services | Indrajay Enterprises",
+  });
+});
+
+app.get("/transportlogistic", (req, res) => {
+  res.render("client/transportlogistics", {
+    title: "Transport Logistics  | Indrajay Enterprises",
+  });
+});
 
 // 404 page
 app.get("*", (req, res) => {

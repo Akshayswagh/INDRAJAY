@@ -11,120 +11,38 @@
         <div class="page-heading">
           <h1>Pulses</h1>
           <p>
-            Explore a wide variety of fresh, nutritious, and wholesome pulses, carefully selected just for you!
+            Explore a wide variety of fresh, nutritious, and wholesome pulses,
+            carefully selected just for you!
           </p>
-        </div>        
+        </div>
 
         <div class="products-container">
+          <% if (spises.length > 0) { %> <% spises.forEach(spice => { %>
+
           <!-- Product 1 -->
-          <a href="product-detail-1.html" class="product-link">
+          <a href="/exports/view/<%= spice._id %>" class="product-link">
             <div class="product-card">
               <div class="product-image-container">
-                <span class="product-badge">New</span>
                 <img
-                  src="https://previews.123rf.com/images/nadianb/nadianb1711/nadianb171100036/88969699-various-spices-in-a-bowls-on-white-background-top-view.jpg"
-                  alt="Wireless Headphones"
+                  src="<%= spice.image %>"
+                  alt="<%= spice.name %>"
                   class="product-image"
                 />
               </div>
               <div class="product-info">
-                <h3 class="product-name">Wireless Headphones</h3>
-                <span class="product-category">Audio</span>
+                <h3 class="product-name"><%= spice.name %></h3>
+                <span class="product-category"><%= spice.category %></span>
               </div>
             </div>
           </a>
 
-          <!-- Product 2 -->
-          <a href="product-detail-2.html" class="product-link">
-            <div class="product-card">
-              <div class="product-image-container">
-                <span class="product-badge">Best Seller</span>
-                <img
-                  src="https://c8.alamy.com/comp/D19NFA/herbs-and-spices-border-on-white-background-D19NFA.jpg"
-                  alt="Smart Watch"
-                  class="product-image"
-                />
-              </div>
-              <div class="product-info">
-                <h3 class="product-name">Pro Smart Watch</h3>
-                <span class="product-category">Wearables</span>
-              </div>
-            </div>
-          </a>
-
-          <!-- Product 3 -->
-          <a href="product-detail-3.html" class="product-link">
-            <div class="product-card">
-              <div class="product-image-container">
-                <img
-                  src="https://t4.ftcdn.net/jpg/02/09/05/33/360_F_209053389_CWCRfQI1RO9jKCPKAFZH0aO9Lwz1durg.jpg"
-                  alt="Bluetooth Speaker"
-                  class="product-image"
-                />
-              </div>
-              <div class="product-info">
-                <h3 class="product-name">Portable Bluetooth Speaker</h3>
-                <span class="product-category">Audio</span>
-              </div>
-            </div>
-          </a>
-
-          <!-- Product 4 -->
-          <a href="product-detail-4.html" class="product-link">
-            <div class="product-card">
-              <div class="product-image-container">
-                <span class="product-badge">Sale</span>
-                <img
-                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHaKvq7gbABAu7kYQIEhQvISwFXALetp9lsg&s"
-                  alt="Fitness Tracker"
-                  class="product-image"
-                />
-              </div>
-              <div class="product-info">
-                <h3 class="product-name">Advanced Fitness Tracker</h3>
-                <span class="product-category">Wearables</span>
-              </div>
-            </div>
-          </a>
-
-          <!-- Product 5 -->
-          <a href="product-detail-5.html" class="product-link">
-            <div class="product-card">
-              <div class="product-image-container">
-                <img
-                  src="https://c4.wallpaperflare.com/wallpaper/360/802/333/food-herbs-and-spices-herbs-wallpaper-preview.jpg"
-                  alt="Tablet"
-                  class="product-image"
-                />
-              </div>
-              <div class="product-info">
-                <h3 class="product-name">Ultra Slim Tablet</h3>
-                <span class="product-category">Computing</span>
-              </div>
-            </div>
-          </a>
-
-          <!-- Product 6 -->
-          <a href="product-detail-6.html" class="product-link">
-            <div class="product-card">
-              <div class="product-image-container">
-                <span class="product-badge">New</span>
-                <img
-                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTNHtCaaV1pcOucEA75vk0SstzdMYW2JSZMQ&s"
-                  alt="Wireless Earbuds"
-                  class="product-image"
-                />
-              </div>
-              <div class="product-info">
-                <h3 class="product-name">True Wireless Earbuds</h3>
-                <span class="product-category">Audio</span>
-              </div>
-            </div>
-          </a>
+          <% }) %> <% } else { %>
+          <p>No products Available in this category.</p>
+          <% } %>
         </div>
-        <div class="view-more">
+        <!-- <div class="view-more">
           <button class="view-more-btn">View More Products</button>
-        </div>
+        </div> -->
       </div>
     </section>
     <%- include('../partials/footer'); %> <%- include('../partials/scripts'); %>

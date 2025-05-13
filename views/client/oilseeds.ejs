@@ -12,118 +12,39 @@
         <div class="page-heading">
           <h1>Oil Seeds</h1>
           <p>
-            Discover high-quality oil seeds rich in nutrients and essential fats—ideal for oil extraction, cooking, and health-focused consumption.
+            Discover high-quality oil seeds rich in nutrients and essential
+            fats—ideal for oil extraction, cooking, and health-focused
+            consumption.
           </p>
         </div>
+
         <div class="products-container">
+          <% if (oilseeds.length > 0) { %> <% oilseeds.forEach(oilseed => { %>
+
           <!-- Product 1 -->
-          <a href="product-detail-1.html" class="product-link">
+          <a href="/exports/view/<%= oilseed._id %>" class="product-link">
             <div class="product-card">
               <div class="product-image-container">
-                <span class="product-badge">New</span>
                 <img
-                  src="https://www.shutterstock.com/image-photo/castor-oil-seeds-on-white-260nw-1472237597.jpg"
-                  alt="Wireless Headphones"
+                  src="<%= oilseed.image %>"
+                  alt="<%= oilseed.name %>"
                   class="product-image"
                 />
               </div>
               <div class="product-info">
-                <h3 class="product-name">Wireless Headphones</h3>
-                <span class="product-category">Audio</span>
+                <h3 class="product-name"><%= oilseed.name %></h3>
+                <span class="product-category"><%= oilseed.category %></span>
               </div>
             </div>
           </a>
 
-          <!-- Product 2 -->
-          <a href="product-detail-2.html" class="product-link">
-            <div class="product-card">
-              <div class="product-image-container">
-                <span class="product-badge">Best Seller</span>
-                <img
-                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJ3PXzzJ0nn5h5pCzb9WJdUF7UnH0c_NSQwg&s"
-                  alt="Smart Watch"
-                  class="product-image"
-                />
-              </div>
-              <div class="product-info">
-                <h3 class="product-name">Pro Smart Watch</h3>
-                <span class="product-category">Wearables</span>
-              </div>
-            </div>
-          </a>
+          <% }) %> <% } else { %>
+          <p>No products Available in this category.</p>
+          <% } %>
 
-          <!-- Product 3 -->
-          <a href="product-detail-3.html" class="product-link">
-            <div class="product-card">
-              <div class="product-image-container">
-                <img
-                  src="https://st2.depositphotos.com/7036298/10773/i/450/depositphotos_107738808-stock-photo-ripe-tasry-grape-orange-and.jpg"
-                  alt="Bluetooth Speaker"
-                  class="product-image"
-                />
-              </div>
-              <div class="product-info">
-                <h3 class="product-name">Portable Bluetooth Speaker</h3>
-                <span class="product-category">Audio</span>
-              </div>
-            </div>
-          </a>
-
-          <!-- Product 4 -->
-          <a href="product-detail-4.html" class="product-link">
-            <div class="product-card">
-              <div class="product-image-container">
-                <span class="product-badge">Sale</span>
-                <img
-                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGecfEaSyLATOSTwgfDIc6wqyNEohJYZLpgA&s"
-                  alt="Fitness Tracker"
-                  class="product-image"
-                />
-              </div>
-              <div class="product-info">
-                <h3 class="product-name">Advanced Fitness Tracker</h3>
-                <span class="product-category">Wearables</span>
-              </div>
-            </div>
-          </a>
-
-          <!-- Product 5 -->
-          <a href="product-detail-5.html" class="product-link">
-            <div class="product-card">
-              <div class="product-image-container">
-                <img
-                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRo7KHSOqsx53wrkhIUlrvKBAY7g3kyZ4p5Yg&s"
-                  alt="Tablet"
-                  class="product-image"
-                />
-              </div>
-              <div class="product-info">
-                <h3 class="product-name">Ultra Slim Tablet</h3>
-                <span class="product-category">Computing</span>
-              </div>
-            </div>
-          </a>
-
-          <!-- Product 6 -->
-          <a href="product-detail-6.html" class="product-link">
-            <div class="product-card">
-              <div class="product-image-container">
-                <span class="product-badge">New</span>
-                <img
-                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT89rctWS54x0nhIyZOizbsjVhYx4sBC5voRw&s"
-                  alt="Wireless Earbuds"
-                  class="product-image"
-                />
-              </div>
-              <div class="product-info">
-                <h3 class="product-name">True Wireless Earbuds</h3>
-                <span class="product-category">Audio</span>
-              </div>
-            </div>
-          </a>
-        </div>
-        <div class="view-more">
+          <!-- <div class="view-more">
           <button class="view-more-btn">View More Products</button>
+        </div> -->
         </div>
       </div>
     </section>
