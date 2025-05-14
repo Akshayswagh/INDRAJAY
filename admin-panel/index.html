@@ -192,13 +192,32 @@
             </div>
             <div class="mb-3">
               <label for="category" class="form-label">Category</label>
-              <input
-                type="text"
-                class="form-control"
+              <select
+                class="form-select"
                 name="category"
                 id="category"
                 required
-              />
+              >
+                <option value="" selected disabled>Select a category</option>
+                <option value="Grains & Cereals">Grains & Cereals</option>
+                <option value="Oil Seeds">Oil Seeds</option>
+                <option value="Pulses">Pulses</option>
+                <option value="Spises">Spises</option>
+                <option value="Fruits and Vegetables">
+                  Fruits and Vegetables
+                </option>
+                <option value="Sugar">Sugar</option>
+                <option value="Jaggery">Jaggery</option>
+                <option value="Coffee and Cocoa">Coffee and Cocoa</option>
+                <option value="Coconut">Coconut</option>
+                <option value="Nuts & Dry Fruits">Nuts & Dry Fruits</option>
+                <option value="Chemicals">Chemicals</option>
+                <option value="Wooden Pallets">Wooden Pallets</option>
+                <option value="Packing Materials">Packing Materials</option>
+                <option value="Appearals & Garments">
+                  Appearals & Garments
+                </option>
+              </select>
             </div>
             <div class="mb-3">
               <label for="description" class="form-label">Description</label>
@@ -233,29 +252,65 @@
           id="export-list"
           style="display: none"
         >
-         <div class="d-flex justify-content-between align-items-center">
-  <h2>View Exports</h2>
-  <div class="d-flex gap-2">
-    <!-- Sort Button -->
-    <button id="sortByCategoryBtn" class="btn btn-outline-dark">
-      <i class="bi bi-arrow-down-up"></i> Sort
-    </button>
-    
-    <!-- Filter Dropdown -->
-    <div class="dropdown">
-      <button class="btn btn-outline-dark dropdown-toggle" type="button" 
-              id="filterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-        <i class="bi bi-funnel"></i> Filter
-      </button>
-      <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="filterDropdown">
-        <li><a class="dropdown-item" href="#" onclick="filterExports('all')">All Categories</a></li>
-        <li><a class="dropdown-item" href="#" onclick="filterExports('Grains & Cereals')">Grains & Cereals</a></li>
-        <li><a class="dropdown-item" href="#" onclick="filterExports('Oil Seeds')">Oil Seeds</a></li>
-        <li><a class="dropdown-item" href="#" onclick="filterExports('Pulses')">Pulses</a></li>
-      </ul>
-    </div>
-  </div>
-</div>
+          <div class="d-flex justify-content-between align-items-center">
+            <h2>View Exports</h2>
+            <div class="d-flex gap-2">
+              <!-- Sort Button -->
+              <button id="sortByCategoryBtn" class="btn btn-outline-dark">
+                <i class="bi bi-arrow-down-up"></i> Sort
+              </button>
+
+              <!-- Filter Dropdown -->
+              <div class="dropdown">
+                <button
+                  class="btn btn-outline-dark dropdown-toggle"
+                  type="button"
+                  id="filterDropdown"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  <i class="bi bi-funnel"></i> Filter
+                </button>
+                <ul
+                  class="dropdown-menu dropdown-menu-end"
+                  aria-labelledby="filterDropdown"
+                >
+                  <li>
+                    <a
+                      class="dropdown-item"
+                      href="#"
+                      onclick="filterExports('all')"
+                      >All Categories</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      class="dropdown-item"
+                      href="#"
+                      onclick="filterExports('Grains & Cereals')"
+                      >Grains & Cereals</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      class="dropdown-item"
+                      href="#"
+                      onclick="filterExports('Oil Seeds')"
+                      >Oil Seeds</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      class="dropdown-item"
+                      href="#"
+                      onclick="filterExports('Pulses')"
+                      >Pulses</a
+                    >
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
 
           <table class="table">
             <thead>
@@ -263,7 +318,7 @@
                 <th>Sr. No.</th>
                 <th>Name</th>
                 <th>Image</th>
-                <th style="text-align: center;">Action</th>
+                <th style="text-align: center">Action</th>
               </tr>
             </thead>
             <tbody id="exportTableBody">
@@ -330,8 +385,7 @@
                 <th>Position</th>
                 <th>Domain</th>
                 <th>Experience</th>
-                <th style="text-align: center;"
-                >Action</th>
+                <th style="text-align: center">Action</th>
               </tr>
             </thead>
             <tbody id="jobsTableBody">
