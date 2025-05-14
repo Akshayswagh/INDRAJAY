@@ -448,7 +448,7 @@ app.get("/events", async (req, res) => {
   try {
     const events = await event.find().sort({ created_at: -1 });
 
-    res.render("client/events", {
+    res.render("client/events.ejs", {
       title: "Events | Indrajay Enterprises",
       events,
     });
