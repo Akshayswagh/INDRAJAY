@@ -451,7 +451,7 @@ app.get("/events", async (req, res) => {
     // Verify events data before rendering
     console.log("Fetched events:", events);
     
-    res.render("client/events", {  // Try without .ejs extension
+    res.render("client/about", {  // Try without .ejs extension
       title: "Events | Indrajay Enterprises",
       events: events || [], // Ensure events is always defined
       user: req.user || null // Add if using authentication
