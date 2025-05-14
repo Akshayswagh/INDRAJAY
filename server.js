@@ -446,17 +446,24 @@ app.get("/careers/:id", async (req, res) => {
 
 app.get("/events", async (req, res) => {
   try {
-    const events = await event.find().sort({ created_at: -1 });
-
-    res.render("client/events.ejs", {
+    const events = await event.find().sort({ created_at: -1 }).lean(); // Add .lean() for better performance
+    
+    // Verify events data before rendering
+    console.log("Fetched events:", events);
+    
+    res.render("client/events", {  // Try without .ejs extension
       title: "Events | Indrajay Enterprises",
-      events,
+      events: events || [], // Ensure events is always defined
+      user: req.user || null // Add if using authentication
     });
+    
   } catch (err) {
-    console.error("events fetch error:", err.message);
-    res.render("client/events", {
-      title: "events | Indrajay Enterprises",
-      careers: null, // Or [] if you prefer an empty array
+    console.error("Events fetch error:", err);
+    
+    // More robust error response
+    res.status(500).render("client/error", {
+      title: "Error | Indrajay Enterprises",
+      message: "Failed to load events. Please try again later."
     });
   }
 });
