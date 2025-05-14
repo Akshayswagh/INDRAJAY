@@ -18,6 +18,8 @@ const careManagementRoutes = require("./routes/careManagementRoutes");
 careManagement = require("./models/careManagement");
 const Career = require("./models/careerModel");
 const event = require("./models/Event");
+const verifyToken = require("./middlewares/authMiddleware");
+const authorizeRoles = require("./middlewares/roleMiddleware");
 
 connectDB();
 
@@ -32,6 +34,7 @@ app.use(express.json());
 app.use(cors());
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
+app.use("/admin", express.static(path.join(__dirname, "admin-panel")));
 
 // Routes
 app.use("/api/exports", exportsRoutes);
@@ -147,7 +150,7 @@ app.get("/reset-password/:token", async (req, res) => {
   try {
     const token = req.params.token;
 
-    // Check if token exists and is valid
+    // `Check `if token exists and is valid
     const tokenDoc = await PasswordResetToken.findOne({ token }).populate(
       "userId"
     );
@@ -248,7 +251,6 @@ app.get("/pulses", async (req, res) => {
     res.status(500).send("Internal server error");
   }
 });
-
 
 // Spises
 app.get("/spises", async (req, res) => {
@@ -523,6 +525,17 @@ app.get("*", (req, res) => {
     message: req.query.msg,
   });
 });
+
+// admin dashbord route
+app.get(
+  "/admin",
+  verifyToken,
+  authorizeRoles("admin"),
+
+  (req, res) => {
+    res.sendFile(path.join(__dirname, "admin-panel", "index.html"));
+  }
+);
 
 // Add this after all your routes
 // Global error handler - always at the end

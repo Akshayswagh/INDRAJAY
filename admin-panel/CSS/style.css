@@ -1,0 +1,92 @@
+.section-container {
+  display: none;
+}
+
+/* Popup styles  starts*/
+/* Popup styles */
+.popup {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  border: 1px solid #ccc;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  /* opacity: 0; */
+  animation: fadeIn 0.5s forwards;
+}
+
+.btns {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+}
+.popup-content {
+  text-align: center;
+}
+
+/* Animation for fade-in */
+/* @keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+} */
+
+/* Okay button styles */
+#okayButton,
+#cancelButton {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+#okayButton:hover,
+#cancelButton:hover {
+  background-color: #45a049;
+}
+
+/* Cancel button style */
+#cancelButton {
+  background-color: #f44336; /* Red for Cancel */
+}
+
+#cancelButton:hover {
+  background-color: #e53935;
+}
+
+/* Animation for button fade-in */
+/* @keyframes fadeInButton {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+} */
+
+/* popup msg end */
+
+
+
+/* Active filter button style */
+.btn-outline-dark.active-filter {
+  background-color: #212529;
+  color: white;
+}
+
+/* Dropdown item active state */
+.dropdown-item.active {
+  background-color: #f8f9fa;
+  color: #212529;
+  font-weight: 500;
+}

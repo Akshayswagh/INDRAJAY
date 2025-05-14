@@ -47,7 +47,6 @@ router.post("/addExport", uploader.single("image"), async (req, res) => {
 
 // READ - Get all export items
 router.get("/allExports", async (req, res, next) => {
-  console.log("req received");
   try {
     const exports = await Export.find().sort({ createdAt: -1 });
     res.status(200).json({
