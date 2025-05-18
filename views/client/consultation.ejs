@@ -1,382 +1,379 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Expert Consultation Services - Refined</title>
-        <%- include('../partials/head'); %>
+    <%- include('../partials/head'); %>
 
     <style>
-        /* Basic Reset & Root Variables */
-        :root {
-            --primary-color: #00796B; /* Dark Teal */
-            --secondary-color: #f39c12; /* Orange */
-            --text-dark: #2c3e50;
-            --text-light: #5a6a7a;
-            --bg-light: #f8f9fa;
-            --bg-white: #ffffff;
-            --card-shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
-            --card-hover-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-        }
+      /* Basic Reset & Root Variables */
+      :root {
+        --primary-color: #00796b; /* Dark Teal */
+        --secondary-color: #f39c12; /* Orange */
+        --text-dark: #2c3e50;
+        --text-light: #5a6a7a;
+        --bg-light: #f8f9fa;
+        --bg-white: #ffffff;
+        --card-shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
+        --card-hover-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+      }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-        body {
-            font-family: 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Changed font for a cleaner look */
-            line-height: 1.7;
-            color: var(--text-dark);
-            background-color: var(--bg-light);
-            overflow-x: hidden;
-        }
+      body {
+        font-family: "Roboto", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; /* Changed font for a cleaner look */
+        line-height: 1.7;
+        color: var(--text-dark);
+        background-color: var(--bg-light);
+        overflow-x: hidden;
+      }
 
-        /* --- Keyframe Animations --- */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+      /* --- Keyframe Animations --- */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
         }
+        to {
+          opacity: 1;
+        }
+      }
 
-        @keyframes slideInFromBottom {
-            from { opacity: 0; transform: translateY(40px); }
-            to { opacity: 1; transform: translateY(0); }
+      @keyframes slideInFromBottom {
+        from {
+          opacity: 0;
+          transform: translateY(40px);
         }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
 
-        @keyframes slideInFromLeftSubtle {
-            from { opacity: 0; transform: translateX(-30px); }
-            to { opacity: 1; transform: translateX(0); }
+      @keyframes slideInFromLeftSubtle {
+        from {
+          opacity: 0;
+          transform: translateX(-30px);
         }
-        
-        @keyframes underlineGrow {
-            from { width: 0; }
-            to { width: 80px; }
+        to {
+          opacity: 1;
+          transform: translateX(0);
         }
+      }
 
-        /* Container */
-        .consultation-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px; /* Horizontal padding for all screen sizes */
+      @keyframes underlineGrow {
+        from {
+          width: 0;
         }
+        to {
+          width: 80px;
+        }
+      }
 
-        /* Header Section */
-        .consultation-hero {
-            padding: 80px 0 60px;
-            text-align: center;
-            background-color: var(--bg-white); /* White background for hero */
-            border-bottom: 1px solid #e0e0e0;
-            animation: fadeIn 1s ease-out;
-        }
+      /* Container */
+      .consultation-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px; /* Horizontal padding for all screen sizes */
+      }
 
-        .consultation-hero h1 {
-            font-size: clamp(2.2rem, 5vw, 2.8rem); /* Responsive font size */
-            color: var(--primary-color);
-            margin-bottom: 20px;
-            font-weight: 700;
-            opacity: 0;
-            animation: slideInFromBottom 0.8s ease-out 0.2s forwards;
-        }
+      /* Header Section */
+      .consultation-hero {
+        padding: 80px 0 60px;
+        text-align: center;
+        background-color: var(--bg-white); /* White background for hero */
+        border-bottom: 1px solid #e0e0e0;
+        animation: fadeIn 1s ease-out;
+      }
 
-        .consultation-hero .tagline {
-            font-size: clamp(1rem, 2.5vw, 1.1rem);
-            color: var(--text-light);
-            max-width: 750px;
-            margin: 0 auto 30px auto;
-            line-height: 1.8;
-            opacity: 0;
-            animation: slideInFromBottom 0.8s ease-out 0.4s forwards;
-        }
+      .consultation-hero h1 {
+        font-size: clamp(2.2rem, 5vw, 2.8rem); /* Responsive font size */
+        color: var(--primary-color);
+        margin-bottom: 20px;
+        font-weight: 700;
+        opacity: 0;
+        animation: slideInFromBottom 0.8s ease-out 0.2s forwards;
+      }
 
-        .cta-button {
-            display: inline-block;
-            background-color: var(--secondary-color);
-            color: var(--bg-white);
-            padding: 12px 30px;
-            border-radius: 50px; /* Pill shape */
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 1.1rem;
-            transition: background-color 0.3s ease, transform 0.3s ease;
-            opacity: 0;
-            animation: slideInFromBottom 0.8s ease-out 0.6s forwards;
-            box-shadow: 0 4px 10px rgba(243, 156, 18, 0.3);
-        }
+      .consultation-hero .tagline {
+        font-size: clamp(1rem, 2.5vw, 1.1rem);
+        color: var(--text-light);
+        max-width: 750px;
+        margin: 0 auto 30px auto;
+        line-height: 1.8;
+        opacity: 0;
+        animation: slideInFromBottom 0.8s ease-out 0.4s forwards;
+      }
 
-        .cta-button:hover {
-            background-color: #e67e22; /* Darker orange */
-            transform: translateY(-3px);
-        }
+      .cta-button {
+        display: inline-block;
+        background-color: var(--secondary-color);
+        color: var(--bg-white);
+        padding: 12px 30px;
+        border-radius: 50px; /* Pill shape */
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 1.1rem;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+        opacity: 0;
+        animation: slideInFromBottom 0.8s ease-out 0.6s forwards;
+        box-shadow: 0 4px 10px rgba(243, 156, 18, 0.3);
+      }
 
-        /* Services Section */
-        .services-section {
-            padding: 70px 0;
-        }
+      .cta-button:hover {
+        background-color: #e67e22; /* Darker orange */
+        transform: translateY(-3px);
+      }
 
-        .services-section .section-title {
-            text-align: center;
-            font-size: clamp(1.8rem, 4vw, 2.2rem);
-            color: var(--text-dark);
-            margin-bottom: 20px;
-            font-weight: 700;
-            opacity: 0;
-            animation: slideInFromBottom 0.7s ease-out 0.2s forwards; /* Stagger relative to section load */
-            position: relative;
-        }
-        
-        .services-section .section-title::after {
-            content: '';
-            display: block;
-            width: 0; /* Animated by keyframe */
-            height: 4px;
-            background-color: var(--primary-color);
-            margin: 15px auto 0;
-            border-radius: 2px;
-            animation: underlineGrow 0.8s ease-out 1s forwards; /* Animate after title */
-        }
+      /* Services Section */
+      .services-section {
+        padding: 70px 0;
+      }
 
-        .services-section .section-subtitle {
-            text-align: center;
-            font-size: clamp(0.9rem, 2vw, 1.1rem);
-            color: var(--text-light);
-            max-width: 600px;
-            margin: 0 auto 50px auto;
-            opacity: 0;
-            animation: slideInFromBottom 0.7s ease-out 0.4s forwards;
-        }
-        
-        .services-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 30px;
-            justify-content: center; /* Center items if last row isn't full */
-        }
+      .services-section .section-title {
+        text-align: center;
+        font-size: clamp(1.8rem, 4vw, 2.2rem);
+        color: var(--text-dark);
+        margin-bottom: 20px;
+        font-weight: 700;
+        opacity: 0;
+        animation: slideInFromBottom 0.7s ease-out 0.2s forwards; /* Stagger relative to section load */
+        position: relative;
+      }
 
+      .services-section .section-title::after {
+        content: "";
+        display: block;
+        width: 0; /* Animated by keyframe */
+        height: 4px;
+        background-color: var(--primary-color);
+        margin: 15px auto 0;
+        border-radius: 2px;
+        animation: underlineGrow 0.8s ease-out 1s forwards; /* Animate after title */
+      }
+
+      .services-section .section-subtitle {
+        text-align: center;
+        font-size: clamp(0.9rem, 2vw, 1.1rem);
+        color: var(--text-light);
+        max-width: 600px;
+        margin: 0 auto 50px auto;
+        opacity: 0;
+        animation: slideInFromBottom 0.7s ease-out 0.4s forwards;
+      }
+
+      .services-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 30px;
+        justify-content: center; /* Center items if last row isn't full */
+      }
+
+      .service-card {
+        background-color: var(--bg-white);
+        border-radius: 12px;
+        padding: 30px 25px;
+        box-shadow: var(--card-shadow);
+        transition: transform 0.3s ease, box-shadow 0.3s ease,
+          border-top-color 0.3s ease;
+        width: calc(
+          33.333% - 20px
+        ); /* 3 cards per row, accounting for 30px gap (20px = 30px * 2/3) */
+        min-width: 280px; /* Minimum card width */
+        display: flex;
+        flex-direction: column;
+        opacity: 0;
+        animation: slideInFromBottom 0.6s ease-out forwards;
+        border-top: 4px solid transparent; /* Placeholder for hover effect */
+      }
+
+      /* Stagger card animations - can be extended */
+      .service-card:nth-child(1) {
+        animation-delay: 0.8s;
+      }
+      .service-card:nth-child(2) {
+        animation-delay: 0.9s;
+      }
+      .service-card:nth-child(3) {
+        animation-delay: 1s;
+      }
+      .service-card:nth-child(4) {
+        animation-delay: 1.1s;
+      }
+      .service-card:nth-child(5) {
+        animation-delay: 1.2s;
+      }
+      .service-card:nth-child(6) {
+        animation-delay: 1.3s;
+      }
+      .service-card:nth-child(7) {
+        animation-delay: 1.4s;
+      }
+      .service-card:nth-child(8) {
+        animation-delay: 1.5s;
+      }
+      /* ... and so on for all 15 services */
+      .service-card:nth-child(9) {
+        animation-delay: 1.6s;
+      }
+      .service-card:nth-child(10) {
+        animation-delay: 1.7s;
+      }
+      .service-card:nth-child(11) {
+        animation-delay: 1.8s;
+      }
+      .service-card:nth-child(12) {
+        animation-delay: 1.9s;
+      }
+      .service-card:nth-child(13) {
+        animation-delay: 2s;
+      }
+      .service-card:nth-child(14) {
+        animation-delay: 2.1s;
+      }
+      .service-card:nth-child(15) {
+        animation-delay: 2.2s;
+      }
+
+      .service-card:hover {
+        transform: translateY(-8px);
+        box-shadow: var(--card-hover-shadow);
+        border-top-color: var(--secondary-color); /* Orange accent on hover */
+      }
+
+      .service-card h3 {
+        font-size: 1.5rem;
+        color: var(--primary-color);
+        margin-bottom: 15px;
+        font-weight: 600;
+      }
+
+      .service-card p {
+        color: var(--text-light);
+        font-size: 0.95rem;
+        flex-grow: 1; /* Ensures cards in a row have paragraphs extending to same visual height */
+        margin-bottom: 20px;
+      }
+
+      .service-card .learn-more {
+        color: var(--secondary-color);
+        text-decoration: none;
+        font-weight: 600;
+        align-self: flex-start; /* Align button to the start if card is flex column */
+        transition: color 0.3s ease;
+      }
+
+      .service-card .learn-more:hover {
+        color: #e67e22; /* Darker orange */
+      }
+
+      /* Responsive Adjustments */
+      /* For Tablets */
+      @media (max-width: 992px) {
         .service-card {
-            background-color: var(--bg-white);
-            border-radius: 12px;
-            padding: 30px 25px;
-            box-shadow: var(--card-shadow);
-            transition: transform 0.3s ease, box-shadow 0.3s ease, border-top-color 0.3s ease;
-            width: calc(33.333% - 20px); /* 3 cards per row, accounting for 30px gap (20px = 30px * 2/3) */
-            min-width: 280px; /* Minimum card width */
-            display: flex;
-            flex-direction: column;
-            opacity: 0;
-            animation: slideInFromBottom 0.6s ease-out forwards;
-            border-top: 4px solid transparent; /* Placeholder for hover effect */
+          width: calc(50% - 15px); /* 2 cards per row */
         }
+      }
 
-        /* Stagger card animations - can be extended */
-        .service-card:nth-child(1) { animation-delay: 0.8s; }
-        .service-card:nth-child(2) { animation-delay: 0.9s; }
-        .service-card:nth-child(3) { animation-delay: 1.0s; }
-        .service-card:nth-child(4) { animation-delay: 1.1s; }
-        .service-card:nth-child(5) { animation-delay: 1.2s; }
-        .service-card:nth-child(6) { animation-delay: 1.3s; }
-        .service-card:nth-child(7) { animation-delay: 1.4s; }
-        .service-card:nth-child(8) { animation-delay: 1.5s; }
-        /* ... and so on for all 15 services */
-        .service-card:nth-child(9) { animation-delay: 1.6s; }
-        .service-card:nth-child(10) { animation-delay: 1.7s; }
-        .service-card:nth-child(11) { animation-delay: 1.8s; }
-        .service-card:nth-child(12) { animation-delay: 1.9s; }
-        .service-card:nth-child(13) { animation-delay: 2.0s; }
-        .service-card:nth-child(14) { animation-delay: 2.1s; }
-        .service-card:nth-child(15) { animation-delay: 2.2s; }
-
-
-        .service-card:hover {
-            transform: translateY(-8px);
-            box-shadow: var(--card-hover-shadow);
-            border-top-color: var(--secondary-color); /* Orange accent on hover */
+      /* For Mobile Phones */
+      @media (max-width: 768px) {
+        .consultation-hero {
+          padding: 60px 0 40px;
         }
+        .services-section {
+          padding: 50px 0;
+        }
+        .service-card {
+          width: 100%; /* 1 card per row */
+          min-width: unset; /* Reset min-width for single column */
+          animation-delay: 0.3s !important; /* Faster reveal when stacked */
+        }
+        .services-section .section-title::after {
+          animation-delay: 0.6s; /* Adjust underline animation delay */
+        }
+      }
 
+      @media (max-width: 480px) {
+        .consultation-hero h1 {
+          font-size: 1.8rem;
+        }
+        .consultation-hero .tagline {
+          font-size: 0.9rem;
+        }
+        .cta-button {
+          font-size: 1rem;
+          padding: 10px 25px;
+        }
+        .services-section .section-title {
+          font-size: 1.6rem;
+        }
+        .services-section .section-subtitle {
+          font-size: 0.85rem;
+        }
         .service-card h3 {
-            font-size: 1.5rem;
-            color: var(--primary-color);
-            margin-bottom: 15px;
-            font-weight: 600;
+          font-size: 1.3rem;
         }
-
         .service-card p {
-            color: var(--text-light);
-            font-size: 0.95rem;
-            flex-grow: 1; /* Ensures cards in a row have paragraphs extending to same visual height */
-            margin-bottom: 20px;
+          font-size: 0.9rem;
         }
-
-        .service-card .learn-more {
-            color: var(--secondary-color);
-            text-decoration: none;
-            font-weight: 600;
-            align-self: flex-start; /* Align button to the start if card is flex column */
-            transition: color 0.3s ease;
+        .services-grid {
+          gap: 20px;
         }
-
-        .service-card .learn-more:hover {
-            color: #e67e22; /* Darker orange */
-        }
-
-        /* Responsive Adjustments */
-        /* For Tablets */
-        @media (max-width: 992px) {
-            .service-card {
-                width: calc(50% - 15px); /* 2 cards per row */
-            }
-        }
-
-        /* For Mobile Phones */
-        @media (max-width: 768px) {
-            .consultation-hero {
-                padding: 60px 0 40px;
-            }
-            .services-section {
-                padding: 50px 0;
-            }
-            .service-card {
-                width: 100%; /* 1 card per row */
-                min-width: unset; /* Reset min-width for single column */
-                animation-delay: 0.3s !important; /* Faster reveal when stacked */
-            }
-            .services-section .section-title::after {
-                 animation-delay: 0.6s; /* Adjust underline animation delay */
-            }
-        }
-        
-        @media (max-width: 480px) {
-             .consultation-hero h1 {
-                 font-size: 1.8rem;
-             }
-             .consultation-hero .tagline {
-                 font-size: 0.9rem;
-             }
-             .cta-button {
-                 font-size: 1rem;
-                 padding: 10px 25px;
-             }
-             .services-section .section-title {
-                 font-size: 1.6rem;
-             }
-             .services-section .section-subtitle {
-                 font-size: 0.85rem;
-             }
-             .service-card h3 {
-                 font-size: 1.3rem;
-             }
-             .service-card p {
-                 font-size: 0.9rem;
-             }
-             .services-grid {
-                gap: 20px;
-            }
-        }
-
+      }
     </style>
-</head>
-<body>
-        <%- include('../partials/navbar'); %>
+  </head>
+  <body>
+    <%- include('../partials/navbar'); %>
 
     <!-- Assume Navbar is above this -->
 
     <div class="consultation-hero">
-        <div class="consultation-container">
-            <h1>Expert Consultation Services</h1>
-            <p class="tagline">Unlock your potential and overcome challenges with our tailored strategies. We provide insightful guidance to drive growth and achieve your personal & business objectives.</p>
-            <a href="#services" class="cta-button">Explore Our Services</a>
-        </div>
+      <div class="consultation-container">
+        <h1>Expert Consultation Services</h1>
+        <p class="tagline">
+          Unlock your potential and overcome challenges with our tailored
+          strategies. We provide insightful guidance to drive growth and achieve
+          your personal & business objectives.
+        </p>
+        <a href="#services" class="cta-button">Explore Our Services</a>
+      </div>
     </div>
 
     <section id="services" class="services-section">
-        <div class="consultation-container">
-            <h2 class="section-title">Our Areas of Expertise</h2>
-            <p class="section-subtitle">We offer a diverse range of consultation services designed to address your specific needs and deliver measurable results.</p>
-            
-            <div class="services-grid">
-                <div class="service-card">
-                    <h3>Export and Licensing</h3>
-                    <p>Navigate international trade regulations, secure necessary licenses, and optimize your export strategies for global market success.</p>
-                    <a href="#" class="learn-more">Learn More →</a>
-                </div>
-                <div class="service-card">
-                    <h3>Transportation</h3>
-                    <p>Strategic advice on logistics, supply chain optimization, and efficient transportation networks to reduce costs and improve delivery.</p>
-                    <a href="#" class="learn-more">Learn More →</a>
-                </div>
-                <div class="service-card">
-                    <h3>Travel Business</h3>
-                    <p>Consulting for travel agencies and tourism ventures, focusing on market trends, operational excellence, and enhancing customer experiences.</p>
-                    <a href="#" class="learn-more">Learn More →</a>
-                </div>
-                <div class="service-card">
-                    <h3>Taxation</h3>
-                    <p>Expert guidance on tax planning, compliance, and optimization for individuals and businesses, ensuring financial efficiency and adherence.</p>
-                    <a href="#" class="learn-more">Learn More →</a>
-                </div>
-                <div class="service-card">
-                    <h3>Education and Career</h3>
-                    <p>Personalized advice on educational paths, career advancement, skill development, and achieving your professional ambitions effectively.</p>
-                    <a href="#" class="learn-more">Learn More →</a>
-                </div>
-                <div class="service-card">
-                    <h3>Health & Fitness</h3>
-                    <p>Customized strategies and coaching to help you achieve your health, wellness, and fitness goals through sustainable lifestyle changes.</p>
-                    <a href="#" class="learn-more">Learn More →</a>
-                </div>
-                <div class="service-card">
-                    <h3>Financial Wellbeing</h3>
-                    <p>Comprehensive planning for personal finance, investment strategies, and wealth management to secure your financial future and peace of mind.</p>
-                    <a href="#" class="learn-more">Learn More →</a>
-                </div>
-                <div class="service-card">
-                    <h3>Insurance</h3>
-                    <p>Professional assessment of your insurance needs, helping you select appropriate coverage for comprehensive risk protection.</p>
-                    <a href="#" class="learn-more">Learn More →</a>
-                </div>
-                <div class="service-card">
-                    <h3>Business Development</h3>
-                    <p>Innovative solutions for market analysis, strategic growth planning, and expanding your business reach and profitability.</p>
-                    <a href="#" class="learn-more">Learn More →</a>
-                </div>
-                <div class="service-card">
-                    <h3>Human Marketing</h3>
-                    <p>Customer-centric marketing strategies focused on building authentic brand connections, loyalty, and driving engagement.</p>
-                    <a href="#" class="learn-more">Learn More →</a>
-                </div>
-                 <div class="service-card">
-                    <h3>Sales</h3>
-                    <p>Develop effective sales processes, equip your team with proven techniques, and optimize strategies to boost revenue and market share.</p>
-                    <a href="#" class="learn-more">Learn More →</a>
-                </div>
-                <div class="service-card">
-                    <h3>Digital Transformation</h3>
-                    <p>Guiding businesses through leveraging digital technologies to innovate, enhance operational efficiency, and improve customer experiences.</p>
-                    <a href="#" class="learn-more">Learn More →</a>
-                </div>
-                <div class="service-card">
-                    <h3>Planning and Execution</h3>
-                    <p>Expertise in robust project planning, meticulous execution management, and ensuring on-time, on-budget project delivery.</p>
-                    <a href="#" class="learn-more">Learn More →</a>
-                </div>
-                 <div class="service-card">
-                    <h3>Security and Body Guard</h3>
-                    <p>Comprehensive security assessments, risk mitigation strategies, and personal protection services tailored to your specific needs.</p>
-                    <a href="#" class="learn-more">Learn More →</a>
-                </div>
-                 <div class="service-card">
-                    <h3>Environment</h3>
-                    <p>Consulting on sustainability, environmental compliance, impact reduction, and adopting eco-friendly business practices for a greener future.</p>
-                    <a href="#" class="learn-more">Learn More →</a>
-                </div>
-            </div>
+      <div class="consultation-container">
+        <h2 class="section-title">Our Areas of Expertise</h2>
+        <p class="section-subtitle">
+          We offer a diverse range of consultation services designed to address
+          your specific needs and deliver measurable results.
+        </p>
+
+        <div class="services-grid">
+          <% if (consultations.length > 0) { %> <% consultations.forEach(consultation => { %>
+
+          <div class="service-card">
+            <h3><%-consultation.title %></h3>
+            <p style="text-align: justify">
+              <%= consultation.description.substring(0, 130) %>...
+            </p>
+            <a
+              href="/api/consultations/view/<%= consultation._id %>"
+              class="learn-more"
+              >Learn More →</a
+            >
+          </div>
+          <% }); %> <% } else { %>
+          <p>No  Consultation services available at this time.</p>
+          <% } %>
         </div>
+      </div>
     </section>
 
-        <%- include('../partials/footer'); %>
-            <%- include('../partials/scripts'); %>
-
+    <%- include('../partials/footer'); %> <%- include('../partials/scripts'); %>
 
     <!-- Assume Footer is below this -->
-</body>
+  </body>
 </html>

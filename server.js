@@ -15,11 +15,18 @@ const Product = require("./models/Exports");
 const careerRoutes = require("./routes/careerRoutes");
 const eventRoutes = require("./routes/eventRoutes");
 const careManagementRoutes = require("./routes/careManagementRoutes");
+const serviceRoutes = require("./routes/indServiceRoutes");
+const IndService = require("./models/IndService");
+
 careManagement = require("./models/careManagement");
 const Career = require("./models/careerModel");
 const event = require("./models/Event");
 const verifyToken = require("./middlewares/authMiddleware");
 const authorizeRoles = require("./middlewares/roleMiddleware");
+
+const consultationRoutes = require("./routes/consultation");
+
+const ConsultService = require("./models/ConsultService");
 
 connectDB();
 
@@ -37,12 +44,14 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/admin", express.static(path.join(__dirname, "admin-panel")));
 
 // Routes
+app.use("/api/consultations", consultationRoutes);
 app.use("/api/exports", exportsRoutes);
 app.use("/api/careers", careerRoutes);
 app.use("/api/events", eventRoutes);
 app.use("/api/care-management", careManagementRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/indservices", serviceRoutes);
 
 // Set up EJS and layouts
 app.set("view engine", "ejs");
@@ -447,23 +456,23 @@ app.get("/careers/:id", async (req, res) => {
 app.get("/events", async (req, res) => {
   try {
     const events = await event.find().sort({ created_at: -1 }).lean(); // Add .lean() for better performance
-    
+
     // Verify events data before rendering
     console.log("Fetched events:", events);
-    
-    res.render("client/e", {  // Try without .ejs extension
+
+    res.render("client/e", {
+      // Try without .ejs extension
       title: "Events | Indrajay Enterprises",
       events: events || [], // Ensure events is always defined
-      user: req.user || null // Add if using authentication
+      user: req.user || null, // Add if using authentication
     });
-    
   } catch (err) {
     console.error("Events fetch error:", err);
-    
+
     // More robust error response
     res.status(500).render("client/error", {
       title: "Error | Indrajay Enterprises",
-      message: "Failed to load events. Please try again later."
+      message: "Failed to load events. Please try again later.",
     });
   }
 });
@@ -507,16 +516,46 @@ app.get("/canteen", (req, res) => {
     title: "Canteen | Indrajay Enterprises",
   });
 });
-app.get("/consultation", (req, res) => {
-  res.render("client/consultation", {
-    title: "Consultation | Indrajay Enterprises",
-  });
+
+app.get("/consultation", async (req, res) => {
+  try {
+    const consultations = await ConsultService.find({});
+
+    res.render("client/consultation", {
+      title: "Consultation | Indrajay Enterprises",
+      consultations,
+    });
+  } catch (err) {
+    res.status(500).send("server error");
+  }
 });
 
-app.get("/is", (req, res) => {
-  res.render("client/is", {
-    title: "Industrial Services | Indrajay Enterprises",
-  });
+app.get("/api/consultations/view/:id", async (req, res) => {
+  try {
+    const consultation = await ConsultService.findById(req.params.id);
+    if (!consultation) {
+      console.log("❌ Consultation not found for ID:", req.params.id);
+      return res.status(404).send("Consultation not found");
+    }
+    res.render("client/consult-details", {
+      title: "Consultation | Indrajay Enterprises",
+      consultation,
+    });
+  } catch (error) {
+    res.status(404).send("server error");
+  }
+});
+
+app.get("/is", async (req, res) => {
+  try {
+    const services = await IndService.find();
+    res.render("client/is", {
+      title: "Industrial Services | Indrajay Enterprises",
+      services,
+    });
+  } catch (err) {
+    res.status(500).send("server error");
+  }
 });
 
 app.get("/transportlogistic", (req, res) => {
