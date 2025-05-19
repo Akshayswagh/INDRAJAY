@@ -1,0 +1,78 @@
+<%# Pass { title: 'View Vendors', activePage: 'view_vendors', vendors: vendorsArray, currentSort: 'desc' or 'asc' } from controller %>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="mt-0 mb-0">View Vendors</h1>
+    <!-- <a href="/admin/vendors/new" class="btn btn-success"><i class="fas fa-plus me-1"></i> Add Vendor</a> -->
+</div>
+<p>A list of all registered vendors.</p>
+
+<div class="card shadow-sm">
+    <div class="card-header">
+        <div class="d-flex justify-content-end">
+            <a href="?sort=desc" class="btn btn-sm <%= (typeof currentSort === 'undefined' || currentSort === 'desc') ? 'btn-primary' : 'btn-outline-primary' %> me-2">
+                <i class="fas fa-sort-amount-down me-1"></i> Newest First
+            </a>
+            <a href="?sort=asc" class="btn btn-sm <%= currentSort === 'asc' ? 'btn-primary' : 'btn-outline-primary' %>">
+                <i class="fas fa-sort-amount-up me-1"></i> Oldest First
+            </a>
+        </div>
+    </div>
+    <div class="card-body p-0">
+        <% if (typeof vendors !== 'undefined' && vendors.length > 0) { %>
+        <div class="table-responsive-custom">
+            <table class="table table-striped table-hover mb-0">
+                <thead class="table-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>Firm Name</th>
+                        <th>Contact Person</th>
+                        <th>Email</th>
+                        <th>Contact No.</th>
+                        <th>Address</th>
+                        <th>Registered On</th>
+                        <!-- <th>Actions</th> -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <% vendors.forEach((vendor, index) => { %>
+                    <tr>
+                        <td><%= index + 1 %></td>
+                        <td><%= vendor.firmName %></td>
+                        <td><%= vendor.name %></td>
+                        <td><%= vendor.email %></td>
+                        <td><%= vendor.contactNumber %></td>
+                        <td><%= vendor.address ? vendor.address.substring(0, 30) + (vendor.address.length > 30 ? '...' : '') : 'N/A' %></td>
+                        <td><%= new Date(vendor.createdAt).toLocaleDateString() %> <small class="text-muted"><%= new Date(vendor.createdAt).toLocaleTimeString() %></small></td>
+                        <!-- <td>
+                            <a href="/admin/vendors/view/<%= vendor._id %>" class="btn btn-sm btn-outline-secondary me-1" title="View"><i class="fas fa-eye"></i></a>
+                            <a href="/admin/vendors/edit/<%= vendor._id %>" class="btn btn-sm btn-outline-primary me-1" title="Edit"><i class="fas fa-edit"></i></a>
+                            <button type="button" class="btn btn-sm btn-outline-danger" title="Delete" onclick="confirmDelete('/admin/vendors/delete/<%= vendor._id %>')"><i class="fas fa-trash"></i></button>
+                        </td> -->
+                    </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+        <% } else { %>
+        <div class="alert alert-info m-3" role="alert">
+            No vendors found.
+        </div>
+        <% } %>
+    </div>
+     <% if (typeof vendors !== 'undefined' && vendors.length > 0) { %>
+    <div class="card-footer text-muted">
+        Displaying <%= vendors.length %> vendor(s).
+        <!-- Add pagination links here -->
+    </div>
+    <% } %>
+</div>
+
+<!-- Re-use delete confirmation script if not globally available -->
+<script>
+    if (typeof confirmDelete === 'undefined') { // Define only if not already defined
+        function confirmDelete(deleteUrl) {
+            if (confirm('Are you sure you want to delete this item? This action cannot be undone.')) {
+                window.location.href = deleteUrl;
+            }
+        }
+    }
+</script>

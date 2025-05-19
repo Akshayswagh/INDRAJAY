@@ -60,6 +60,120 @@
         padding: 0 20px;
       }
 
+      /* Basic Reset & Global Styles */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "Open Sans", sans-serif; /* Changed to Open Sans as base */
+        color: #333;
+        background-color: #f8f9fa;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      /* Main container for the entire showcase */
+      .product-showcase-container {
+        width: 100%;
+        max-width: 100%;
+        margin: 0 auto;
+        background-color: #ffffff;
+      }
+
+      /* Hero Image Section - Updated for responsive sizing */
+      .product-image-hero {
+        width: 100%;
+        margin: auto;
+        padding: 20px 0;
+        position: relative;
+        overflow: hidden;
+        /* background-color: #f5f5f5; */
+      }
+
+      .product-image-hero img {
+        border-radius: 10px;
+        display: block;
+        width: 100%;
+        max-width: 1100px;
+        height: auto;
+        max-height: 70vh;
+        margin: 0 auto;
+        object-fit: contain;
+      }
+
+      /* Content Section */
+      .product-details-content {
+        padding: 40px 20px;
+        max-width: 800px;
+        margin: 0 auto;
+        text-align: center;
+      }
+
+      .product-details-content h2 { /* Changed from h1 as per your code */
+        font-family: "Montserrat", sans-serif;
+        font-size: 2.2em; /* REDUCED from 2.8em */
+        color: #2c3e50;
+        margin-bottom: 20px; /* Increased margin for title */
+        font-weight: 700;
+      }
+
+      .product-description {
+        font-family: "Open Sans", sans-serif;
+        font-size: 1.1em;
+        color: #555;
+        margin-bottom: 30px;
+        text-align: justify; /* Justify text for cleaner look */
+        line-height: 1.8;
+      }
+
+      .product-description p:not(:last-child) {
+        margin-bottom: 15px;
+      }
+
+      /* NEW: Enquire Now Button Section Styles */
+      .enquire-button-container {
+        margin-top: 40px; /* More space above the button */
+        margin-bottom: 30px;
+        text-align: center;
+      }
+
+      .enquire-now-btn {
+        display: inline-block;
+        background-color: #4CAF50; /* Green, consistent with ribbon theme */
+        color: white;
+        padding: 12px 30px; /* REDUCED padding for smaller text */
+        border-radius: 50px; /* Pill shape */
+        font-family: "Montserrat", sans-serif;
+        font-size: 1.0em; /* REDUCED from 1.15em */
+        font-weight: bold;
+        text-decoration: none;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        transition: all 0.3s ease;
+        border: 2px solid transparent; /* For potential hover effect */
+      }
+
+      .enquire-now-btn:hover {
+        background-color: #3e8e41; /* Darker green */
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+      }
+      /* END NEW: Enquire Now Button Section Styles */
+
+
+      /* Responsive adjustments */
+      @media (max-width: 1200px) {
+        .product-image-hero img {
+          padding: 0 20px;
+        }
+      }
+
       @media (max-width: 768px) {
         .similar-products-ribbon {
           padding: 25px 0;
@@ -71,6 +185,22 @@
         .ribbon-text {
           font-size: 1.1em;
           margin-right: 10px;
+        }
+        .product-details-content h2 {
+          font-size: 1.8em; /* REDUCED from 2.2em */
+        }
+        .product-description {
+          font-size: 1em;
+        }
+        .product-details-content {
+          padding: 30px 15px;
+        }
+        .product-image-hero img {
+          max-height: 60vh;
+        }
+        .enquire-now-btn {
+            padding: 10px 25px; /* REDUCED padding */
+            font-size: 0.95em; /* REDUCED from 1.05em */
         }
       }
 
@@ -92,128 +222,31 @@
           margin: 0;
           padding: 10px 20px;
         }
-      }
-      /* Basic Reset & Global Styles */
-      *,
-      *::before,
-      *::after {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
-
-      body {
-        font-family: sans-serif;
-        color: #333;
-        background-color: #f8f9fa;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-      }
-
-      /* Main container for the entire showcase */
-      .product-showcase-container {
-        width: 100%;
-        max-width: 100%;
-        margin: 0 auto;
-        background-color: #ffffff;
-      }
-
-      /* Hero Image Section - Updated for responsive sizing */
-      .product-image-hero {
-        width: 100%;
-        margin: auto;
-        padding: 20px 0; /* Remove horizontal padding for full width */
-        position: relative;
-        overflow: hidden;
-        background-color: #f5f5f5; /* Fallback background */
-      }
-
-      .product-image-hero img {
-        border-radius: 10px;
-        display: block;
-        width: 100%;
-        max-width: 1100px; /* Maximum width for very large screens */
-        height: auto;
-        max-height: 70vh; /* Limits height on large screens */
-        margin: 0 auto;
-        object-fit: contain; /* Ensures full image is visible */
-      }
-
-      /* Content Section */
-      .product-details-content {
-        padding: 40px 20px;
-        max-width: 800px;
-        margin: 0 auto;
-        text-align: center;
-      }
-
-      .product-details-content h1 {
-        font-family: "Montserrat", sans-serif;
-        font-size: 2.8em;
-        color: #2c3e50;
-        margin-bottom: 15px;
-        font-weight: 700;
-      }
-
-      .product-description {
-        font-size: 1.1em;
-        color: #555;
-        margin-bottom: 30px;
-        text-align: left;
-        line-height: 1.8;
-        text-align: justify;
-      }
-
-      .product-description p:not(:last-child) {
-        margin-bottom: 15px;
-      }
-
-      /* Responsive adjustments */
-      @media (max-width: 1200px) {
+        .product-details-content h2 {
+          font-size: 1.5em; /* REDUCED from 1.8em */
+        }
         .product-image-hero img {
-          padding: 0 20px; /* Add some padding on large but not full-width screens */
+          max-height: 50vh;
+          padding: 0 10px;
         }
-      }
-
-      @media (max-width: 768px) {
-        .product-details-content h1 {
-          font-size: 2.2em;
+        .enquire-button-container {
+            margin-top: 30px;
         }
-
-        .product-description {
-          font-size: 1em;
-        }
-
-        .product-details-content {
-          padding: 30px 15px;
-        }
-
-        .product-image-hero img {
-          max-height: 60vh; /* Slightly smaller on tablets */
-        }
-      }
-
-      @media (max-width: 480px) {
-        .product-details-content h1 {
-          font-size: 1.2em;
-        }
-
-        .product-image-hero img {
-          max-height: 50vh; /* Smaller on mobile */
-          padding: 0 10px; /* Less padding on mobile */
+        .enquire-now-btn {
+            padding: 10px 22px; /* REDUCED padding */
+            font-size: 0.9em; /* REDUCED from 1em */
+            min-width: 160px; /* REDUCED min-width */
         }
       }
       @media (min-width: 425px) {
-        .product-image-hero img {
-          max-height: 40vh;
-        }
+        /* No specific changes needed here from previous version unless intended */
       }
     </style>
   </head>
   <body>
     <%- include('../partials/navbar'); %>
     <main class="product-showcase-container">
-      <!-- Hero Product Image - Now properly responsive -->
+      <!-- Hero Product Image -->
       <section class="product-image-hero">
         <img
           src="<%= exportItem.image %>"
@@ -223,14 +256,20 @@
 
       <section class="product-details-content">
         <h2><%= exportItem.name %></h2>
-        <!-- Changed from h3 to h1 for better SEO -->
         <div class="product-description">
           <p>
            <%= exportItem.description %>
           </p>
         </div>
+
+        <!-- NEW ENQUIRE NOW BUTTON SECTION -->
+        <div class="enquire-button-container">
+            <a href="/enquiry" class="enquire-now-btn">Enquire Now</a>
+        </div>
+        <!-- END NEW ENQUIRE NOW BUTTON SECTION -->
+
       </section>
-      <!-- Similar Products Ribbon - Now in document flow -->
+      <!-- Similar Products Ribbon - Commented out as per your provided code -->
       <!-- <div class="similar-products-ribbon">
         <div class="ribbon-content">
           <span class="ribbon-text">Looking for similar items?</span>

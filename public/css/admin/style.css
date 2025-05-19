@@ -1,0 +1,133 @@
+body {
+    overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+/* === SIDEBAR WRAPPER === */
+#sidebar-wrapper {
+    min-height: 100vh;
+    width: 250px;
+    position: fixed; /* Keeps sidebar in place during page scroll */
+    top: 0;
+    left: 0;
+    z-index: 1030; /* High z-index to be on top */
+    transition: margin-left 0.25s ease-out;
+    background-color: #212529; /* Bootstrap dark color or your preferred dark */
+    color: #adb5bd;
+    overflow-y: auto; /* Allow sidebar to scroll if content is too long */
+
+    /* Default state (Mobile First): Sidebar is hidden off-screen */
+    margin-left: -250px;
+}
+
+#sidebar-wrapper .sidebar-heading {
+    padding: 0.875rem 1.25rem;
+    font-size: 1.2rem;
+    color: white;
+    border-bottom: 1px solid #343a40;
+}
+
+#sidebar-wrapper .list-group-item {
+    border: none;
+    color: #adb5bd;
+    background-color: #212529;
+}
+#sidebar-wrapper .list-group-item.active {
+    background-color: #0d6efd; /* Bootstrap primary */
+    color: white;
+    border-left: 4px solid #ffffff;
+    font-weight: bold;
+}
+#sidebar-wrapper .list-group-item:hover,
+#sidebar-wrapper .list-group-item:focus {
+    background-color: #343a40;
+    color: white;
+}
+#sidebar-wrapper .list-group-item i.me-2 {
+    min-width: 20px;
+    text-align: center;
+}
+#sidebar-wrapper .collapse .list-group-item {
+    background-color: #1c1f23;
+}
+#sidebar-wrapper .collapse .list-group-item.active {
+    background-color: #0b5ed7;
+}
+
+
+/* === PAGE CONTENT WRAPPER === */
+#page-content-wrapper {
+    width: 100%; /* Initially takes full width */
+    padding-left: 0; /* No padding when sidebar is hidden */
+    /* padding-top: 56px; Assuming navbar height is around 56px, adjust if needed */
+    transition: padding-left 0.25s ease-out;
+    min-height: calc(100vh - 56px); /* Full height minus navbar */
+}
+
+/* === RESPONSIVE BEHAVIOR & TOGGLING === */
+
+/* DESKTOP: Sidebar visible by default (md breakpoint and up) */
+@media (min-width: 768px) {
+    #sidebar-wrapper {
+        margin-left: 0; /* Sidebar comes into view */
+    }
+    #page-content-wrapper {
+        padding-left: 250px; /* Make space for the visible sidebar */
+    }
+}
+
+/* --- TOGGLED STATES --- */
+/* The #wrapper.toggled class is controlled by JavaScript */
+
+/* MOBILE: When #wrapper.toggled, sidebar becomes visible */
+@media (max-width: 767.98px) {
+    #wrapper.toggled #sidebar-wrapper {
+        margin-left: 0;
+    }
+    /* Optional: If you want content to be pushed/covered on mobile when sidebar is open */
+    /* #wrapper.toggled #page-content-wrapper { */
+        /* For instance, if sidebar overlays content, you might not change padding-left */
+        /* Or if it pushes content: */
+        /* padding-left: 250px; */
+    /* } */
+}
+
+/* DESKTOP: When #wrapper.toggled, sidebar (which is visible by default) hides */
+@media (min-width: 768px) {
+    #wrapper.toggled #sidebar-wrapper {
+        margin-left: -250px; /* Hide sidebar */
+    }
+    #wrapper.toggled #page-content-wrapper {
+        padding-left: 0; /* Page content takes full width */
+    }
+}
+
+
+/* Ensure navbar toggle is always visible and clickable */
+#sidebarToggle {
+    z-index: 1031; /* Above sidebar if they overlap during transition */
+}
+
+/* --- Other styles for tables, cards, etc. --- */
+.table th, .table td {
+    vertical-align: middle;
+}
+.table-hover tbody tr:hover {
+    background-color: #f1f1f1;
+}
+.table thead.table-dark th {
+    color: #fff;
+    background-color: #343a40;
+    border-color: #454d55;
+}
+.table-responsive-custom {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+.card .card-header h5 {
+    margin-bottom: 0;
+}
+.border-start.border-4 { /* For dashboard cards */
+    border-left-width: 4px !important;
+}

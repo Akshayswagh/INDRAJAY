@@ -1,0 +1,176 @@
+<%# Pass { title: 'Add New Export Item', activePage: 'add_export' } from
+controller %>
+<h1 class="mt-0 mb-4">Add New Export Item</h1>
+<p>Fill in the details below to add a new item to the exports catalog.</p>
+
+<%# Display success/error messages if using connect-flash or similar %> <% if
+(typeof messages !== 'undefined' && messages.error && messages.error.length > 0)
+{ %>
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+  <%= messages.error.join('<br />') %>
+  <button
+    type="button"
+    class="btn-close"
+    data-bs-dismiss="alert"
+    aria-label="Close"
+  ></button>
+</div>
+<% } %> <% if (typeof messages !== 'undefined' && messages.success &&
+messages.success.length > 0) { %>
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+  <%= messages.success.join('<br />') %>
+  <button
+    type="button"
+    class="btn-close"
+    data-bs-dismiss="alert"
+    aria-label="Close"
+  ></button>
+</div>
+<% } %>
+
+<div class="card shadow-sm">
+  <div class="card-header">
+    <h5 class="mb-0">Item Details</h5>
+  </div>
+  <div class="card-body">
+    <form
+      id="addExportItemForm"
+      action="/api/exports/add"
+      method="POST"
+      enctype="multipart/form-data"
+    >
+      <div class="mb-3">
+        <label for="name" class="form-label"
+          >Item Name <span class="text-danger">*</span></label
+        >
+        <input
+          type="text"
+          class="form-control"
+          id="name"
+          name="name"
+          placeholder="e.g., Premium Basmati Rice"
+          required
+        />
+      </div>
+
+      <div class="mb-3">
+        <label for="category" class="form-label"
+          >Category <span class="text-danger">*</span></label
+        >
+        <select class="form-select" id="category" name="category" required>
+          <option value="" selected disabled>Select category...</option>
+          <option value="Grains & Cereals">Grains & Cereals</option>
+          <option value="Oil Seeds">Oil Seeds</option>
+          <option value="Pulses">Pulses</option>
+          <option value="Spises">Spices</option>
+          <!-- Corrected typo: Spices -->
+          <option value="Fruits and Vegetables">Fruits and Vegetables</option>
+          <option value="Sugar">Sugar</option>
+          <option value="Jaggery">Jaggery</option>
+          <option value="Coffee and Cocoa">Coffee and Cocoa</option>
+          <option value="Coconut">Coconut</option>
+          <option value="Nuts & Dry Fruits">Nuts & Dry Fruits</option>
+          <option value="Chemicals">Chemicals</option>
+          <option value="Wooden Pallets">Wooden Pallets</option>
+          <option value="Packing Materials">Packing Materials</option>
+          <option value="Appearals & Garments">Apparels & Garments</option>
+          <!-- Corrected typo: Apparels -->
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label for="description" class="form-label"
+          >Description <span class="text-danger">*</span></label
+        >
+        <textarea
+          class="form-control"
+          id="description"
+          name="description"
+          rows="4"
+          placeholder="Detailed description of the item, its quality, origin, etc."
+          required
+        ></textarea>
+      </div>
+
+      <div class="mb-3">
+        <label for="image" class="form-label"
+          >Item Image <span class="text-danger">*</span></label
+        >
+        <input
+          type="file"
+          class="form-control"
+          id="image"
+          name="image"
+          accept="image/png, image/jpeg, image/gif"
+          required
+        />
+        <small class="form-text text-muted"
+          >Accepted formats: PNG, JPG, GIF. Max size: 5MB (configure on
+          server).</small
+        >
+      </div>
+
+      <div class="mt-4 d-flex justify-content-end">
+        <a href="/api/exports/allExports" class="btn btn-outline-secondary me-2"
+          >Cancel</a
+        >
+        <button type="submit" class="btn btn-primary" id="submitBtn">
+          <span
+            class="spinner-border spinner-border-sm me-1"
+            role="status"
+            aria-hidden="true"
+            style="display: none"
+          ></span>
+          <span class="button-text"
+            ><i class="fas fa-plus-circle me-1"></i> Add Item</span
+          >
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("addExportItemForm");
+    const submitButton = document.getElementById("submitBtn");
+    const buttonText = submitButton.querySelector(".button-text");
+    const spinner = submitButton.querySelector(".spinner-border");
+
+    form.addEventListener("submit", function (event) {
+      // Basic check, server-side validation is paramount
+      if (!form.checkValidity()) {
+        event.preventDefault();
+        event.stopPropagation();
+        form.classList.add("was-validated"); // Trigger Bootstrap's native validation styles
+        return;
+      }
+
+      // Disable button and show loading state
+      submitButton.disabled = true;
+      if (buttonText) buttonText.textContent = "Adding..."; // Change text
+      if (spinner) spinner.style.display = "inline-block"; // Show spinner
+
+      // The form will now submit.
+      // If you were using AJAX, you would re-enable the button in the .finally() or .always() block.
+      // Since this is a standard form submission, the page will navigate away or reload.
+      // If the submission fails and the user is redirected back to this page with an error message,
+      // the button will be in its initial state because the page reloads.
+    });
+
+    // Optional: If you want to reset the button if the user navigates back to the page
+    // without a full reload (e.g., using browser back button after a client-side error
+    // that prevented submission but didn't cause a page load), you might need:
+    window.addEventListener("pageshow", function (event) {
+      // Check if the page was loaded from the bfcache (back/forward cache)
+      if (event.persisted) {
+        submitButton.disabled = false;
+        if (buttonText)
+          buttonText.innerHTML =
+            '<i class="fas fa-plus-circle me-1"></i> Add Item';
+        if (spinner) spinner.style.display = "none";
+        form.classList.remove("was-validated"); // Reset validation styles
+      }
+    });
+  });
+</script>

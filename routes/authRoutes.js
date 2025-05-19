@@ -8,6 +8,8 @@ const {
 } = require("../controllers/authController");
 const router = express.Router();
 
+
+
 // Route definitions
 router.post("/register", register);
 router.post("/login", login);

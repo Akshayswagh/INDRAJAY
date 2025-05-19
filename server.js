@@ -1,32 +1,49 @@
 const express = require("express");
 const fs = require("fs");
 const dotenv = require("dotenv").config();
-const connectDB = require("./config/db");
+const methodOverride = require("method-override"); // Add this
 const cors = require("cors");
+const session = require("express-session"); // Add this
+const flash = require("connect-flash"); // Add this
 const axios = require("axios");
+const expressLayouts = require("express-ejs-layouts");
 const path = require("path");
+const uploadPath = path.join(__dirname, "public", "uploads", "exports");
+
+
+// middlewares
+const verifyToken = require("./middlewares/authMiddleware");
+const authorizeRoles = require("./middlewares/roleMiddleware");
+// const errorHandler = require("./middlewares/errorHandler");
+
+
+const connectDB = require("./config/db");
+
+
+// Models 
+const PasswordResetToken = require("./models/PasswordResetToken");
+const Export = require("./models/Exports");
+const careManagement = require("./models/careManagement");
+const IndService = require("./models/IndService");
+const Career = require("./models/careerModel");
+const event = require("./models/Event");
+const User = require("./models/userModel");
+const ConsultService = require("./models/ConsultService");
+
+
+
+// Routes
 const exportsRoutes = require("./routes/exportsRoutes");
 const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
-const PasswordResetToken = require("./models/PasswordResetToken");
-const uploadPath = path.join(__dirname, "public", "uploads", "exports");
-// const errorHandler = require("./middlewares/errorHandler");
-const Product = require("./models/Exports");
 const careerRoutes = require("./routes/careerRoutes");
 const eventRoutes = require("./routes/eventRoutes");
 const careManagementRoutes = require("./routes/careManagementRoutes");
 const serviceRoutes = require("./routes/indServiceRoutes");
-const IndService = require("./models/IndService");
-
-careManagement = require("./models/careManagement");
-const Career = require("./models/careerModel");
-const event = require("./models/Event");
-const verifyToken = require("./middlewares/authMiddleware");
-const authorizeRoles = require("./middlewares/roleMiddleware");
-
 const consultationRoutes = require("./routes/consultation");
 
-const ConsultService = require("./models/ConsultService");
+
+
 
 connectDB();
 
@@ -37,11 +54,33 @@ if (!fs.existsSync(uploadPath)) {
 }
 
 // Middleware
+app.use(methodOverride('_method')); // For PUT and DELETE from forms
 app.use(express.json());
 app.use(cors());
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
-app.use("/admin", express.static(path.join(__dirname, "admin-panel")));
+
+// Session Configuration (MUST be before flash)
+app.use(
+  session({
+    secret: "my-secret key", // Replace with a strong, random secret
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false }, // Set to true if using HTTPS in production
+  })
+);
+
+// Flash Middleware (MUST be after session)
+app.use(flash());
+
+// Optional: Make flash messages available in all templates via res.locals
+app.use((req, res, next) => {
+  res.locals.success_msg = req.flash("success_msg"); // Example for success messages
+  res.locals.error_msg = req.flash("error_msg"); // Example for error messages
+  res.locals.error = req.flash("error"); // General error (often used by Passport)
+  res.locals.messages = req.flash(); // This passes all flash messages as an object
+  next();
+});
 
 // Routes
 app.use("/api/consultations", consultationRoutes);
@@ -53,7 +92,12 @@ app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/indservices", serviceRoutes);
 
+
+
+
 // Set up EJS and layouts
+app.use(expressLayouts);
+app.set("layout", "./layouts/main"); // Default layout
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.use("/public", express.static("public"));
@@ -91,11 +135,6 @@ app.post("/submit-form", async (req, res) => {
 });
 
 // Routes
-
-// add products
-app.get("/add-product", (req, res) => {
-  res.render("admin/addProduct");
-});
 
 // all products
 
@@ -408,6 +447,10 @@ app.get("/about", (req, res) => {
 app.get("/contact", (req, res) => {
   res.render("client/contact.ejs", { title: "Contact | Indrajay Enterprises" });
 });
+// Enquiry page
+app.get("/enquiry", (req, res) => {
+  res.render("client/enquiry", { title: "Enquiry | Indrajay Enterprises" });
+});
 
 // career page
 app.get("/career", async (req, res) => {
@@ -564,6 +607,208 @@ app.get("/transportlogistic", (req, res) => {
   });
 });
 
+// admin dashboard route
+app.get(
+  "/admin",
+  // verifyToken,              // Your existing token verification middleware
+  // authorizeRoles("admin"),  // Your existing role authorization middleware
+  async (req, res) => {
+    // Make it async if you need to fetch data for the dashboard
+    try {
+      // OPTIONAL: Fetch any data you want to display on the dashboard
+      // For example, counts of users, vendors, etc.
+      // const totalUsers = await User.countDocuments({ role: 'user' });
+      // const totalVendors = await User.countDocuments({ role: 'vendor' });
+      // const recentActivity = await ActivityLog.find().sort({ createdAt: -1 }).limit(5);
+
+      res.render("admin/dashboard", {
+        // Render the EJS view
+        title: "Admin Dashboard", // Passed to your main.ejs layout and navbar.ejs
+        activePage: "dashboard", // Used by sidebar.ejs to highlight the active link
+        // Pass any fetched data to the template:
+        // totalUsers: totalUsers,
+        // totalVendors: totalVendors,
+        // recentActivity: recentActivity,
+        // user: req.user // If verifyToken adds user object to req, you can pass it
+      });
+    } catch (error) {
+      console.error("Error rendering admin dashboard:", error);
+      // Render an error page or send an error response
+      res.status(500).send("Error loading dashboard. Please try again later.");
+      // Or, you could render an error view:
+      // res.render('errorPage', { title: 'Error', message: 'Could not load dashboard.'});
+    }
+  }
+);
+// In your server.js or adminController.js
+
+// ... (other requires, like your User model) ...
+
+// Route that renders view_users.ejs
+// (This is an example, find your actual route handler around server.js line 619)
+app.get("/admin/users", async (req, res) => {
+  // Make it async if fetching from DB
+  try {
+    // Determine the sort order from the query parameter
+    // Default to 'desc' (newest first) if no sort parameter is provided or if it's invalid
+    const sortQuery = req.query.sort;
+    let sortCriteria = { createdAt: -1 }; // Mongoose sort object: -1 for descending
+    let currentSortValue = "desc"; // Value to pass to the EJS template
+
+    if (sortQuery === "asc") {
+      sortCriteria = { createdAt: 1 }; // 1 for ascending
+      currentSortValue = "asc";
+    }
+    // If sortQuery is 'desc' or anything else (or undefined), it defaults to 'desc' due to initial values.
+
+    const usersData = await User.find({ role: "user" })
+      .sort(sortCriteria)
+      .lean(); // Fetch users with sorting
+
+    res.render("admin/view_users", {
+      title: "View Users",
+      activePage: "view_users", // For sidebar active state
+      users: usersData,
+      currentSort: currentSortValue, // <--- THIS IS THE IMPORTANT PART
+      // layout: 'layouts/main' // This might be set globally
+    });
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    res.status(500).send("Error loading users page.");
+    // Or render an error page:
+    // res.render('errorPage', { title: 'Error', message: 'Could not load users.'});
+  }
+});
+
+app.get("/admin/vendors", async (req, res) => {
+  try {
+    const sortQuery = req.query.sort;
+    let sortCriteria = { createdAt: -1 };
+    let currentSortValue = "desc";
+
+    if (sortQuery === "asc") {
+      sortCriteria = { createdAt: 1 };
+      currentSortValue = "asc";
+    }
+
+    const vendorsData = await User.find({ role: "vendor" })
+      .sort(sortCriteria)
+      .lean();
+
+    res.render("admin/view_vendors", {
+      title: "Manage Vendors",
+      activePage: "view_vendors",
+      vendors: vendorsData,
+      currentSort: currentSortValue,
+    });
+  } catch (error) {
+    console.error("Error fetching vendors for admin panel:", error);
+    res
+      .status(500)
+      .send("An error occurred while trying to load the vendors page.");
+  }
+});
+
+// GET /admin/admins - Display list of administrators
+app.get("/admin/admins", async (req, res) => {
+  try {
+    // 1. Determine sort order from query parameters
+    const sortQuery = req.query.sort;
+    let sortCriteria = { createdAt: -1 }; // Default: newest first
+    let currentSortValue = "desc";
+
+    if (sortQuery === "asc") {
+      sortCriteria = { createdAt: 1 }; // oldest first
+      currentSortValue = "asc";
+    }
+
+    // 2. Fetch users with the role 'admin' from the database
+    const adminsData = await User.find({ role: "admin" })
+      .sort(sortCriteria)
+      .lean();
+      console.log(adminsData);
+
+    // 3. Render the EJS template with the necessary data
+    res.render("admin/view_admins", {
+      title: "Manage Administrators",
+      activePage: "view_admins", // For sidebar active state
+      admins: adminsData,
+      currentSort: currentSortValue,
+
+      // currentUser: req.user, // Pass the logged-in admin's details for conditional rendering in EJS
+      // Assuming verifyToken or authorizeRoles adds 'user' to 'req'
+
+    });
+  } catch (error) {
+    console.error("Error fetching administrators for admin panel:", error);
+    res.status(500).render("admin/error_page", {
+      title: "Error",
+      message:
+        "Could not load the administrators page. Please try again later.",
+      activePage: "error",
+    });
+  }
+});
+
+// GET /admin/exports/add - Display form to add a new export item
+app.get("/admin/exports/add", (req, res) => {
+  try {
+    // CAREFULLY RE-TYPE THIS LINE. Ensure no leading/trailing spaces or weird characters.
+    // Assuming your file is named 'add_export_form.ejs' in 'views/admin/'
+    res.render("admin/add_exports", {
+      title: "Add New Export Item",
+      activePage: "add_export",
+    });
+  } catch (error) {
+    console.error("ERROR RENDERING ADD EXPORT FORM:", error); // Log the full error object
+    res
+      .status(500)
+      .send(
+        `<h1>Error Loading Page</h1><p>Server error while trying to display the 'Add Export Item' page. Check server logs for details.</p><pre>${error.stack}</pre>`
+      );
+  }
+});
+
+// === ADMIN PAGE RENDERING ROUTES (mounted under /admin or similar) ===
+
+// GET /admin/exports/allExports - Render the list page
+// (Assuming this route is mounted as /admin/exports/allExports in server.js)
+app.get('/admin/exports', async (req, res) => {
+    try {
+        const page = parseInt(req.query.page) || 1;
+        const limit = 10; // Items per page
+        const skip = (page - 1) * limit;
+
+        const exportItems = await Export.find()
+            .sort({ createdAt: -1 })
+            .skip(skip)
+            .limit(limit)
+            .lean();
+
+        const totalItems = await Export.countDocuments();
+        const totalPages = Math.ceil(totalItems / limit);
+
+        res.render('admin/view_exports', {
+            title: 'Manage Export Items',
+            activePage: 'view_exports',
+            exports: exportItems,
+            // currentUser: req.user,
+            currentPage: page,
+            totalPages: totalPages,
+            messages: req.flash() // Pass flash messages
+        });
+    } catch (error) {
+        console.error("Error fetching export items list:", error);
+        req.flash('error_msg', 'Could not load export items.');
+        res.redirect('/admin/dashboard'); // Or an error page
+    }
+});
+
+
+// Add this after all your routes
+// Global error handler - always at the end
+// app.use(errorHandler);
+
 // 404 page
 app.get("*", (req, res) => {
   res.render("client/404.ejs", {
@@ -571,21 +816,5 @@ app.get("*", (req, res) => {
     message: req.query.msg,
   });
 });
-
-// admin dashbord route
-app.get(
-  "/admin",
-  verifyToken,
-  authorizeRoles("admin"),
-
-  (req, res) => {
-    res.sendFile(path.join(__dirname, "admin-panel", "index.html"));
-  }
-);
-
-// Add this after all your routes
-// Global error handler - always at the end
-// app.use(errorHandler);
-
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

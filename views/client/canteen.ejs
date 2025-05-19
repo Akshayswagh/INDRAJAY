@@ -5,6 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Canteen Services - Body</title>
+    <!-- Link to Google Fonts used on the other page for consistency if desired -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Open+Sans:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
 
     <style>
         /* Basic Reset (optional, but good practice) */
@@ -36,12 +43,14 @@
         }
 
         .canteen-header h1 {
+            font-family: 'Montserrat', sans-serif; /* Consistent font */
             font-size: 2.8em;
             color: #00796B; /* Dark Teal from logo */
             margin-bottom: 10px;
         }
 
         .canteen-header .tagline {
+            font-family: 'Open Sans', sans-serif; /* Consistent font */
             font-size: 1.2em;
             color: #555555; /* Medium grey */
             font-style: italic;
@@ -56,6 +65,7 @@
         }
 
         .canteen-section h2 {
+            font-family: 'Montserrat', sans-serif; /* Consistent font */
             font-size: 2em;
             color: #f39c12; /* Orange from navbar */
             margin-bottom: 25px;
@@ -76,6 +86,7 @@
         }
         
         .intro-text {
+            font-family: 'Open Sans', sans-serif; /* Consistent font */
             font-size: 1.1em;
             color: #444444;
             margin-bottom: 20px;
@@ -99,8 +110,8 @@
             border-radius: 6px;
             flex: 1 1 300px;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            display: flex; /* For better alignment if content varies */
-            flex-direction: column; /* Stack title and paragraph */
+            display: flex; 
+            flex-direction: column; 
         }
         
         .service-item:hover, .option-item:hover {
@@ -109,16 +120,50 @@
         }
 
         .service-item h3, .option-item h3 {
+            font-family: 'Montserrat', sans-serif; /* Consistent font */
             font-size: 1.5em;
             color: #00796B; /* Dark Teal for item titles */
             margin-bottom: 10px;
         }
 
         .service-item p, .option-item p {
+            font-family: 'Open Sans', sans-serif; /* Consistent font */
             font-size: 1em;
             color: #555555; /* Medium grey for item text */
-            flex-grow: 1; /* Allow paragraph to take available space */
+            flex-grow: 1; 
         }
+
+        /* NEW: Enquire Now Button Section Styles (Reused from product page) */
+        .enquire-button-section-canteen { /* Unique container name for this page if needed for spacing */
+            margin-top: 20px; /* Space above the button */
+            margin-bottom: 40px; /* Space below the button, before footer */
+            text-align: center;
+        }
+
+        .enquire-now-btn { /* This class style is reused */
+            display: inline-block;
+            background-color: #00796B; /* Dark Teal to match page theme */
+            color: white;
+            padding: 12px 30px; 
+            border-radius: 50px; 
+            font-family: "Montserrat", sans-serif;
+            font-size: 1.0em; 
+            font-weight: bold;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+            border: 2px solid transparent; 
+        }
+
+        .enquire-now-btn:hover {
+            background-color: #005f56; /* Darker Teal */
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+        /* END NEW: Enquire Now Button Section Styles */
+
 
         /* Responsive adjustments */
         @media (max-width: 768px) {
@@ -129,10 +174,15 @@
                 font-size: 1.8em;
             }
             .service-item, .option-item {
-                flex-basis: calc(50% - 12.5px); /* Two items per row, accounting for gap */
+                flex-basis: calc(50% - 12.5px); 
+            }
+            /* Reused button responsive */
+            .enquire-now-btn {
+                padding: 10px 25px;
+                font-size: 0.95em;
             }
         }
-         @media (max-width: 600px) { /* Make them full width earlier */
+         @media (max-width: 600px) { 
              .service-item, .option-item {
                 flex-basis: 100%;
             }
@@ -151,14 +201,18 @@
             .canteen-page-body {
                 padding: 20px 15px;
             }
+            /* Reused button responsive */
+            .enquire-now-btn {
+                padding: 10px 22px;
+                font-size: 0.9em;
+                min-width: 160px;
+            }
         }
 
     </style>
 </head>
 <body>
         <%- include('../partials/navbar'); %>
-
-    <!-- Assume Navbar is above this -->
 
     <main class="canteen-page-body">
         <header class="canteen-header">
@@ -210,17 +264,22 @@
                     <h3>Beverage Services</h3>
                     <p>Quench your thirst with our wide array of beverage choices, including freshly brewed coffee, teas, juices, and refreshing cold drinks.</p>
                 </div>
-                <div class="service-item"> <!-- New Item -->
+                <div class="service-item"> 
                     <h3>Special Dietary Services</h3>
                     <p>We cater to various dietary requirements, including vegetarian, vegan, gluten-free, and allergen-specific meals. Please inquire for details.</p>
                 </div>
             </div>
         </section>
+
+        <!-- NEW ENQUIRE NOW BUTTON SECTION FOR CANTEEN PAGE -->
+        <section class="enquire-button-section-canteen">
+            <a href="/enquiry" class="enquire-now-btn">Enquire About Our Canteen Services</a>
+        </section>
+        <!-- END NEW ENQUIRE NOW BUTTON SECTION -->
+
     </main>
     <%- include('../partials/footer'); %>
     <%- include('../partials/scripts'); %>
 
-
-    <!-- Assume Footer is below this -->
 </body>
 </html>

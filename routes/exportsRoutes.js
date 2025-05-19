@@ -8,7 +8,7 @@ const handleError = require("../utils/handleError");
 const uploader = getMulterUploader("exports");
 
 // ADD - add exports
-router.post("/addExport", uploader.single("image"), async (req, res) => {
+router.post("/add", uploader.single("image"), async (req, res) => {
   try {
     const { name, category, description } = req.body;
 
@@ -44,6 +44,13 @@ router.post("/addExport", uploader.single("image"), async (req, res) => {
     handleError(res, error);
   }
 });
+
+
+
+
+// In your routes/adminRoutes.js or server.js
+
+
 
 // READ - Get all export items
 router.get("/allExports", async (req, res, next) => {
@@ -159,5 +166,9 @@ router.use((err, req, res, next) => {
     message: "Internal server error",
   });
 });
+
+
+
+
 
 module.exports = router;
