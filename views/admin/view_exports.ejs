@@ -101,7 +101,7 @@ exportsArray, currentUser: userObject } from controller %>
               </button>
 
               <form
-                action="/api/exports/<%= item._id %>?_method=DELETE"
+                action="/admin/api/exports/<%= item._id %>?_method=DELETE"
                 method="POST"
                 class="d-inline delete-form"
               >
@@ -393,7 +393,7 @@ exportsArray, currentUser: userObject } from controller %>
         document.getElementById("editItemImageFile").value = ""; // Clear file input
 
         // Set form action dynamically. Use _method=PUT for RESTful update.
-        editItemForm.action = `/api/exports/${itemId}?_method=PUT`;
+        editItemForm.action = `/admin/api/exports/${itemId}?_method=PUT`;
         // editItemModal.show(); // Bootstrap handles this
       });
     });

@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 const PasswordResetToken = require("../models/PasswordResetToken");
 const transporter = require("../config/email");
-const User = require("../models/userModel");
+const User = require("../models/User");
 
 // Handle register/signup Request
 const register = async (req, res) => {
