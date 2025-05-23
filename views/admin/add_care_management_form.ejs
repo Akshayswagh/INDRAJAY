@@ -1,0 +1,59 @@
+<%# views/admin/add_care_management_form.ejs %>
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1><%= title %></h1>
+        <a href="/admin/care-management" class="btn btn-outline-secondary">Back to List</a>
+    </div>
+    <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+        <% errors.forEach(function(error) { %><div class="alert alert-danger"><%= error.msg %></div><% }); %>
+    <% } %>
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <form action="/admin/api/care-management" method="POST" enctype="multipart/form-data" id="addCareForm" novalidate>
+                <div class="mb-3">
+                    <label for="title" class="form-label">Title <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="title" name="title" value="<%= typeof entryData !== 'undefined' ? entryData.title : '' %>" required>
+                    <div class="invalid-feedback">Title is required.</div>
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description <span class="text-danger">*</span></label>
+                    <textarea class="form-control" id="description" name="description" rows="5" required><%= typeof entryData !== 'undefined' ? entryData.description : '' %></textarea>
+                    <div class="invalid-feedback">Description is required.</div>
+                </div>
+                <div class="mb-3">
+                    <label for="image" class="form-label">Image <span class="text-danger">*</span></label>
+                    <input type="file" class="form-control" id="image" name="image" accept="image/*" required>
+                    <div class="invalid-feedback">An image is required.</div>
+                </div>
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary btn-lg" id="addCareSubmitBtn">
+                        <span class="spinner-border spinner-border-sm me-1" style="display: none;"></span>
+                        <span class="button-text">Add Entry</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<%- include('../partials/admin_footer') %>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.getElementById('addCareForm');
+        const submitButton = document.getElementById('addCareSubmitBtn');
+        if (form && submitButton) {
+            const buttonText = submitButton.querySelector('.button-text');
+            const spinner = submitButton.querySelector('.spinner-border');
+            form.addEventListener('submit', function (event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    form.classList.add('was-validated');
+                    return;
+                }
+                submitButton.disabled = true;
+                if(buttonText) buttonText.textContent = 'Adding...';
+                if(spinner) spinner.style.display = 'inline-block';
+            });
+        }
+    });
+</script>

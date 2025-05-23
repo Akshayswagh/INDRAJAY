@@ -1,0 +1,150 @@
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1><%= title %></h1>
+        <a href="/admin/events" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-1"></i> Back to List
+        </a>
+    </div>
+
+
+    <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+        <% errors.forEach(function(error) { %>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <%= error.msg %>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <% }); %>
+    <% } %>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <form action="/admin/api/events" method="POST" enctype="multipart/form-data" id="addEventForm" novalidate>
+                <%# novalidate disables default browser validation messages, allowing Bootstrap's to show if form submission is prevented by JS or server responds with errors %>
+                <div class="mb-3">
+                    <label for="name" class="form-label">Event Name <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="name" name="name" value="<%= typeof eventData !== 'undefined' && eventData.name ? eventData.name : '' %>" required>
+                    <div class="invalid-feedback">
+                        Event name is required.
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="category" class="form-label">Category <span class="text-danger">*</span></label>
+                    <select class="form-select" id="category" name="category" required>
+                        <option value="" <%= (typeof eventData === 'undefined' || !eventData.category) ? 'selected disabled' : '' %>>Select category...</option>
+                        <option value="Corporate Event" <%= (typeof eventData !== 'undefined' && eventData.category === 'Corporate Event') ? 'selected' : '' %>>Corporate Event</option>
+                        <option value="Social Event" <%= (typeof eventData !== 'undefined' && eventData.category === 'Social Event') ? 'selected' : '' %>>Social Event</option>
+                        <option value="Sports Event" <%= (typeof eventData !== 'undefined' && eventData.category === 'Sports Event') ? 'selected' : '' %>>Sports Event</option>
+                        <option value="Cultural Event" <%= (typeof eventData !== 'undefined' && eventData.category === 'Cultural Event') ? 'selected' : '' %>>Cultural Event</option>
+                        <option value="Educational Event" <%= (typeof eventData !== 'undefined' && eventData.category === 'Educational Event') ? 'selected' : '' %>>Educational Event</option>
+                        <option value="Entertainment Event" <%= (typeof eventData !== 'undefined' && eventData.category === 'Entertainment Event') ? 'selected' : '' %>>Entertainment Event</option>
+                        <%# Add other categories from your schema's enum here %>
+                    </select>
+                    <div class="invalid-feedback">
+                        Please select an event category.
+                    </div>
+                </div>
+
+                 <div class="mb-3">
+                    <label for="description" class="form-label">Description <span class="text-danger">*</span></label>
+                    <textarea class="form-control" id="description" name="description" rows="3" required><%= typeof eventData !== 'undefined' && eventData.description ? eventData.description : '' %></textarea>
+                    <div class="invalid-feedback">
+                        Description is required.
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="venue" class="form-label">Venue <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="venue" name="venue" value="<%= typeof eventData !== 'undefined' && eventData.venue ? eventData.venue : '' %>" required>
+                    <div class="invalid-feedback">
+                        Venue is required.
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="date" class="form-label">Date <span class="text-danger">*</span></label>
+                        <input type="date" class="form-control" id="date" name="date" value="<%= typeof eventData !== 'undefined' && eventData.date ? eventData.date : '' %>" required>
+                        <div class="invalid-feedback">
+                            Event date is required.
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="time" class="form-label">Time <span class="text-danger">*</span></label>
+                        <input type="time" class="form-control" id="time" name="time" value="<%= typeof eventData !== 'undefined' && eventData.time ? eventData.time : '' %>" required>
+                        <div class="invalid-feedback">
+                            Event time is required.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="image" class="form-label">Event Image <span class="text-danger">*</span></label>
+                    <input type="file" class="form-control" id="image" name="image" accept="image/png, image/jpeg, image/gif, image/webp" required>
+                    <div class="invalid-feedback">
+                        An event image is required.
+                    </div>
+                </div>
+
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary btn-lg" id="addEventSubmitBtn">
+                        <span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true" style="display: none;"></span>
+                        <span class="button-text">Add Event</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<%- include('../partials/admin_footer') %>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('addEventForm');
+    const submitButton = document.getElementById('addEventSubmitBtn');
+    const buttonText = submitButton.querySelector('.button-text');
+    const spinner = submitButton.querySelector('.spinner-border');
+
+    if (form) {
+        form.addEventListener('submit', function (event) {
+            // Check Bootstrap's built-in validation.
+            // If form is not valid, Bootstrap will handle showing messages if 'was-validated' is added.
+            if (!form.checkValidity()) {
+                event.preventDefault(); // Prevent submission if native HTML5 validation fails
+                event.stopPropagation();
+                form.classList.add('was-validated'); // Trigger Bootstrap's styles for invalid fields
+                return; // Stop here
+            }
+
+            // If validation passes (or if novalidate is used and we rely on server-side)
+            // Proceed to disable button and show loading state
+            if (submitButton) {
+                submitButton.disabled = true;
+            }
+            if (buttonText) {
+                buttonText.textContent = 'Adding...';
+            }
+            if (spinner) {
+                spinner.style.display = 'inline-block';
+            }
+
+            // The form will now submit. The server will handle the actual creation and redirect.
+            // No need to event.preventDefault() here if we want the form to submit.
+            // If you were using AJAX, you would preventDefault and handle the submission with fetch/axios.
+        });
+    }
+
+    // Optional: If you want to remove the 'was-validated' class on input change
+    // after an initial failed submission attempt for a cleaner UX.
+    form.querySelectorAll('input, select, textarea').forEach(input => {
+        input.addEventListener('input', () => {
+            if (form.classList.contains('was-validated')) {
+                // You could check individual validity here if needed, or just clear global state
+                // For simplicity, we're not re-validating on each input for this example.
+            }
+        });
+    });
+});
+</script>

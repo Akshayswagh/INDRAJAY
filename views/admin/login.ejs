@@ -1,0 +1,44 @@
+<%# views/admin/auth/login.ejs %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= typeof title !== 'undefined' ? title : 'Admin Login' %></title>
+    <%- include('../../partials/head') %> <%# Your general head partial with Bootstrap CSS, etc. %>
+    <style>
+        body { background-color: #f4f7f6; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; }
+        .login-container { background-color: #fff; padding: 2rem 2.5rem; border-radius: 0.5rem; box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.1); width: 100%; max-width: 420px; }
+        .login-heading { text-align: center; margin-bottom: 1.5rem; color: #333; }
+        .form-control:focus { border-color: #80bdff; box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25); }
+        .btn-login { background-color: #007bff; border-color: #007bff; width: 100%; }
+        .btn-login:hover { background-color: #0056b3; border-color: #0056b3; }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2 class="login-heading"><i class="fas fa-user-shield me-2"></i>Admin Panel Login</h2>
+
+        <%# include('../../partials/messages') %> <%# This partial displays flash messages %>
+
+        <form action="/admin/auth/login" method="POST">
+            <div class="mb-3">
+                <label for="email" class="form-label">Email address</label>
+                <input type="email" class="form-control" id="email" name="email" value="<%= typeof formData !== 'undefined' && formData.email ? formData.email : '' %>" required autofocus>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+            <%# Add a hidden field for role or handle role checking server-side for admin login %>
+            <%# For admin login, role is implicitly 'admin' based on the login URL and controller logic %>
+            <div class="d-grid mt-4">
+                <button type="submit" class="btn btn-primary btn-login">Login</button>
+            </div>
+        </form>
+        <%# Optional: Link to main site or forgot password (if you implement admin forgot password) %>
+        <%# <div class="text-center mt-3"><a href="/">Back to Main Site</a></div> %>
+    </div>
+    <%- include('../../partials/scripts') %> <%# Your general scripts partial with Bootstrap JS, etc. %>
+</body>
+</html>

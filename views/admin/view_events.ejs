@@ -1,0 +1,297 @@
+<%# views/admin/view_events.ejs %>
+
+
+<div class="container-fluid mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
+        <h1 class="mb-0"><%= title %></h1>
+        <div class="d-flex align-items-center gap-2 mt-2 mt-md-0">
+            <div>
+                Sort by Date:
+                <% if (currentSort === 'desc') { %>
+                    <a href="?sort=asc<%= typeof limit !== 'undefined' ? '&limit='+limit : '' %>" class="btn btn-sm btn-outline-secondary">Oldest First ↑</a>
+                <% } else { %>
+                    <a href="?sort=desc<%= typeof limit !== 'undefined' ? '&limit='+limit : '' %>" class="btn btn-sm btn-outline-secondary">Newest First ↓</a>
+                <% } %>
+            </div>
+            <a href="/admin/events/add" class="btn btn-success">
+                <i class="fas fa-plus-circle me-1"></i> Add New Event
+            </a>
+        </div>
+    </div>
+
+
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <h5 class="mb-0">Events List</h5>
+        </div>
+        <div class="card-body p-0">
+            <% if (typeof events !== 'undefined' && events.length > 0) { %>
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover mb-0">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>#</th>
+                                <th>Image</th>
+                                <th>Event Name</th>
+                                <th>Category</th>
+                                <th>Venue</th>
+                                <th>Date & Time</th>
+                                <th>Created At</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% events.forEach((event, index) => { %>
+                                <tr>
+                                    <td><%= (currentPage - 1) * limit + index + 1 %></td>
+                                    <td>
+                                        <% if (event.image) { %>
+                                            <img src="<%= event.image %>" alt="<%= event.name %>" style="width: 60px; height: 60px; object-fit: cover;" class="img-thumbnail">
+                                        <% } else { %>
+                                            <img src="/images/placeholder.png" alt="No image" style="width: 60px; height: 60px; object-fit: cover;" class="img-thumbnail">
+                                        <% } %>
+                                    </td>
+                                    <td><%= event.name %></td>
+                                    <td><%= event.category %></td>
+                                    <td><%= event.venue %></td>
+                                    <td>
+                                        <%= new Date(event.date).toLocaleDateString() %>
+                                        <br>
+                                        <small class="text-muted"><%= event.time %></small>
+                                    </td>
+                                    <td><%= new Date(event.createdAt).toLocaleDateString() %></td>
+                                    <td>
+                                        <button
+                                            type="button"
+                                            class="btn btn-sm btn-primary me-1 edit-event-btn"
+                                            title="Edit Event"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#editEventModal"
+                                            data-id="<%= event._id %>"
+                                            data-name="<%= event.name %>"
+                                            data-category="<%= event.category %>"
+                                            data-description="<%= event.description %>"
+                                            data-venue="<%= event.venue %>"
+                                            data-date="<%= event.date ? new Date(event.date).toISOString().split('T')[0] : '' %>"
+                                            data-time="<%= event.time %>"
+                                            data-image="<%= event.image %>"
+                                        >
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        
+                                        <form action="/admin/api/events/<%= event._id %>?_method=DELETE" method="POST" class="d-inline delete-form">
+                                            <button type="submit" class="btn btn-sm btn-danger" title="Delete Event">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            <% }); %>
+                        </tbody>
+                    </table>
+                </div>
+            <% } else { %>
+                <div class="alert alert-info m-3" role="alert">
+                    No events found. <a href="/admin/events/add">Add a new event.</a>
+                </div>
+            <% } %>
+        </div>
+
+        <%# Pagination Footer %>
+        <% if (typeof events !== 'undefined' && events.length > 0 && typeof totalPages !== 'undefined' && totalPages > 1) { %>
+            <div class="card-footer">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center mb-0">
+                         <%# ... your existing pagination ... %>
+                        <% if (currentPage > 1) { %>
+                            <li class="page-item"><a class="page-link" href="?page=<%= currentPage - 1 %>&limit=<%= limit %><%= currentSort ? '&sort='+currentSort : '' %>">Previous</a></li>
+                        <% } else { %><li class="page-item disabled"><a class="page-link" href="#">Previous</a></li><% } %>
+                        <% for(let i = 1; i <= totalPages; i++) { %><li class="page-item <%= currentPage === i ? 'active' : '' %>"><a class="page-link" href="?page=<%= i %>&limit=<%= limit %><%= currentSort ? '&sort='+currentSort : '' %>"><%= i %></a></li><% } %>
+                        <% if (currentPage < totalPages) { %><li class="page-item"><a class="page-link" href="?page=<%= currentPage + 1 %>&limit=<%= limit %><%= currentSort ? '&sort='+currentSort : '' %>">Next</a></li><% } else { %><li class="page-item disabled"><a class="page-link" href="#">Next</a></li><% } %>
+                    </ul>
+                </nav>
+            </div>
+        <% } %>
+    </div>
+</div>
+
+
+<!-- Edit Event Modal -->
+<div class="modal fade" id="editEventModal" tabindex="-1" aria-labelledby="editEventModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editEventModalLabel">Edit Event</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="editEventForm" method="POST" enctype="multipart/form-data" novalidate>
+                <%# Action will be set by JavaScript %>
+                <div class="modal-body">
+                    <input type="hidden" id="editEventId" name="eventId"> <%# Though not directly used by server if ID is in URL %>
+
+                    <div class="mb-3">
+                        <label for="editEventName" class="form-label">Event Name <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="editEventName" name="name" required>
+                        <div class="invalid-feedback">Event name is required.</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="editEventCategory" class="form-label">Category <span class="text-danger">*</span></label>
+                        <select class="form-select" id="editEventCategory" name="category" required>
+                            <option value="">Select category...</option>
+                            <option value="Corporate Event">Corporate Event</option>
+                            <option value="Social Event">Social Event</option>
+                            <option value="Sports Event">Sports Event</option>
+                            <option value="Cultural Event">Cultural Event</option>
+                            <option value="Educational Event">Educational Event</option>
+                            <option value="Entertainment Event">Entertainment Event</option>
+                        </select>
+                        <div class="invalid-feedback">Please select a category.</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="editEventDescription" class="form-label">Description <span class="text-danger">*</span></label>
+                        <textarea class="form-control" id="editEventDescription" name="description" rows="3" required></textarea>
+                        <div class="invalid-feedback">Description is required.</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="editEventVenue" class="form-label">Venue <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="editEventVenue" name="venue" required>
+                        <div class="invalid-feedback">Venue is required.</div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="editEventDate" class="form-label">Date <span class="text-danger">*</span></label>
+                            <input type="date" class="form-control" id="editEventDate" name="date" required>
+                            <div class="invalid-feedback">Date is required.</div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="editEventTime" class="form-label">Time <span class="text-danger">*</span></label>
+                            <input type="time" class="form-control" id="editEventTime" name="time" required>
+                            <div class="invalid-feedback">Time is required.</div>
+                        </div>
+                    </div>
+
+                    <div class="row align-items-end">
+                        <div class="col-md-8 mb-3">
+                            <label for="editEventImageFile" class="form-label">New Image (Optional)</label>
+                            <input type="file" class="form-control" id="editEventImageFile" name="image" accept="image/png, image/jpeg, image/gif, image/webp">
+                            <small class="form-text text-muted">Upload a new image to replace the current one. If left empty, current image will be kept.</small>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <p class="mb-1 small">Current Image:</p>
+                            <img id="editEventCurrentImage" src="" alt="Current Image" class="img-thumbnail" style="max-height: 100px; display: none;">
+                            <span id="noCurrentImageText" class="text-muted small" style="display: none;">No current image.</span>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="editEventSubmitBtn">
+                        <span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true" style="display: none;"></span>
+                        <span class="button-text">Save Changes</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- End Edit Event Modal -->
+
+
+<%- include('../partials/admin_footer') %>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // --- Delete Confirmation ---
+    const deleteForms = document.querySelectorAll('.delete-form');
+    deleteForms.forEach(form => {
+        form.addEventListener('submit', function(event) {
+            if (!confirm('Are you sure you want to delete this event? This action cannot be undone.')) {
+                event.preventDefault();
+            }
+        });
+    });
+
+    // --- Edit Event Modal Logic ---
+    const editEventModalElement = document.getElementById('editEventModal');
+    const editEventModal = editEventModalElement ? new bootstrap.Modal(editEventModalElement) : null;
+    const editEventForm = document.getElementById('editEventForm');
+
+    const editEventIdEl = document.getElementById('editEventId'); // Hidden input
+    const editEventNameEl = document.getElementById('editEventName');
+    const editEventCategoryEl = document.getElementById('editEventCategory');
+    const editEventDescriptionEl = document.getElementById('editEventDescription');
+    const editEventVenueEl = document.getElementById('editEventVenue');
+    const editEventDateEl = document.getElementById('editEventDate');
+    const editEventTimeEl = document.getElementById('editEventTime');
+    const editEventImageFileEl = document.getElementById('editEventImageFile');
+    const editEventCurrentImageEl = document.getElementById('editEventCurrentImage');
+    const noCurrentImageTextEl = document.getElementById('noCurrentImageText');
+
+    const editEventSubmitButton = document.getElementById('editEventSubmitBtn');
+    const editButtonText = editEventSubmitButton ? editEventSubmitButton.querySelector('.button-text') : null;
+    const editSpinner = editEventSubmitButton ? editEventSubmitButton.querySelector('.spinner-border') : null;
+
+    document.querySelectorAll('.edit-event-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const eventId = this.dataset.id;
+
+            // Populate modal fields
+            if(editEventIdEl) editEventIdEl.value = eventId;
+            if(editEventNameEl) editEventNameEl.value = this.dataset.name || '';
+            if(editEventCategoryEl) editEventCategoryEl.value = this.dataset.category || '';
+            if(editEventDescriptionEl) editEventDescriptionEl.value = this.dataset.description || '';
+            if(editEventVenueEl) editEventVenueEl.value = this.dataset.venue || '';
+            if(editEventDateEl) editEventDateEl.value = this.dataset.date || ''; // Ensure data-date is YYYY-MM-DD
+            if(editEventTimeEl) editEventTimeEl.value = this.dataset.time || '';
+            
+            if(editEventImageFileEl) editEventImageFileEl.value = ''; // Clear file input
+
+            // Display current image
+            const currentImageUrl = this.dataset.image;
+            if (editEventCurrentImageEl && noCurrentImageTextEl) {
+                if (currentImageUrl && currentImageUrl !== 'null' && currentImageUrl !== 'undefined') {
+                    editEventCurrentImageEl.src = currentImageUrl;
+                    editEventCurrentImageEl.style.display = 'block';
+                    noCurrentImageTextEl.style.display = 'none';
+                } else {
+                    editEventCurrentImageEl.style.display = 'none';
+                    noCurrentImageTextEl.style.display = 'inline';
+                }
+            }
+            
+            // Set form action
+            if (editEventForm) {
+                editEventForm.action = `/admin/api/events/${eventId}?_method=PUT`;
+                editEventForm.classList.remove('was-validated'); // Reset validation state
+            }
+
+            // Reset submit button state (if re-opening modal after a previous attempt)
+            if (editEventSubmitButton) editEventSubmitButton.disabled = false;
+            if (editButtonText) editButtonText.textContent = 'Save Changes';
+            if (editSpinner) editSpinner.style.display = 'none';
+        });
+    });
+
+    // Handle Edit Form Submission
+    if (editEventForm) {
+        editEventForm.addEventListener('submit', function(event) {
+            if (!editEventForm.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+                editEventForm.classList.add('was-validated');
+                return;
+            }
+
+            if (editEventSubmitButton) editEventSubmitButton.disabled = true;
+            if (editButtonText) editButtonText.textContent = 'Saving...';
+            if (editSpinner) editSpinner.style.display = 'inline-block';
+            // Form will submit normally
+        });
+    }
+});
+</script>

@@ -10,9 +10,6 @@ const expressLayouts = require("express-ejs-layouts");
 const path = require("path");
 const uploadPath = path.join(__dirname, "public", "uploads", "exports");
 
-// middlewares
-const verifyToken = require("./middlewares/authMiddleware");
-const authorizeRoles = require("./middlewares/roleMiddleware");
 // const errorHandler = require("./middlewares/errorHandler");
 
 const connectDB = require("./config/db");
@@ -29,20 +26,40 @@ const ConsultService = require("./models/ConsultService");
 
 // Routes
 // const userRoutes = require("./routes/userRoutes");
-const authRoutes = require("./routes/authRoutes");
-const careerRoutes = require("./routes/careerRoutes");
-const eventRoutes = require("./routes/eventRoutes");
-const careManagementRoutes = require("./routes/careManagementRoutes");
-const consultationRoutes = require("./routes/consultation");
 
 // okay
+
+// --- Routers ---
+const adminAuthRoutes = require("./routes/adminAuthRoutes");
+const {
+  ensureAuthenticated,
+  ensureAdminRole,
+} = require("./middlewares/adminAuthMiddleware");
+
+const publicEnquiryRoutes = require("./routes/publicEnquiryRoutes");
+
+const adminEnquiryPageRoutes = require("./routes/adminEnquiryPageRoutes");
+const adminEnquiryApiRoutes = require("./routes/adminEnquiryApiRoutes");
+const adminCareManagementPageRoutes = require("./routes/adminCareManagementPageRoutes");
+const adminCareManagementApiRoutes = require("./routes/adminCareManagementApiRoutes");
+const publicCareApiRoutes = require("./routes/publicCareManagementRoutes"); // If you have a public JSON API
+
+const adminCareerPageRoutes = require("./routes/adminCareerPageRoutes");
+const adminCareerApiRoutes = require("./routes/adminCareerApiRoutes");
+const publicCareerApiRoutes = require("./routes/publicCareerApiRoutes"); // If you're using it
+
+const adminConsultationPageRoutes = require("./routes/adminConsultationPageRoutes");
+const adminConsultationApiRoutes = require("./routes/adminConsultationApiRoutes");
 const clientServiceRoutes = require("./routes/clientIndServiceRoutes");
 const adminServicePageRoutes = require("./routes/adminIndServicePageRoutes");
 const adminServiceApiRoutes = require("./routes/adminIndServiceApiRoutes");
 const adminExportPageRoutes = require("./routes/adminExportPageRoutes");
 const adminExportApiRoutes = require("./routes/adminExportApiRoutes");
-const clientExportRoutes = require("./routes/clientExportRoutes"); 
-const adminUserPageRoutes = require('./routes/adminUserPageRoutes'); // <<< NEW ROUTER
+const clientExportRoutes = require("./routes/clientExportRoutes");
+const adminUserPageRoutes = require("./routes/adminUserPageRoutes"); // <<< NEW ROUTER
+const adminEventPageRoutes = require("./routes/adminEventPageRoutes");
+const adminEventApiRoutes = require("./routes/adminEventApiRoutes");
+const publicEventApiRoutes = require("./routes/publicEventApiRoutes"); // Your existing API router for events
 
 connectDB();
 
@@ -68,43 +85,103 @@ app.set("views", path.join(__dirname, "views"));
 app.use("/public", express.static("public"));
 
 // Session Configuration (MUST be before flash)
+// Express Session Middleware
 app.use(
   session({
-    secret: "my-secret key", // Replace with a strong, random secret
+    secret: process.env.SESSION_SECRET || "a_very_strong_and_long_secret_key", // CHANGE THIS and use .env
     resave: false,
-    saveUninitialized: true,
-    cookie: { secure: false }, // Set to true if using HTTPS in production
+    saveUninitialized: false, // true if you want to store session for all visitors
+    cookie: {
+      secure: process.env.NODE_ENV === "production", // true in production (requires HTTPS)
+      httpOnly: true, // Prevents client-side JS from accessing the cookie
+      maxAge: 1000 * 60 * 60 * 24, // e.g., 1 day
+    },
   })
 );
 
 // Flash Middleware (MUST be after session)
 app.use(flash());
 
-// Optional: Make flash messages available in all templates via res.locals
+// Global variables for templates (IMPORTANT for EJS pages)
 app.use((req, res, next) => {
-  res.locals.success_msg = req.flash("success_msg"); // Example for success messages
-  res.locals.error_msg = req.flash("error_msg"); // Example for error messages
-  res.locals.error = req.flash("error"); // General error (often used by Passport)
-  res.locals.messages = req.flash(); // This passes all flash messages as an object
+  res.locals.success_msg = req.flash("success_msg");
+  res.locals.error_msg = req.flash("error_msg");
+  res.locals.error = req.flash("error"); // General error
+  res.locals.info_msg = req.flash("info_msg");
+  res.locals.currentUser = req.session.user || null; // User from session
+  res.locals.isAdmin = !!(
+    req.session.user && req.session.user.role === "admin"
+  ); // Boolean helper
   next();
 });
 
-// Routes
-
-app.use("/api/consultations", consultationRoutes);
-app.use("/api/careers", careerRoutes);
-app.use("/api/events", eventRoutes);
-app.use("/api/care-management", careManagementRoutes);
-app.use("/api/auth", authRoutes);
-
-// okay
+// Routes mapping
 app.use("/industrialservices", clientServiceRoutes); // e.g., yoursite.com/services and yoursite.com/services/123
-app.use("/admin/industrialservices", adminServicePageRoutes);
-app.use("/admin/api/indservices", adminServiceApiRoutes);
-app.use("/admin/exports", adminExportPageRoutes); // Mount Admin Page Routes for Exports
-app.use("/admin/api/exports", adminExportApiRoutes); // Mount Admin API Routes for Exports
-app.use("/exports", clientExportRoutes);   // Mount Client-Facing Routes for Exports (example)
-app.use('/admin', adminUserPageRoutes);
+app.use("/admin/auth", adminAuthRoutes);
+app.use("/admin/industrialservices",ensureAuthenticated, ensureAdminRole, adminServicePageRoutes);
+app.use("/admin/api/indservices",ensureAuthenticated, ensureAdminRole, adminServiceApiRoutes);
+app.use("/admin/exports",ensureAuthenticated, ensureAdminRole, adminExportPageRoutes); // Mount Admin Page Routes for Exports
+app.use("/admin/api/exports",ensureAuthenticated, ensureAdminRole, adminExportApiRoutes); // Mount Admin API Routes for Exports
+app.use("/exports", clientExportRoutes); // Mount Client-Facing Routes for Exports (example)
+app.use("/admin",ensureAuthenticated, ensureAdminRole, adminUserPageRoutes);
+app.use("/admin/events",ensureAuthenticated, ensureAdminRole, adminEventPageRoutes);
+app.use("/admin/api/events",ensureAuthenticated, ensureAdminRole, adminEventApiRoutes);
+// Mount Public API Routes for Events (if you have them)
+// This assumes your original router was purely for JSON API
+app.use("/api/events", publicEventApiRoutes); // Example mount point for public API
+
+app.use("/admin/consultations",ensureAuthenticated, ensureAdminRole, adminConsultationPageRoutes);
+app.use("/admin/api/consultations",ensureAuthenticated, ensureAdminRole, adminConsultationApiRoutes);
+// Mount Admin Page Routes for Careers
+app.use("/admin/careers",ensureAuthenticated, ensureAdminRole, adminCareerPageRoutes);
+// Mount Admin API Routes for Careers
+app.use("/admin/api/careers",ensureAuthenticated, ensureAdminRole, adminCareerApiRoutes);
+// Mount Public API Routes for Careers (optional, if your main site uses this)
+app.use("/api/careers", publicCareerApiRoutes);
+// Mount Admin Page Routes for Care & Management
+app.use("/admin/care-management",ensureAuthenticated, ensureAdminRole, adminCareManagementPageRoutes);
+
+// Mount Admin API Routes for Care & Management
+app.use("/admin/api/care-management",ensureAuthenticated, ensureAdminRole, adminCareManagementApiRoutes);
+// Choose a suitable path for your public API, e.g., /api/public/care-entries
+app.use("/api/public/care-entries", publicCareApiRoutes);
+
+
+// Mount Admin Page Routes for Enquiries
+app.use("/admin/enquiries",ensureAuthenticated, ensureAdminRole, adminEnquiryPageRoutes);
+
+// Mount Admin API Routes for Enquiries
+app.use("/admin/api/enquiries",ensureAuthenticated, ensureAdminRole, adminEnquiryApiRoutes);
+
+
+
+// Admin creation route
+// app.post("/create-admin", async (req, res) => {
+//   try {
+//     const { email, name, contactNumber, password } = req.body;
+
+//     // Check if admin already exists
+//     const existingAdmin = await User.findOne({ email });
+//     if (existingAdmin) {
+//       return res.status(400).json({ message: "Admin already exists" });
+//     }
+
+//     // Create the user with admin role
+//     const adminUser = await User.create({
+//       email,
+//       name,
+//       contactNumber,
+//       password,
+//       role: "admin", // Force the role to admin
+//     });
+
+//     res.status(201).json({ message: "Admin user created", userId: adminUser._id });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ message: "Server error", error: error.message });
+//   }
+// });
+
 
 
 
@@ -423,8 +500,6 @@ app.get("/appearalsgarments", async (req, res) => {
   }
 });
 
-
-
 // About page
 app.get("/about", (req, res) => {
   res.render("client/about.ejs", { title: "About | Indrajay Enterprises" });
@@ -595,42 +670,33 @@ app.get("/transportlogistic", (req, res) => {
 });
 
 // admin dashboard route
-app.get(
-  "/admin",
-  // verifyToken,              // Your existing token verification middleware
-  // authorizeRoles("admin"),  // Your existing role authorization middleware
-  async (req, res) => {
-    // Make it async if you need to fetch data for the dashboard
-    try {
-      // OPTIONAL: Fetch any data you want to display on the dashboard
-      // For example, counts of users, vendors, etc.
-      // const totalUsers = await User.countDocuments({ role: 'user' });
-      // const totalVendors = await User.countDocuments({ role: 'vendor' });
-      // const recentActivity = await ActivityLog.find().sort({ createdAt: -1 }).limit(5);
+app.get("/admin", ensureAuthenticated, ensureAdminRole, async (req, res) => {
+  // Make it async if you need to fetch data for the dashboard
+  try {
+    // OPTIONAL: Fetch any data you want to display on the dashboard
+    // For example, counts of users, vendors, etc.
+    // const totalUsers = await User.countDocuments({ role: 'user' });
+    // const totalVendors = await User.countDocuments({ role: 'vendor' });
+    // const recentActivity = await ActivityLog.find().sort({ createdAt: -1 }).limit(5);
 
-      res.render("admin/dashboard", {
-        // Render the EJS view
-        title: "Admin Dashboard", // Passed to your main.ejs layout and navbar.ejs
-        activePage: "dashboard", // Used by sidebar.ejs to highlight the active link
-        // Pass any fetched data to the template:
-        // totalUsers: totalUsers,
-        // totalVendors: totalVendors,
-        // recentActivity: recentActivity,
-        // user: req.user // If verifyToken adds user object to req, you can pass it
-      });
-    } catch (error) {
-      console.error("Error rendering admin dashboard:", error);
-      // Render an error page or send an error response
-      res.status(500).send("Error loading dashboard. Please try again later.");
-      // Or, you could render an error view:
-      // res.render('errorPage', { title: 'Error', message: 'Could not load dashboard.'});
-    }
+    res.render("admin/dashboard", {
+      // Render the EJS view
+      title: "Admin Dashboard", // Passed to your main.ejs layout and navbar.ejs
+      activePage: "dashboard", // Used by sidebar.ejs to highlight the active link
+      // Pass any fetched data to the template:
+      // totalUsers: totalUsers,
+      // totalVendors: totalVendors,
+      // recentActivity: recentActivity,
+      // user: req.user // If verifyToken adds user object to req, you can pass it
+    });
+  } catch (error) {
+    console.error("Error rendering admin dashboard:", error);
+    // Render an error page or send an error response
+    res.status(500).send("Error loading dashboard. Please try again later.");
+    // Or, you could render an error view:
+    // res.render('errorPage', { title: 'Error', message: 'Could not load dashboard.'});
   }
-);
-
-
-
-
+});
 
 // Add this after all your routes
 // Global error handler - always at the end

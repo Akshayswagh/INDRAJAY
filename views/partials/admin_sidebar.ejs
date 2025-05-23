@@ -10,6 +10,7 @@
       <i class="fas fa-tachometer-alt me-2"></i>Dashboard
     </a>
 
+    <!-- Users Submenu -->
     <a
       class="list-group-item list-group-item-action list-group-item-dark p-3 d-flex justify-content-between align-items-center"
       data-bs-toggle="collapse"
@@ -22,7 +23,7 @@
       <i class="fas fa-chevron-down"></i>
     </a>
     <div
-      class="collapse <%= (typeof activePage !== 'undefined' && (activePage === 'view_users' || activePage === 'view_vendors')) ? 'show' : '' %>"
+      class="collapse <%= (typeof activePage !== 'undefined' && (activePage === 'view_users' || activePage === 'view_vendors' || activePage === 'view_admins')) ? 'show' : '' %>"
       id="userSubmenu"
     >
       <a
@@ -37,7 +38,6 @@
       >
         <i class="fas fa-store me-2"></i>View Vendors
       </a>
-
       <a
         href="/admin/admins"
         class="list-group-item list-group-item-action list-group-item-dark p-3 ps-5 <%= (typeof activePage !== 'undefined' && activePage === 'view_admins') ? 'active' : '' %>"
@@ -52,14 +52,14 @@
       data-bs-toggle="collapse"
       href="#exportSubmenu"
       role="button"
-      aria-expanded="<%= (typeof activePage !== 'undefined' && (activePage === 'add_export' || activePage === 'view_exports')) ? 'true' : 'false' %>"
+      aria-expanded="<%= (typeof activePage !== 'undefined' && (activePage === 'add_export' || activePage === 'view_exports' || activePage === 'edit_export')) ? 'true' : 'false' %>"
       aria-controls="exportSubmenu"
     >
       <span><i class="fas fa-file-export me-2"></i>Exports</span>
       <i class="fas fa-chevron-down"></i>
     </a>
     <div
-      class="collapse <%= (typeof activePage !== 'undefined' && (activePage === 'add_export' || activePage === 'view_exports')) ? 'show' : '' %>"
+      class="collapse <%= (typeof activePage !== 'undefined' && (activePage === 'add_export' || activePage === 'view_exports' || activePage === 'edit_export')) ? 'show' : '' %>"
       id="exportSubmenu"
     >
       <a
@@ -69,27 +69,153 @@
         <i class="fas fa-plus-circle me-2"></i>Add Export
       </a>
       <a
-        href="/admin/exports/"
+        href="/admin/exports"
         class="list-group-item list-group-item-action list-group-item-dark p-3 ps-5 <%= (typeof activePage !== 'undefined' && activePage === 'view_exports') ? 'active' : '' %>"
       >
         <i class="fas fa-list-alt me-2"></i>View Exports
       </a>
     </div>
 
+    <!-- Events Submenu -->
     <a
-      href="/admin/Industrialservices"
-      class="list-group-item list-group-item-action list-group-item-dark p-3 <%= (typeof activePage !== 'undefined' && activePage === 'industrialservices') ? 'active' : '' %>"
+      class="list-group-item list-group-item-action list-group-item-dark p-3 d-flex justify-content-between align-items-center"
+      data-bs-toggle="collapse"
+      href="#eventSubmenu"
+      role="button"
+      aria-expanded="<%= (typeof activePage !== 'undefined' && (activePage === 'add_event' || activePage === 'view_events' || activePage === 'edit_event')) ? 'true' : 'false' %>"
+      aria-controls="eventSubmenu"
     >
-      <i class="fas fa-cog me-2"></i>Industrial Services
+      <span><i class="fas fa-calendar-alt me-2"></i>Events</span>
+      <i class="fas fa-chevron-down"></i>
+    </a>
+    <div
+      class="collapse <%= (typeof activePage !== 'undefined' && (activePage === 'add_event' || activePage === 'view_events' || activePage === 'edit_event')) ? 'show' : '' %>"
+      id="eventSubmenu"
+    >
+      <a
+        href="/admin/events/add"
+        class="list-group-item list-group-item-action list-group-item-dark p-3 ps-5 <%= (typeof activePage !== 'undefined' && activePage === 'add_event') ? 'active' : '' %>"
+      >
+        <i class="fas fa-plus-circle me-2"></i>Add Event
+      </a>
+      <a
+        href="/admin/events"
+        class="list-group-item list-group-item-action list-group-item-dark p-3 ps-5 <%= (typeof activePage !== 'undefined' && activePage === 'view_events') ? 'active' : '' %>"
+      >
+        <i class="fas fa-list-alt me-2"></i>View Events
+      </a>
+    </div>
+    <!-- End Events Submenu -->
+
+    <a
+      href="/admin/industrial-services"
+      class="list-group-item list-group-item-action list-group-item-dark p-3 <%= (typeof activePage !== 'undefined' && (activePage === 'view_services' || activePage === 'add_service' || activePage === 'edit_service')) ? 'active' : '' %>"
+    >
+      <i class="fas fa-industry me-2"></i>Industrial Services
+    </a>
+
+    <!-- Consultations Submenu -->
+    <a
+      class="list-group-item list-group-item-action list-group-item-dark p-3 d-flex justify-content-between align-items-center"
+      data-bs-toggle="collapse"
+      href="#consultationSubmenu"
+      role="button"
+      aria-expanded="<%= (typeof activePage !== 'undefined' && (activePage === 'add_consultation' || activePage === 'view_consultations' || activePage === 'edit_consultation')) ? 'true' : 'false' %>"
+      aria-controls="consultationSubmenu"
+    >
+      <span><i class="fas fa-comments me-2"></i>Consultations</span>
+      <i class="fas fa-chevron-down"></i>
+    </a>
+    <div
+      class="collapse <%= (typeof activePage !== 'undefined' && (activePage === 'add_consultation' || activePage === 'view_consultations' || activePage === 'edit_consultation')) ? 'show' : '' %>"
+      id="consultationSubmenu"
+    >
+      <a
+        href="/admin/consultations/add"
+        class="list-group-item list-group-item-action list-group-item-dark p-3 ps-5 <%= (typeof activePage !== 'undefined' && activePage === 'add_consultation') ? 'active' : '' %>"
+      >
+        <i class="fas fa-plus-circle me-2"></i>Add Consultation
+      </a>
+      <a
+        href="/admin/consultations"
+        class="list-group-item list-group-item-action list-group-item-dark p-3 ps-5 <%= (typeof activePage !== 'undefined' && activePage === 'view_consultations') ? 'active' : '' %>"
+      >
+        <i class="fas fa-list-alt me-2"></i>View Consultations
+      </a>
+    </div>
+    <!-- End Consultations Submenu -->
+
+    <!-- Careers Submenu (Job Postings) -->
+    <a
+      class="list-group-item list-group-item-action list-group-item-dark p-3 d-flex justify-content-between align-items-center"
+      data-bs-toggle="collapse"
+      href="#careerSubmenu"
+      role="button"
+      aria-expanded="<%= (typeof activePage !== 'undefined' && (activePage === 'add_career' || activePage === 'view_careers' || activePage === 'edit_career')) ? 'true' : 'false' %>"
+      aria-controls="careerSubmenu"
+    >
+      <span><i class="fas fa-briefcase me-2"></i>Careers</span>
+      <i class="fas fa-chevron-down"></i>
+    </a>
+    <div
+      class="collapse <%= (typeof activePage !== 'undefined' && (activePage === 'add_career' || activePage === 'view_careers' || activePage === 'edit_career')) ? 'show' : '' %>"
+      id="careerSubmenu"
+    >
+      <a
+        href="/admin/careers/add"
+        class="list-group-item list-group-item-action list-group-item-dark p-3 ps-5 <%= (typeof activePage !== 'undefined' && activePage === 'add_career') ? 'active' : '' %>"
+      >
+        <i class="fas fa-plus-circle me-2"></i>Add Job Posting
+      </a>
+      <a
+        href="/admin/careers"
+        class="list-group-item list-group-item-action list-group-item-dark p-3 ps-5 <%= (typeof activePage !== 'undefined' && activePage === 'view_careers') ? 'active' : '' %>"
+      >
+        <i class="fas fa-list-alt me-2"></i>View Job Postings
+      </a>
+    </div>
+    <!-- End Careers Submenu -->
+
+    <!-- Care & Management Submenu -->
+    <a
+      class="list-group-item list-group-item-action list-group-item-dark p-3 d-flex justify-content-between align-items-center"
+      data-bs-toggle="collapse"
+      href="#careManagementSubmenu"
+      role="button"
+      aria-expanded="<%= (typeof activePage !== 'undefined' && (activePage === 'add_care_management' || activePage === 'view_care_management' || activePage === 'edit_care_management')) ? 'true' : 'false' %>"
+      aria-controls="careManagementSubmenu"
+    >
+      <span><i class="fas fa-heartbeat me-2"></i>Care & Management</span> <%#
+      Icon for care/health %>
+      <i class="fas fa-chevron-down"></i>
+    </a>
+    <div
+      class="collapse <%= (typeof activePage !== 'undefined' && (activePage === 'add_care_management' || activePage === 'view_care_management' || activePage === 'edit_care_management')) ? 'show' : '' %>"
+      id="careManagementSubmenu"
+    >
+      <a
+        href="/admin/care-management/add"
+        class="list-group-item list-group-item-action list-group-item-dark p-3 ps-5 <%= (typeof activePage !== 'undefined' && activePage === 'add_care_management') ? 'active' : '' %>"
+      >
+        <i class="fas fa-plus-circle me-2"></i>Add Entry
+      </a>
+      <a
+        href="/admin/care-management"
+        class="list-group-item list-group-item-action list-group-item-dark p-3 ps-5 <%= (typeof activePage !== 'undefined' && activePage === 'view_care_management') ? 'active' : '' %>"
+      >
+        <i class="fas fa-list-alt me-2"></i>View Entries
+      </a>
+    </div>
+    <!-- End Care & Management Submenu -->
+
+    <a
+      href="/admin/enquiries"
+      class="list-group-item list-group-item-action list-group-item-dark p-3 <%= (typeof activePage !== 'undefined' && activePage === 'view_enquiries') ? 'active' : '' %>"
+    >
+      <i class="fas fa-envelope-open-text me-2"></i>Manage Enquiries <%# Or fas
+      fa-question-circle %>
     </a>
 
     <!-- Add other main menu items here -->
-
-    <!-- Add other main menu items here following the same pattern -->
-    <!-- Example:
-        <a href="/admin/settings" class="list-group-item list-group-item-action list-group-item-dark p-3 <%= (typeof activePage !== 'undefined' && activePage === 'settings') ? 'active' : '' %>">
-            <i class="fas fa-cog me-2"></i>Settings
-        </a>
-        -->
   </div>
 </div>

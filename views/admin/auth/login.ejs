@@ -1,0 +1,124 @@
+<%# views/admin/auth/login.ejs %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= typeof title !== 'undefined' ? title : 'Admin Login' %></title>
+    <%- include('../../partials/head') %> <%# General head partial for Bootstrap CSS, Font Awesome, etc. %>
+    <style>
+        body {
+            background-color: #f0f2f5; /* Light grey background */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Roboto', sans-serif; /* Consistent font */
+        }
+        .auth-container {
+            background-color: #fff;
+            padding: 2.5rem 3rem; /* More padding */
+            border-radius: 0.75rem; /* Softer radius */
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1); /* Softer shadow */
+            width: 100%;
+            max-width: 450px; /* Slightly wider */
+            text-align: center; /* Center heading and potentially logo */
+        }
+        .auth-heading {
+            margin-bottom: 1.5rem;
+            color: #333;
+            font-weight: 500; /* Medium weight */
+            font-size: 1.75rem;
+        }
+        .form-control:focus {
+            border-color: #007bff; /* Bootstrap primary blue */
+            box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+        }
+        .btn-submit-auth {
+            background-color: #007bff;
+            border-color: #007bff;
+            color: #fff;
+            padding: 0.75rem 1rem; /* Adjusted padding */
+            font-size: 1rem;
+            width: 100%;
+            transition: background-color 0.2s ease-in-out;
+        }
+        .btn-submit-auth:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+        .auth-links {
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+        }
+        .auth-links a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .auth-links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <%# Optional: Your Admin Panel Logo %>
+        <%# <img src="/path/to/admin-logo.png" alt="Admin Panel Logo" style="max-height: 60px; margin-bottom: 1rem;"> %>
+        
+        <h2 class="auth-heading"><i class="fas fa-user-shield me-2"></i>Admin Panel Login</h2>
+
+        <%# include('../../partials/messages') %> <%# Displays flash messages (success_msg, error_msg) %>
+
+        <form action="/admin/auth/login" method="POST" novalidate>
+            <div class="mb-3 text-start">
+                <label for="email" class="form-label">Email address</label>
+                <input type="email" class="form-control form-control-lg" id="email" name="email" 
+                       value="<%= typeof formData !== 'undefined' && formData.email ? formData.email : '' %>" 
+                       required autofocus>
+                <div class="invalid-feedback">Please enter a valid email.</div>
+            </div>
+            <div class="mb-3 text-start">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control form-control-lg" id="password" name="password" required>
+                <div class="invalid-feedback">Password is required.</div>
+            </div>
+            
+            <%# The role is implicitly 'admin' for this form/route %>
+            <%# If you wanted a generic login form, you'd add a role selector here %>
+
+            <div class="d-grid mt-4">
+                <button type="submit" class="btn btn-primary btn-submit-auth">Login</button>
+            </div>
+        </form>
+
+        <div class="auth-links">
+            <%# Optional: Link to forgot password page for admins %>
+            <%# <a href="/admin/auth/forgot-password">Forgot Password?</a> %>
+            <%# If you have an admin registration page: %>
+            <%# <span class="mx-2">|</span> <a href="/admin/auth/register">Register Admin Account</a> %>
+            <br>
+            <a href="/" class="mt-2 d-inline-block">Back to Main Site</a>
+        </div>
+    </div>
+
+    <%- include('../../partials/scripts') %> <%# General scripts partial for Bootstrap JS, etc. %>
+    <script>
+        // Basic Bootstrap client-side validation enabling
+        (function () {
+            'use strict'
+            var forms = document.querySelectorAll('form[novalidate]')
+            Array.prototype.slice.call(forms)
+                .forEach(function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                        }
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+        })()
+    </script>
+</body>
+</html>
