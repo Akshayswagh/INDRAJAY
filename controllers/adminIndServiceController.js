@@ -68,7 +68,6 @@ const getAdminServicesListPage = async (req, res) => {
     const totalPages = Math.ceil(totalServices / limit);
 
     res.render('admin/industrial_services', { // Or your specific admin list EJS file
-                                              // e.g., 'admin/services_list.ejs'
       title: 'Manage Industrial Services',
       activePage: 'view_services', // For nav highlighting
       services: services,

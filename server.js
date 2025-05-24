@@ -118,42 +118,109 @@ app.use((req, res, next) => {
 // Routes mapping
 app.use("/industrialservices", clientServiceRoutes); // e.g., yoursite.com/services and yoursite.com/services/123
 app.use("/admin/auth", adminAuthRoutes);
-app.use("/admin/industrialservices",ensureAuthenticated, ensureAdminRole, adminServicePageRoutes);
-app.use("/admin/api/indservices",ensureAuthenticated, ensureAdminRole, adminServiceApiRoutes);
-app.use("/admin/exports",ensureAuthenticated, ensureAdminRole, adminExportPageRoutes); // Mount Admin Page Routes for Exports
-app.use("/admin/api/exports",ensureAuthenticated, ensureAdminRole, adminExportApiRoutes); // Mount Admin API Routes for Exports
+app.use(
+  "/admin/industrialservices",
+  ensureAuthenticated,
+  ensureAdminRole,
+  adminServicePageRoutes
+);
+app.use(
+  "/admin/api/indservices",
+  ensureAuthenticated,
+  ensureAdminRole,
+  adminServiceApiRoutes
+);
+app.use(
+  "/admin/exports",
+  ensureAuthenticated,
+  ensureAdminRole,
+  adminExportPageRoutes
+); // Mount Admin Page Routes for Exports
+app.use(
+  "/admin/api/exports",
+  ensureAuthenticated,
+  ensureAdminRole,
+  adminExportApiRoutes
+); // Mount Admin API Routes for Exports
 app.use("/exports", clientExportRoutes); // Mount Client-Facing Routes for Exports (example)
-app.use("/admin",ensureAuthenticated, ensureAdminRole, adminUserPageRoutes);
-app.use("/admin/events",ensureAuthenticated, ensureAdminRole, adminEventPageRoutes);
-app.use("/admin/api/events",ensureAuthenticated, ensureAdminRole, adminEventApiRoutes);
+app.use("/admin", ensureAuthenticated, ensureAdminRole, adminUserPageRoutes);
+app.use(
+  "/admin/events",
+  ensureAuthenticated,
+  ensureAdminRole,
+  adminEventPageRoutes
+);
+app.use(
+  "/admin/api/events",
+  ensureAuthenticated,
+  ensureAdminRole,
+  adminEventApiRoutes
+);
 // Mount Public API Routes for Events (if you have them)
 // This assumes your original router was purely for JSON API
 app.use("/api/events", publicEventApiRoutes); // Example mount point for public API
 
-app.use("/admin/consultations",ensureAuthenticated, ensureAdminRole, adminConsultationPageRoutes);
-app.use("/admin/api/consultations",ensureAuthenticated, ensureAdminRole, adminConsultationApiRoutes);
+app.use(
+  "/admin/consultations",
+  ensureAuthenticated,
+  ensureAdminRole,
+  adminConsultationPageRoutes
+);
+app.use(
+  "/admin/api/consultations",
+  ensureAuthenticated,
+  ensureAdminRole,
+  adminConsultationApiRoutes
+);
 // Mount Admin Page Routes for Careers
-app.use("/admin/careers",ensureAuthenticated, ensureAdminRole, adminCareerPageRoutes);
+app.use(
+  "/admin/careers",
+  ensureAuthenticated,
+  ensureAdminRole,
+  adminCareerPageRoutes
+);
 // Mount Admin API Routes for Careers
-app.use("/admin/api/careers",ensureAuthenticated, ensureAdminRole, adminCareerApiRoutes);
+app.use(
+  "/admin/api/careers",
+  ensureAuthenticated,
+  ensureAdminRole,
+  adminCareerApiRoutes
+);
 // Mount Public API Routes for Careers (optional, if your main site uses this)
 app.use("/api/careers", publicCareerApiRoutes);
 // Mount Admin Page Routes for Care & Management
-app.use("/admin/care-management",ensureAuthenticated, ensureAdminRole, adminCareManagementPageRoutes);
+app.use(
+  "/admin/care-management",
+  ensureAuthenticated,
+  ensureAdminRole,
+  adminCareManagementPageRoutes
+);
 
 // Mount Admin API Routes for Care & Management
-app.use("/admin/api/care-management",ensureAuthenticated, ensureAdminRole, adminCareManagementApiRoutes);
+app.use(
+  "/admin/api/care-management",
+  ensureAuthenticated,
+  ensureAdminRole,
+  adminCareManagementApiRoutes
+);
 // Choose a suitable path for your public API, e.g., /api/public/care-entries
 app.use("/api/public/care-entries", publicCareApiRoutes);
 
-
 // Mount Admin Page Routes for Enquiries
-app.use("/admin/enquiries",ensureAuthenticated, ensureAdminRole, adminEnquiryPageRoutes);
+app.use(
+  "/admin/enquiries",
+  ensureAuthenticated,
+  ensureAdminRole,
+  adminEnquiryPageRoutes
+);
 
 // Mount Admin API Routes for Enquiries
-app.use("/admin/api/enquiries",ensureAuthenticated, ensureAdminRole, adminEnquiryApiRoutes);
-
-
+app.use(
+  "/admin/api/enquiries",
+  ensureAuthenticated,
+  ensureAdminRole,
+  adminEnquiryApiRoutes
+);
 
 // Admin creation route
 // app.post("/create-admin", async (req, res) => {
@@ -181,14 +248,6 @@ app.use("/admin/api/enquiries",ensureAuthenticated, ensureAdminRole, adminEnquir
 //     res.status(500).json({ message: "Server error", error: error.message });
 //   }
 // });
-
-
-
-
-
-
-
-
 
 app.post("/submit-form", async (req, res) => {
   const token = req.body["g-recaptcha-response"];
