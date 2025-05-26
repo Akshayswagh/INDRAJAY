@@ -223,31 +223,31 @@ app.use(
 );
 
 // Admin creation route
-// app.post("/create-admin", async (req, res) => {
-//   try {
-//     const { email, name, contactNumber, password } = req.body;
+app.post("/create-admin", async (req, res) => {
+  try {
+    const { email, name, contactNumber, password } = req.body;
 
-//     // Check if admin already exists
-//     const existingAdmin = await User.findOne({ email });
-//     if (existingAdmin) {
-//       return res.status(400).json({ message: "Admin already exists" });
-//     }
+    // Check if admin already exists
+    const existingAdmin = await User.findOne({ email });
+    if (existingAdmin) {
+      return res.status(400).json({ message: "Admin already exists" });
+    }
 
-//     // Create the user with admin role
-//     const adminUser = await User.create({
-//       email,
-//       name,
-//       contactNumber,
-//       password,
-//       role: "admin", // Force the role to admin
-//     });
+    // Create the user with admin role
+    const adminUser = await User.create({
+      email,
+      name,
+      contactNumber,
+      password,
+      role: "admin", // Force the role to admin
+    });
 
-//     res.status(201).json({ message: "Admin user created", userId: adminUser._id });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ message: "Server error", error: error.message });
-//   }
-// });
+    res.status(201).json({ message: "Admin user created", userId: adminUser._id });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+});
 
 app.post("/submit-form", async (req, res) => {
   const token = req.body["g-recaptcha-response"];
