@@ -1,5 +1,5 @@
 // controllers/adminTrustedBuyerController.js
-const TrustedBuyer = require('../models/TrustedBuyer');
+const TrustedBuyer = require('../models/T');
 const mongoose = require('mongoose');
 const getMulterUploader = require('../config/multerConfig');
 const cloudinary = require('../config/cloudinaryConfig');
