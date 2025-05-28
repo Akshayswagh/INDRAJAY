@@ -24,7 +24,7 @@ const getMulterUploader = (folderName) => {
     storage,
     limits: { fileSize: 5 * 1024 * 1024 }, // 5 MB
     fileFilter: (req, file, cb) => {
-      const allowedTypes = /jpeg|jpg|png|gif|webp/;
+      const allowedTypes = /jpeg|jpg|png|gif|webp|pdf/;
       const extname = allowedTypes.test(file.originalname.toLowerCase());
       const mimetype = allowedTypes.test(file.mimetype);
 

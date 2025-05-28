@@ -216,6 +216,38 @@
       fa-question-circle %>
     </a>
 
+
+    <!-- Trusted Buyers Submenu -->
+    <a
+      class="list-group-item list-group-item-action list-group-item-dark p-3 d-flex justify-content-between align-items-center"
+      data-bs-toggle="collapse"
+      href="#trustedBuyerSubmenu"
+      role="button"
+      aria-expanded="<%= (typeof activePage !== 'undefined' && (activePage === 'add_trusted_buyer' || activePage === 'view_trusted_buyers' || activePage === 'edit_trusted_buyer')) ? 'true' : 'false' %>"
+      aria-controls="trustedBuyerSubmenu"
+    >
+      <span><i class="fas fa-handshake me-2"></i>Trusted Buyers</span>
+      <i class="fas fa-chevron-down"></i>
+    </a>
+    <div
+      class="collapse <%= (typeof activePage !== 'undefined' && (activePage === 'add_trusted_buyer' || activePage === 'view_trusted_buyers' || activePage === 'edit_trusted_buyer')) ? 'show' : '' %>"
+      id="trustedBuyerSubmenu"
+    >
+      <a
+        href="/admin/trusted-buyers/add"
+        class="list-group-item list-group-item-action list-group-item-dark p-3 ps-5 <%= (typeof activePage !== 'undefined' && activePage === 'add_trusted_buyer') ? 'active' : '' %>"
+      >
+        <i class="fas fa-user-plus me-2"></i>Add Buyer
+      </a>
+      <a
+        href="/admin/trusted-buyers"
+        class="list-group-item list-group-item-action list-group-item-dark p-3 ps-5 <%= (typeof activePage !== 'undefined' && activePage === 'view_trusted_buyers') ? 'active' : '' %>"
+      >
+        <i class="fas fa-users-cog me-2"></i>View Buyers
+      </a>
+    </div>
+    <!-- End Trusted Buyers Submenu -->
+
     <!-- Add other main menu items here -->
   </div>
 </div>

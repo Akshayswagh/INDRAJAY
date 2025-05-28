@@ -37,6 +37,8 @@ const {
 } = require("./middlewares/adminAuthMiddleware");
 
 const publicEnquiryRoutes = require("./routes/publicEnquiryRoutes");
+const adminTrustedBuyerPageRoutes = require('./routes/adminTrustedBuyerPageRoutes');
+const adminTrustedBuyerApiRoutes = require('./routes/adminTrustedBuyerApiRoutes');
 
 const adminEnquiryPageRoutes = require("./routes/adminEnquiryPageRoutes");
 const adminEnquiryApiRoutes = require("./routes/adminEnquiryApiRoutes");
@@ -221,6 +223,9 @@ app.use(
   ensureAdminRole,
   adminEnquiryApiRoutes
 );
+// Mount Admin Page Routes for Trusted Buyers
+app.use('/admin/trusted-buyers', adminTrustedBuyerPageRoutes);
+app.use('/admin/api/trusted-buyers', adminTrustedBuyerApiRoutes);
 
 // Admin creation route
 app.post("/create-admin", async (req, res) => {

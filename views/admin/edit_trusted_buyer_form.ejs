@@ -1,0 +1,210 @@
+<%# views/admin/edit_trusted_buyer_form.ejs %>
+<%# include('../partials/admin_header', { 
+  title: title, 
+  currentUser: currentUser, 
+  activePage: activePage 
+}) %>
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1><%= title %>: <%= buyerItem.customerName %></h1>
+        <a href="/admin/trusted-buyers" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-1"></i> Back to List
+        </a>
+    </div>
+
+    <%# include('../partials/messages') %>
+
+    <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+        <div class="alert alert-danger">
+            <ul class="mb-0">
+                <% errors.forEach(function(error) { %>
+                    <li><%= error.msg %></li>
+                <% }); %>
+            </ul>
+        </div>
+    <% } %>
+
+    <% if (buyerItem) { %>
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <form action="/admin/api/trusted-buyers/<%= buyerItem._id %>?_method=PUT" method="POST" enctype="multipart/form-data" id="editTrustedBuyerForm" novalidate>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="customerName" class="form-label">Customer Name <span class="text-danger">*</span></label>
+                        <input 
+                            type="text" 
+                            class="form-control <%= typeof errors !== 'undefined' && errors.some(e => e.param === 'customerName') ? 'is-invalid' : '' %>" 
+                            id="customerName" 
+                            name="customerName" 
+                            value="<%= typeof buyerData !== 'undefined' ? buyerData.customerName : buyerItem.customerName %>" 
+                            required
+                        >
+                        <div class="invalid-feedback">
+                            <%= typeof errors !== 'undefined' && errors.find(e => e.param === 'customerName') ? errors.find(e => e.param === 'customerName').msg : 'Customer name is required.' %>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="companyName" class="form-label">Company Name <span class="text-danger">*</span></label>
+                        <input 
+                            type="text" 
+                            class="form-control <%= typeof errors !== 'undefined' && errors.some(e => e.param === 'companyName') ? 'is-invalid' : '' %>" 
+                            id="companyName" 
+                            name="companyName" 
+                            value="<%= typeof buyerData !== 'undefined' ? buyerData.companyName : buyerItem.companyName %>" 
+                            required
+                        >
+                        <div class="invalid-feedback">
+                            <%= typeof errors !== 'undefined' && errors.find(e => e.param === 'companyName') ? errors.find(e => e.param === 'companyName').msg : 'Company name is required.' %>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
+                        <input 
+                            type="email" 
+                            class="form-control <%= typeof errors !== 'undefined' && errors.some(e => e.param === 'email') ? 'is-invalid' : '' %>" 
+                            id="email" 
+                            name="email" 
+                            value="<%= typeof buyerData !== 'undefined' ? buyerData.email : buyerItem.email %>" 
+                            required
+                        >
+                        <div class="invalid-feedback">
+                            <%= typeof errors !== 'undefined' && errors.find(e => e.param === 'email') ? errors.find(e => e.param === 'email').msg : 'Valid email is required.' %>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="contactNumber" class="form-label">Contact Number <span class="text-danger">*</span></label>
+                        <input 
+                            type="tel" 
+                            class="form-control <%= typeof errors !== 'undefined' && errors.some(e => e.param === 'contactNumber') ? 'is-invalid' : '' %>" 
+                            id="contactNumber" 
+                            name="contactNumber" 
+                            value="<%= typeof buyerData !== 'undefined' ? buyerData.contactNumber : buyerItem.contactNumber %>" 
+                            required
+                        >
+                        <div class="invalid-feedback">
+                            <%= typeof errors !== 'undefined' && errors.find(e => e.param === 'contactNumber') ? errors.find(e => e.param === 'contactNumber').msg : 'Contact number is required.' %>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="address" class="form-label">Address <span class="text-danger">*</span></label>
+                    <textarea 
+                        class="form-control <%= typeof errors !== 'undefined' && errors.some(e => e.param === 'address.fullAddress') ? 'is-invalid' : '' %>" 
+                        id="fullAddress" 
+                        name="fullAddress" 
+                        rows="3" 
+                        required
+                    ><%= typeof buyerData !== 'undefined' ? buyerData.address : buyerItem.address.fullAddress %></textarea>
+                    <div class="invalid-feedback">
+                        <%= typeof errors !== 'undefined' && errors.find(e => e.param === 'address') ? errors.find(e => e.param === 'address').msg : 'Address is required.' %>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="gstnNumber" class="form-label">GSTN Number (Optional)</label>
+                        <input 
+                            type="text" 
+                            class="form-control text-uppercase <%= typeof errors !== 'undefined' && errors.some(e => e.param === 'gstnNumber') ? 'is-invalid' : '' %>" 
+                            id="gstnNumber" 
+                            name="gstnNumber" 
+                            pattern="^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$" 
+                            title="Enter valid GSTN" 
+                            value="<%= typeof buyerData !== 'undefined' ? buyerData.gstnNumber : (buyerItem.gstnNumber || '') %>"
+                        >
+                        <div class="invalid-feedback">
+                            <%= typeof errors !== 'undefined' && errors.find(e => e.param === 'gstnNumber') ? errors.find(e => e.param === 'gstnNumber').msg : 'Please enter a valid GSTN number.' %>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="panNumber" class="form-label">PAN Number (Optional)</label>
+                        <input 
+                            type="text" 
+                            class="form-control text-uppercase <%= typeof errors !== 'undefined' && errors.some(e => e.param === 'panNumber') ? 'is-invalid' : '' %>" 
+                            id="panNumber" 
+                            name="panNumber" 
+                            pattern="^[A-Z]{5}[0-9]{4}[A-Z]{1}$" 
+                            title="Enter valid PAN" 
+                            value="<%= typeof buyerData !== 'undefined' ? buyerData.panNumber : (buyerItem.panNumber || '') %>"
+                        >
+                        <div class="invalid-feedback">
+                            <%= typeof errors !== 'undefined' && errors.find(e => e.param === 'panNumber') ? errors.find(e => e.param === 'panNumber').msg : 'Please enter a valid PAN number.' %>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="bankDetailsPdf" class="form-label">Bank Details PDF</label>
+                    <input 
+                        type="file" 
+                        class="form-control <%= typeof errors !== 'undefined' && errors.some(e => e.param === 'bankDetailsPdf') ? 'is-invalid' : '' %>" 
+                        id="bankDetailsPdf" 
+                        name="bankDetailsPdf" 
+                        accept="application/pdf"
+                    >
+                    <% if (buyerItem.bankDetailsPdf) { %>
+                        <div class="mt-2">
+                            <small class="text-muted">Current file: </small>
+                            <a href="<%= buyerItem.bankDetailsPdf %>" target="_blank" class="btn btn-sm btn-outline-info">
+                                <i class="fas fa-file-pdf me-1"></i> View Current PDF
+                            </a>
+                        </div>
+                    <% } %>
+                    <div class="invalid-feedback">
+                        <%= typeof errors !== 'undefined' && errors.find(e => e.param === 'bankDetailsPdf') ? errors.find(e => e.param === 'bankDetailsPdf').msg : 'Please upload a valid PDF file.' %>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="adminNotes" class="form-label">Admin Notes</label>
+                    <textarea 
+                        class="form-control" 
+                        id="adminNotes" 
+                        name="adminNotes" 
+                        rows="3"
+                    ><%= typeof buyerData !== 'undefined' ? buyerData.adminNotes : (buyerItem.adminNotes || '') %></textarea>
+                </div>
+
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary btn-lg" id="updateBuyerSubmitBtn">
+                        <span class="spinner-border spinner-border-sm me-1 d-none"></span>
+                        <span class="button-text">Update Trusted Buyer</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <% } %>
+</div>
+
+<%- include('../partials/admin_footer') %>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const form = document.getElementById("editTrustedBuyerForm");
+        const submitButton = document.getElementById("updateBuyerSubmitBtn");
+        
+        if (form && submitButton) {
+            const buttonText = submitButton.querySelector(".button-text");
+            const spinner = submitButton.querySelector(".spinner-border");
+            
+            form.addEventListener("submit", function(event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    form.classList.add("was-validated");
+                    return;
+                }
+                
+                submitButton.disabled = true;
+                if (buttonText) buttonText.textContent = "Updating...";
+                if (spinner) spinner.classList.remove("d-none");
+            });
+        }
+    });
+</script>
