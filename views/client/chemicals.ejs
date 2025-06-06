@@ -17,31 +17,31 @@
           </p>
         </div>
 
-        <div class="products-container"></div>
+        <div class="products-container">
 
-         <% if (chemicals.length > 0) { %> <% chemicals.forEach(chemical => { %>
+        <% if (chemicals.length > 0) { %> <% chemicals.forEach(chemical => { %>
 
-          <!-- Product 1 -->
-          <a href="/exports/view/<%= chemical._id %>" class="product-link">
-            <div class="product-card">
-              <div class="product-image-container">
-                <img
-                  src="<%= chemical.image %>"
-                  alt="<%= chemical.name %>"
-                  class="product-image"
-                />
-              </div>
-              <div class="product-info">
-                <h3 class="product-name"><%= chemical.name %></h3>
-                <span class="product-category"><%= chemical.category %></span>
-              </div>
+        <!-- Product 1 -->
+        <a href="/exports/view/<%= chemical._id %>" class="product-link">
+          <div class="product-card">
+            <div class="product-image-container">
+              <img
+                src="<%= chemical.image %>"
+                alt="<%= chemical.name %>"
+                class="product-image"
+              />
             </div>
-          </a>
+            <div class="product-info">
+              <h3 class="product-name"><%= chemical.name %></h3>
+              <span class="product-category"><%= chemical.category %></span>
+            </div>
+          </div>
+        </a>
 
-          <% }) %> <% } else { %>
-          <p>No products Available in this category.</p>
-          <% } %>
-
+        <% }) %> <% } else { %>
+        <p>No products Available in this category.</p>
+        <% } %>
+</div>
         <!-- <div class="view-more">
           <button class="view-more-btn">View More Products</button>
         </div> -->

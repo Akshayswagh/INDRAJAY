@@ -6,3 +6,8 @@ aslo using same mail for clodudinary
 Go to: https://www.google.com/recaptcha/admin
 
 uses this for captch verification
+
+
+
+
+err 1} In Export tab admin panel file too large error unhandled.  apply client side validation
