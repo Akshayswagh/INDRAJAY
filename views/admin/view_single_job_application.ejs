@@ -1,0 +1,83 @@
+<%# views/admin/view_single_job_application.ejs %>
+<%# include('../partials/admin_header', { title: title, currentUser: currentUser, activePage: activePage }) %>
+<div class="container-fluid mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1><%= title %></h1>
+        <a href="/admin/job-applications<%= application.jobId ? '?jobId='+application.jobId._id : '' %>" class="btn btn-outline-secondary"><i class="fas fa-arrow-left me-1"></i> Back to Applications List</a>
+    </div>
+    <%- include('../partials/messages') %>
+    <% if (application) { %>
+        <div class="card shadow-sm">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Application from: <%= application.firstName %> <%= application.lastName %></h5>
+                <span class="badge bg-<%= application.status === 'Offered' || application.status === 'Hired' ? 'success' : application.status === 'Received' ? 'info text-dark' : application.status === 'Under Review' || application.status === 'Interview Scheduled' ? 'primary' : 'secondary' %>">
+                    Status: <%= application.status %>
+                </span>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-7 col-lg-8 mb-4 mb-md-0 border-md-end pe-md-4">
+                        <h6 class="text-muted mb-3">Applicant Details:</h6>
+                        <dl class="row">
+                            <dt class="col-sm-4">Applied For:</dt><dd class="col-sm-8"><%= application.appliedForPosition %></dd>
+                            <% if (application.jobId) { %>
+                            <dt class="col-sm-4">Specific Job Listing:</dt><dd class="col-sm-8"><%= application.jobId.role %> (<%= application.jobId.domain %>)</dd>
+                            <% } %>
+                            <dt class="col-sm-4">Name:</dt><dd class="col-sm-8"><%= application.firstName %> <%= application.lastName %></dd>
+                            <dt class="col-sm-4">Email:</dt><dd class="col-sm-8"><a href="mailto:<%= application.email %>"><%= application.email %></a></dd>
+                            <dt class="col-sm-4">Phone:</dt><dd class="col-sm-8"><%= application.areaCode %> <%= application.phone %></dd>
+                            <dt class="col-sm-4">Gender:</dt><dd class="col-sm-8"><%= application.gender %></dd>
+                            <dt class="col-sm-4">Availability:</dt><dd class="col-sm-8"><%= application.startDate %></dd>
+                            <dt class="col-sm-4">Address:</dt><dd class="col-sm-8" style="white-space: pre-wrap;"><%= application.address %></dd>
+                            <dt class="col-sm-4">Resume:</dt>
+                            <dd class="col-sm-8">
+                                <a href="<%= application.resume %>" target="_blank" class="btn btn-sm btn-outline-secondary">
+                                    <i class="fas fa-file-alt me-1"></i> View/Download Resume
+                                </a>
+                            </dd>
+                            <% if (application.coverLetter) { %>
+                            <dt class="col-sm-12 mt-3 text-muted">Cover Letter:</dt>
+                            <dd class="col-sm-12" style="white-space: pre-wrap; background-color: #f8f9fa; padding: 10px; border-radius: 4px;"><%= application.coverLetter %></dd>
+                            <% } %>
+                            <dt class="col-sm-4 mt-3">Applied At:</dt><dd class="col-sm-8 mt-3"><%= new Date(application.createdAt).toLocaleString() %></dd>
+                        </dl>
+                    </div>
+                    <div class="col-md-5 col-lg-4 ps-md-4">
+                        <h5 class="mb-3">Admin Actions</h5>
+                        <form action="/admin/api/job-applications/<%= application._id %>?_method=PUT" method="POST" id="updateAppStatusForm">
+                            <div class="mb-3">
+                                <label for="status" class="form-label fw-bold">Update Status:</label>
+                                <select name="status" id="status" class="form-select form-select-sm">
+                                    <option value="Received" <%= application.status === 'Received' ? 'selected' : '' %>>Received</option>
+                                    <option value="Under Review" <%= application.status === 'Under Review' ? 'selected' : '' %>>Under Review</option>
+                                    <option value="Interview Scheduled" <%= application.status === 'Interview Scheduled' ? 'selected' : '' %>>Interview Scheduled</option>
+                                    <option value="Offered" <%= application.status === 'Offered' ? 'selected' : '' %>>Offered</option>
+                                    <option value="Rejected" <%= application.status === 'Rejected' ? 'selected' : '' %>>Rejected</option>
+                                    <option value="Hired" <%= application.status === 'Hired' ? 'selected' : '' %>>Hired</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="adminNotes" class="form-label fw-bold">Admin Notes:</label>
+                                <textarea name="adminNotes" id="adminNotes" rows="5" class="form-control form-control-sm"><%= application.adminNotes || '' %></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-sm w-100" id="updateAppBtn">Update Application</button>
+                        </form>
+                        <hr class="my-3">
+                         <form action="/admin/api/job-applications/<%= application._id %>?_method=DELETE" method="POST" class="delete-app-form">
+                            <button type="submit" class="btn btn-danger btn-sm w-100">Delete Application</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <% } else { %>
+        <div class="alert alert-warning">Application not found.</div>
+    <% } %>
+</div>
+<%# include('../partials/admin_footer') %>
+<script>
+    // Script for delete confirmation and update button state (similar to other single view pages)
+    document.querySelectorAll('.delete-app-form').forEach(f => f.addEventListener('submit', e => { if(!confirm('Delete this application?')) e.preventDefault();}));
+    const updateForm = document.getElementById('updateAppStatusForm');
+    if(updateForm) { /* ... spinner logic for updateAppBtn ... */ }
+</script>

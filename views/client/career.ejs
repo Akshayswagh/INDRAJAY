@@ -1,187 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>Careers - Indrajay Enterprises</title>
-    <%- include('../partials/head'); %>
+<head>
+    <title><%= typeof title !== 'undefined' ? title : 'Careers - Indrajay Enterprises' %></title>
+    <%- include('../partials/head'); %> <%# Ensure Bootstrap CSS is here %>
     <style>
+      /* Your existing styles - they look mostly fine.
+         Ensure paths to fonts and images are correct.
+         Consider moving these to an external CSS file linked in head.ejs for better organization.
+      */
+      body { font-family: "Roboto", sans-serif; background-color: #f8f9fa; color: #333; line-height: 1.6; }
       .career-hero {
         background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
-          url("https://images.unsplash.com/photo-1521791136064-7986c2920216?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80");
+          url("https://images.unsplash.com/photo-1521791136064-7986c2920216?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"); /* Example URL */
         background-size: cover;
         background-position: center;
         color: white;
         padding: 5rem 0;
         margin-bottom: 3rem;
       }
+      .career-form-container { background-color: #fff; border-radius: 10px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); padding: 2.5rem; margin-bottom: 3rem; }
+      .form-section-title { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 0.5rem; margin-bottom: 1.5rem; font-weight: 600; }
+      .form-label { font-weight: 600; color: #2c3e50; margin-bottom: 0.5rem; }
+      .required-field::after { content: "*"; color: #e74c3c; margin-left: 4px; }
+      .form-control, .form-select { padding: 0.5rem 0.75rem; font-size: 1rem; border-radius: 5px; border: 1px solid #ddd; }
+      textarea.form-control { height: auto; min-height: 120px; }
+      .input-group .form-select.area-code { max-width: 120px; min-width: 70px;flex-grow: 0; flex-shrink: 0; } /* For phone area code */
+      .file-name-display { font-size: 0.9rem; color: #7f8c8d; margin-top: 0.5rem; display: block; }
+      .submit-btn { background-color: #3498db; color: white; border: none; padding: 0.75rem 2rem; border-radius: 5px; font-weight: 600; transition: background-color 0.3s ease; width: 100%; }
+      .submit-btn:hover { background-color: #2980b9; }
+      .submit-btn:disabled { background-color: #a5c9e3; cursor: not-allowed; }
+      .submit-btn .spinner-border { vertical-align: text-bottom; }
+      .job-openings { background-color: #f8f9fa; border-radius: 10px; padding: 2rem; margin-bottom: 3rem; }
+      .job-card { background-color: #fff; border-radius: 8px; box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08); padding: 1.5rem; margin-bottom: 1.5rem; transition: transform 0.3s ease; border-left: 4px solid #3498db; display: flex; flex-direction: column; height: 100%; }
+      .job-card:hover { transform: translateY(-5px); }
+      .job-title { color: #2c3e50; font-weight: 600; margin-bottom: 0.5rem; }
+      .job-department { color: #7f8c8d; font-size: 0.9rem; margin-bottom: 0.75rem; }
+      .job-experiance { color: #7f8c8d; font-size: 0.9rem; margin-bottom: 0.75rem; font-weight: 500; }
+      .job-description { margin-bottom: 1rem; flex-grow: 1; }
+      .apply-btn { background-color: #2ecc71; color: white; border: none; padding: 0.5rem 1.5rem; border-radius: 5px; font-weight: 500; transition: background-color 0.3s ease; margin-top: auto; }
+      .apply-btn:hover { background-color: #27ae60; color: white; }
+    
+    
+   @media (max-width: 400px) {
+ .job-openings {
+    padding: 0.2rem;
+   
+}
+.career-form-container {
 
-      .career-form-container {
-        background-color: #fff;
-        border-radius: 10px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        padding: 1.8rem;
-        margin-bottom: 3rem;
-      }
-
-      .form-section-title {
-        color: #2c3e50;
-        border-bottom: 2px solid #3498db;
-        padding-bottom: 0.5rem;
-        margin-bottom: 1.5rem;
-        font-weight: 600;
-      }
-
-      .form-label {
-        font-weight: 600;
-        color: #2c3e50;
-        margin-bottom: 0.5rem;
-      }
-
-      .required-field::after {
-        content: "*";
-        color: #e74c3c;
-        margin-left: 4px;
-      }
-
-      .form-control,
-      .form-select {
-        height: 45px;
-        border-radius: 5px;
-        border: 1px solid #ddd;
-        margin-bottom: 1.5rem;
-      }
-
-      textarea.form-control {
-        height: auto;
-        min-height: 120px;
-      }
-
-      .phone-input-group {
-        display: flex;
-      }
-
-      .area-code {
-        width: 100px;
-        margin-right: 15px;
-      }
-
-      .phone-number {
-        flex-grow: 1;
-      }
-
-      .file-upload {
-        position: relative;
-        overflow: hidden;
-        margin-bottom: 1.5rem;
-      }
-
-      .file-upload-input {
-        position: absolute;
-        font-size: 100px;
-        opacity: 0;
-        right: 0;
-        top: 0;
-        cursor: pointer;
-      }
-
-      .file-upload-label {
-        display: block;
-        padding: 0.75rem;
-        border: 1px dashed #3498db;
-        border-radius: 5px;
-        text-align: center;
-        color: #3498db;
-        cursor: pointer;
-        transition: all 0.3s ease;
-      }
-
-      .file-upload-label:hover {
-        background-color: #f0f7ff;
-      }
-
-      .file-name {
-        font-size: 0.9rem;
-        color: #7f8c8d;
-        margin-top: 0.5rem;
-      }
-
-      .submit-btn {
-        background-color: #3498db;
-        color: white;
-        border: none;
-        padding: 0.75rem 2rem;
-        border-radius: 5px;
-        font-weight: 600;
-        transition: background-color 0.3s ease;
-        width: 100%;
-      }
-
-      .submit-btn:hover {
-        background-color: #2980b9;
-      }
-
-      .job-openings {
-        background-color: #f8f9fa;
-        border-radius: 10px;
-        padding: 1rem;
-        margin-bottom: 3rem;
-      }
-
-      .job-card {
-        background-color: #fff;
-        border-radius: 8px;
-        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
-        padding: 1.5rem;
-        margin-bottom: 1.5rem;
-        transition: transform 0.3s ease;
-        border-left: 4px solid #3498db;
-      }
-
-      .job-card:hover {
-        transform: translateY(-5px);
-      }
-
-      .job-title {
-        color: #2c3e50;
-        font-weight: 600;
-        margin-bottom: 0.5rem;
-      }
-
-      .job-department {
-        color: #7f8c8d;
-        font-size: 0.9rem;
-        margin-bottom: 0.75rem;
-      }
-      .job-experiance {
-        color: #7f8c8d;
-        font-size: 0.9rem;
-        margin-bottom: 0.75rem;
-        font-weight: 500;
-      }
-
-      .job-description {
-        margin-bottom: 1rem;
-      }
-
-      .apply-btn {
-        background-color: #2ecc71;
-        color: white;
-        border: none;
-        padding: 0.5rem 1.5rem;
-        border-radius: 5px;
-        font-weight: 500;
-        transition: background-color 0.3s ease;
-      }
-
-      .apply-btn:hover {
-        background-color: #27ae60;
-        color: white;
-      }
+    padding: 1.5rem;
+}
+ }
     </style>
-  </head>
-  <body>
+</head>
+<body>
     <%- include('../partials/navbar', {activePage: 'careers'}); %>
 
-    <!-- Hero Section -->
     <section class="career-hero text-center">
       <div class="container">
         <h1 class="display-4 text-white">Join Our Team</h1>
@@ -189,31 +63,23 @@
       </div>
     </section>
 
-    <!-- Main Content -->
     <div class="container mb-5">
-      <!-- Current Openings -->
       <div class="job-openings">
         <h2 class="section-title text-center mb-4">Current Job Openings</h2>
-
-        <% if (careers && careers.length > 0) { %>
+        <% if (typeof careers !== 'undefined' && careers.length > 0) { %>
         <div class="row">
           <% careers.forEach(career => { %>
-
-          <div class="col-md-6">
+          <div class="col-md-6 mb-4">
             <div class="job-card">
               <h3 class="job-title"><%= career.role %></h3>
               <div class="job-department"><%= career.domain %></div>
               <div class="job-experiance">
-                Experince: <%= career.experience_required %>
+                Experience: <%= career.experience_required %>
               </div>
               <div class="job-description">
-                <p><%= career.description %></p>
+                <p><%= career.description.substring(0, 150) %><% if (career.description.length > 150) { %>...<% } %></p>
               </div>
-
-              <button
-                class="apply-btn"
-                onclick="applyForJob('<%= career.role %>')"
-              >
+              <button class="btn apply-btn" data-job-role="<%= career.role %>" data-job-id="<%= career._id %>">
                 Apply Now
               </button>
             </div>
@@ -221,252 +87,265 @@
           <% }) %>
         </div>
         <% } else { %>
-        <p>No career openings available at the moment.</p>
+        <p class="text-center">No career openings available at the moment. Please check back later!</p>
         <% } %>
       </div>
 
-      <!-- Application Form -->
-      <div class="career-form-container" id="applicationForm">
+      <div class="career-form-container" id="applicationFormContainer">
         <h2 class="section-title text-center mb-4">Application Form</h2>
+        
+        <form id="careerApplicationForm" enctype="multipart/form-data" novalidate>
+          <input type="hidden" id="jobId" name="jobId" value="" />
 
-        <form id="careerForm" novalidate>
-          <!-- Personal Information Section -->
           <h4 class="form-section-title">Personal Information</h4>
-          <div class="row">
+          <div class="row mb-3">
             <div class="col-md-6">
-              <div class="form-group">
-                <label for="firstName" class="form-label required-field"
-                  >First Name</label
-                >
-                <input
-                  type="text"
-                  class="form-control"
-                  id="firstName"
-                  name="firstName"
-                  required
-                />
-              </div>
+              <label for="applicantName" class="form-label required-field">Full Name</label>
+              <input type="text" class="form-control" id="applicantName" name="applicantName" required />
+              <div class="invalid-feedback">Full name is required.</div>
             </div>
             <div class="col-md-6">
-              <div class="form-group">
-                <label for="lastName" class="form-label required-field"
-                  >Last Name</label
-                >
-                <input
-                  type="text"
-                  class="form-control"
-                  id="lastName"
-                  name="lastName"
-                  required
-                />
-              </div>
+              <label for="applicantEmail" class="form-label required-field">Email Address</label>
+              <input type="email" class="form-control" id="applicantEmail" name="applicantEmail" required />
+              <div class="invalid-feedback">Please enter a valid email.</div>
             </div>
           </div>
 
-          <div class="row">
+          <div class="row mb-3">
             <div class="col-md-6">
-              <div class="form-group">
-                <label for="email" class="form-label required-field"
-                  >Email Address</label
-                >
-                <input
-                  type="email"
-                  class="form-control"
-                  id="email"
-                  name="email"
-                  required
-                />
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-group">
-                <label for="gender" class="form-label required-field"
-                  >Gender</label
-                >
-                <select class="form-select" id="gender" name="gender" required>
-                  <option value="" selected disabled>Select Gender</option>
-                  <option value="male">Male</option>
-                  <option value="female">Female</option>
-                  <option value="other">Other</option>
-                  <option value="prefer-not-to-say">Prefer not to say</option>
-                </select>
-              </div>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label for="phone" class="form-label required-field"
-              >Phone Number</label
-            >
-            <div class="phone-input-group">
-              <select
-                class="form-select area-code"
-                id="areaCode"
-                name="areaCode"
-                required
-              >
-                <option value="+91">+91 (India)</option>
-                <option value="+1">+1 (USA)</option>
-                <option value="+44">+44 (UK)</option>
-                <option value="+971">+971 (UAE)</option>
-                <option value="+65">+65 (Singapore)</option>
+              <label for="gender" class="form-label">Gender</label>
+              <select class="form-select" id="gender" name="gender">
+                <option value="" selected disabled>Select Gender (Optional)</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+                <option value="prefer-not-to-say">Prefer not to say</option>
               </select>
-              <input
-                type="tel"
-                class="form-control phone-number"
-                id="phone"
-                name="phone"
-                required
-              />
-            </div>
-          </div>
-
-          <!-- Position Information Section -->
-          <h4 class="form-section-title">Position Information</h4>
-          <div class="row">
-            <div class="col-md-6">
-              <div class="form-group">
-                <label for="position" class="form-label required-field"
-                  >Applying for Position</label
-                >
-                <input
-                  type="text"
-                  class="form-control"
-                  id="position"
-                  name="position"
-                  required
-                />
-              </div>
             </div>
             <div class="col-md-6">
-              <div class="form-group">
-                <label for="startDate" class="form-label required-field"
-                  >When can you start?</label
-                >
-                <select
-                  class="form-select"
-                  id="startDate"
-                  name="startDate"
-                  required
-                >
-                  <option value="" selected disabled>
-                    Select Availability
-                  </option>
-                  <option value="immediately">Immediately</option>
-                  <option value="10-days">Within 10 days</option>
-                  <option value="20-days">Within 20 days</option>
-                  <option value="30-days">Within 30 days</option>
-                  <option value="negotiable">Negotiable</option>
+              <label for="applicantPhone" class="form-label required-field">Phone Number</label>
+              <div class="input-group">
+                <select class="form-select area-code" id="areaCode" name="areaCode" aria-label="Area Code">
+                  <option value="+91" selected>+91</option>
+                  <option value="+1">+1</option>
                 </select>
+                <input type="tel" class="form-control" id="applicantPhone" name="applicantPhone" required />
+                <div class="invalid-feedback">Phone number is required.</div>
               </div>
             </div>
           </div>
 
-          <!-- Address Section -->
-          <h4 class="form-section-title">Address</h4>
-          <div class="form-group">
-            <label for="address" class="form-label required-field"
-              >Full Address</label
-            >
-            <textarea
-              class="form-control"
-              id="address"
-              name="address"
-              required
-            ></textarea>
-          </div>
-
-          <!-- Cover Letter Section -->
-          <h4 class="form-section-title">Cover Letter</h4>
-          <div class="form-group">
-            <label for="coverLetter" class="form-label"
-              >Cover Letter (Optional)</label
-            >
-            <textarea
-              class="form-control"
-              id="coverLetter"
-              name="coverLetter"
-              placeholder="Tell us why you'd be a great fit for this position..."
-            ></textarea>
-          </div>
-
-          <!-- Resume Upload Section -->
-          <h4 class="form-section-title">Resume Upload</h4>
-          <div class="form-group">
-            <label class="form-label required-field">Upload Your Resume</label>
-            <div class="file-upload">
-              <input
-                type="file"
-                class="file-upload-input"
-                id="resume"
-                name="resume"
-                accept=".pdf,.doc,.docx"
-                required
-              />
-              <label for="resume" class="file-upload-label">
-                <i class="fas fa-cloud-upload-alt mr-2"></i>Choose File
-              </label>
-              <div class="file-name" id="fileName">No file chosen</div>
+          <h4 class="form-section-title">Position Information</h4>
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="appliedForPosition" class="form-label required-field">Applying for Position</label>
+              <input type="text" class="form-control" id="appliedForPosition" name="appliedForPosition" readonly required />
+              <div class="invalid-feedback">Position applied for is required.</div>
             </div>
-            <small class="text-muted"
-              >Accepted formats: PDF, DOC, DOCX (Max 5MB)</small
-            >
+            <div class="col-md-6">
+              <label for="startDate" class="form-label">When can you start?</label>
+              <select class="form-select" id="startDate" name="startDate">
+                <option value="" selected>Select Availability (Optional)</option>
+                <option value="immediately">Immediately</option>
+                <option value="10-days">Within 10 days</option>
+                <option value="20-days">Within 20 days</option>
+                <option value="30-days">Within 30 days</option>
+                <option value="negotiable">Negotiable</option>
+              </select>
+            </div>
           </div>
 
-          <!-- Submit Button -->
-          <div class="form-group mt-4">
-            <button type="submit" class="submit-btn">Submit Application</button>
+          <div class="mb-3">
+            <label for="address" class="form-label">Full Address</label>
+            <textarea class="form-control" id="address" name="address"></textarea>
+          </div>
+
+          <h4 class="form-section-title">Cover Letter & Resume</h4>
+          <div class="mb-3">
+            <label for="coverLetter" class="form-label">Cover Letter (Optional)</label>
+            <textarea class="form-control" id="coverLetter" name="coverLetter" placeholder="Tell us why you'd be a great fit..."></textarea>
+          </div>
+
+          <div class="mb-3">
+            <label for="resumeFile" class="form-label required-field">Upload Resume</label>
+            <input type="file" class="form-control" id="resumeFile" name="resumeFile" accept=".pdf,.doc,.docx,.txt" required />
+            <small class="form-text text-muted">Accepted: PDF, DOC, DOCX, TXT (Max 5MB)</small>
+            <div class="invalid-feedback">A resume file (PDF, DOC, DOCX, or TXT) is required.</div>
+            <span class="file-name-display" id="fileNameDisplay"></span>
+          </div>
+
+          <div class="form-group mt-4 text-center">
+            <button type="submit" class="btn submit-btn" id="submitApplicationBtn">
+              <span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true" style="display: none"></span>
+              <span class="button-text">Submit Application</span>
+            </button>
           </div>
         </form>
       </div>
     </div>
 
-    <%- include('../partials/footer'); %> <%- include('../partials/scripts'); %>
+    <%- include('../partials/footer'); %>
+    <%- include('../partials/scripts'); %> <%# Ensure Bootstrap JS (and Popper if needed) is here %>
 
-    <!-- Font Awesome for icons -->
-    <script
-      src="https://kit.fontawesome.com/a076d05399.js"
-      crossorigin="anonymous"
-    ></script>
-
-    <!-- Form Script -->
     <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        // File upload display
-        const fileInput = document.getElementById("resume");
-        const fileNameDisplay = document.getElementById("fileName");
+      function applyForJob(jobTitle, careerId) {
+        console.log(`[CAREER PAGE] Apply button clicked for: ${jobTitle}, ID: ${careerId}`);
+        const positionInput = document.getElementById("appliedForPosition");
+        const jobIdInput = document.getElementById("jobId"); // Hidden input
+        const form = document.getElementById("careerApplicationForm");
 
-        fileInput.addEventListener("change", function () {
-          if (this.files.length > 0) {
-            fileNameDisplay.textContent = this.files[0].name;
-          } else {
-            fileNameDisplay.textContent = "No file chosen";
-          }
-        });
+        if (positionInput) positionInput.value = jobTitle;
+        if (jobIdInput) jobIdInput.value = careerId;
+        
+        // IMPORTANT: Set the form's action attribute. This will be used by fetch.
+        if (form) form.action = `/careers/apply/${careerId}`; 
 
-        // Form submission handling (non-functional as per request)
-        const form = document.getElementById("careerForm");
-
-        form.addEventListener("submit", function (e) {
-          e.preventDefault();
-          alert(
-            "Thank you for your application! This is a demonstration form and no data will be submitted."
-          );
-          form.reset();
-          fileNameDisplay.textContent = "No file chosen";
-        });
-      });
-
-      // New function to handle job application clicks
-      function applyForJob(jobTitle) {
-        // Set the position field value
-        document.getElementById("position").value = jobTitle;
-
-        // Scroll to the application form
-        document.getElementById("applicationForm").scrollIntoView({
-          behavior: "smooth",
-        });
+        const formContainer = document.getElementById("applicationFormContainer");
+        if (formContainer) {
+          formContainer.scrollIntoView({ behavior: "smooth" });
+          if (positionInput) positionInput.focus(); // Focus after scroll
+        }
       }
+
+      document.addEventListener("DOMContentLoaded", function () {
+        console.log("[CAREER PAGE] DOMContentLoaded.");
+
+        const fileInput = document.getElementById("resumeFile");
+        const fileNameDisplay = document.getElementById("fileNameDisplay");
+        const form = document.getElementById("careerApplicationForm");
+        const submitButton = document.getElementById("submitApplicationBtn");
+        const appliedForPositionInput = document.getElementById("appliedForPosition");
+        const jobIdHiddenInput = document.getElementById("jobId");
+
+
+        document.querySelectorAll('.apply-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const jobTitle = this.dataset.jobRole;
+                const jobId = this.dataset.jobId;
+                applyForJob(jobTitle, jobId);
+            });
+        });
+
+        if (fileInput && fileNameDisplay) {
+          fileInput.addEventListener("change", function () {
+            if (this.files.length > 0) {
+              fileNameDisplay.textContent = "Selected: " + this.files[0].name;
+              this.classList.remove('is-invalid'); // Clear validation state on change
+            } else {
+              fileNameDisplay.textContent = "";
+            }
+          });
+        }
+
+        if (form && submitButton) {
+          const buttonText = submitButton.querySelector(".button-text");
+          const spinner = submitButton.querySelector(".spinner-border");
+
+          form.addEventListener("submit", async function (e) {
+            e.preventDefault(); // Prevent default HTML form submission
+            console.log("[CAREER PAGE] Form submit event. Action:", form.action);
+
+            // Client-side validation using Bootstrap's system
+            form.classList.remove("was-validated"); // Reset validation state
+            form.classList.add("was-validated");   // Trigger Bootstrap validation display
+
+            if (!form.checkValidity()) {
+              console.log("[CAREER PAGE] Client-side validation FAILED.");
+              const firstInvalidField = form.querySelector(":invalid");
+              if (firstInvalidField) {
+                firstInvalidField.scrollIntoView({ behavior: "smooth", block: "center" });
+                firstInvalidField.focus();
+              }
+              return; // Stop submission if form is invalid
+            }
+            
+            // Check if form.action (jobId) is set
+            if (!form.action || form.action === window.location.href || !jobIdHiddenInput.value) {
+                alert('Error: Please select a job to apply for first by clicking "Apply Now" on a job listing.');
+                console.error("[CAREER PAGE] Form action not properly set or jobId is missing.");
+                return;
+            }
+
+            console.log("[CAREER PAGE] Client-side validation PASSED.");
+            submitButton.disabled = true;
+            if (buttonText) buttonText.textContent = "Submitting...";
+            if (spinner) spinner.style.display = "inline-block";
+
+            const formData = new FormData(form);
+            // The jobId is already part of form.action, and also in formData via the hidden input.
+
+            try {
+              console.log(`[CAREER PAGE] Attempting fetch POST to ${form.action}`);
+              const response = await fetch(form.action, {
+                method: "POST",
+                body: formData,
+                headers: {
+                    'Accept': 'application/json' // Crucial: tell server we want JSON back
+                }
+              });
+
+              // Try to parse the response as JSON, regardless of status code initially
+              let responseData;
+              const responseText = await response.text(); // Get raw text first for debugging
+              try {
+                responseData = JSON.parse(responseText);
+                console.log("[CAREER PAGE] Server JSON response:", responseData);
+              } catch (jsonError) {
+                console.error("[CAREER PAGE] Error parsing JSON response:", jsonError);
+                console.error("[CAREER PAGE] Raw server response text:", responseText.substring(0, 1000)); // Log a snippet
+                alert(`Submission error: Server responded in an unexpected format. Status: ${response.status}. Please contact support.`);
+                // Rethrow or handle as a critical error so 'finally' still runs
+                throw new Error("Non-JSON response received from server.");
+              }
+
+              if (response.ok && responseData.success) { // Check for 2xx status and success flag in JSON
+                console.log("[CAREER PAGE] Application submitted successfully via JSON:", responseData);
+                alert(responseData.message || "Application submitted successfully! Thank you.");
+                
+                if (responseData.redirectUrl) {
+                    console.log("[CAREER PAGE] Redirecting to:", responseData.redirectUrl);
+                    window.location.href = responseData.redirectUrl; // Navigate to thank you page
+                } else {
+                    // If no redirectUrl, just reset the form and scroll up
+                    form.reset();
+                    form.classList.remove("was-validated");
+                    if (fileNameDisplay) fileNameDisplay.textContent = "";
+                    if (appliedForPositionInput) appliedForPositionInput.value = "";
+                    if (jobIdHiddenInput) jobIdHiddenInput.value = "";
+                    form.action = ""; // Reset form action
+                    const jobOpeningsSection = document.querySelector('.job-openings');
+                    if(jobOpeningsSection) jobOpeningsSection.scrollIntoView({ behavior: "smooth" });
+                }
+
+              } else { // Handle server-side errors (non-2xx status or success:false in JSON)
+                console.error("[CAREER PAGE] Application submission server error:", responseData);
+                let alertMessage = "Submission failed. ";
+                if (responseData && responseData.message) {
+                    alertMessage += responseData.message;
+                } else {
+                    alertMessage += "Please check your input and try again.";
+                }
+                if (responseData && responseData.errors && responseData.errors.length > 0) {
+                    alertMessage += "\n\nDetails:\n" + responseData.errors.map(err => `- ${err.msg}`).join("\n");
+                    // TODO: Implement displaying these errors next to form fields for better UX
+                }
+                alert(alertMessage);
+                // Do not reset the form here, so user can correct errors.
+                form.classList.remove("was-validated"); // Remove so errors are not stuck
+              }
+            } catch (error) { // Catch network errors or the rethrown JSON parsing error
+              console.error("[CAREER PAGE] Fetch API, network, or JSON parsing error:", error);
+              if (!error.message.includes("Non-JSON response")) { // Avoid double alerting for JSON parse error
+                  alert("An error occurred while submitting your application. Please check your network and try again.");
+              }
+            } finally {
+              submitButton.disabled = false;
+              if (buttonText) buttonText.textContent = "Submit Application";
+              if (spinner) spinner.style.display = "none";
+            }
+          });
+        }
+      });
     </script>
-  </body>
+</body>
 </html>

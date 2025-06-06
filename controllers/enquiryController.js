@@ -70,7 +70,7 @@ const submitPublicEnquiry = async (req, res) => {
         });
 
         if (req.flash) req.flash('success_msg', 'Your enquiry has been submitted successfully! We will contact you soon.');
-        res.redirect('/contact-thank-you');
+        res.redirect('/public/enquiry/contact-thank-you');
 
     } catch (err) {
         console.error("Error submitting enquiry:", err);
@@ -82,7 +82,7 @@ const submitPublicEnquiry = async (req, res) => {
             req.flash('error_validation', JSON.stringify(errorMessages.map(msg => ({msg}))));
             req.flash('error_form_data', JSON.stringify(req.body));
         }
-        res.redirect(req.headers.referer || '/contact-us');
+        res.redirect(req.headers.referer || '/enquiry');
     }
 };
 

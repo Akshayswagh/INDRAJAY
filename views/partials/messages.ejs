@@ -1,0 +1,64 @@
+<%# views/partials/messages.ejs %>
+
+<%# Check for success messages (usually an array) %>
+<% if (typeof success_msg !== 'undefined' && success_msg && success_msg.length > 0) { %>
+    <% success_msg.forEach(function(message) { %>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <%- message %> <%# Use <%- to output HTML if your messages might contain it (like <br>) %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <% }); %>
+<% } %>
+
+<%# Check for error messages (usually an array) %>
+<% if (typeof error_msg !== 'undefined' && error_msg && error_msg.length > 0) { %>
+    <% error_msg.forEach(function(message) { %>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <%- message %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <% }); %>
+<% } %>
+
+<%# Check for general error (often set by Passport.js or other auth libraries) %>
+<% if (typeof error !== 'undefined' && error && error.length > 0) { %>
+    <%# Ensure 'error' is treated as an array, even if it's a single string from some libraries %>
+    <% const errorMessages = Array.isArray(error) ? error : [error]; %>
+    <% errorMessages.forEach(function(message) { %>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <%- message %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <% }); %>
+<% } %>
+
+<%# Check for info messages (usually an array) %>
+<% if (typeof info_msg !== 'undefined' && info_msg && info_msg.length > 0) { %>
+    <% info_msg.forEach(function(message) { %>
+        <div class="alert alert-info alert-dismissible fade show" role="alert">
+            <%- message %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <% }); %>
+<% } %>
+
+<%# --- Alternative: If you pass the entire req.flash() object as 'messages' --- %>
+<%# This is more generic but requires your EJS to know the keys (success_msg, error_msg etc.) %>
+<%#
+    if (typeof messages !== 'undefined' && Object.keys(messages).length > 0) {
+        Object.keys(messages).forEach(function(type) {
+            if (messages[type] && messages[type].length > 0) {
+                const alertClass = type === 'success_msg' || type === 'success' ? 'success' :
+                                 type === 'error_msg' || type === 'error' ? 'danger' :
+                                 type === 'info_msg' || type === 'info' ? 'info' :
+                                 'warning'; // Default to warning for other types
+                messages[type].forEach(function(message) { %>
+                    <div class="alert alert-<%= alertClass %> alert-dismissible fade show" role="alert">
+                        <%- message %>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                <% });
+            }
+        });
+    }
+%>

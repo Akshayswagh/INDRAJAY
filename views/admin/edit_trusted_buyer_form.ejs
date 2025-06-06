@@ -78,13 +78,17 @@
                     <div class="col-md-6 mb-3">
                         <label for="contactNumber" class="form-label">Contact Number <span class="text-danger">*</span></label>
                         <input 
-                            type="tel" 
-                            class="form-control <%= typeof errors !== 'undefined' && errors.some(e => e.param === 'contactNumber') ? 'is-invalid' : '' %>" 
-                            id="contactNumber" 
-                            name="contactNumber" 
-                            value="<%= typeof buyerData !== 'undefined' ? buyerData.contactNumber : buyerItem.contactNumber %>" 
-                            required
-                        >
+  type="tel" 
+  pattern="\d{10}" 
+  maxlength="10"
+  title="Enter a valid 10-digit contact number"
+  class="form-control <%= typeof errors !== 'undefined' && errors.some(e => e.param === 'contactNumber') ? 'is-invalid' : '' %>" 
+  id="contactNumber" 
+  name="contactNumber" 
+  value="<%= typeof buyerData !== 'undefined' ? buyerData.contactNumber : buyerItem.contactNumber %>" 
+  required
+/>
+
                         <div class="invalid-feedback">
                             <%= typeof errors !== 'undefined' && errors.find(e => e.param === 'contactNumber') ? errors.find(e => e.param === 'contactNumber').msg : 'Contact number is required.' %>
                         </div>
@@ -145,13 +149,13 @@
                         class="form-control <%= typeof errors !== 'undefined' && errors.some(e => e.param === 'bankDetailsPdf') ? 'is-invalid' : '' %>" 
                         id="bankDetailsPdf" 
                         name="bankDetailsPdf" 
-                        accept="application/pdf"
+                        accept="image/jpeg, image/jpg, image/png"
                     >
                     <% if (buyerItem.bankDetailsPdf) { %>
                         <div class="mt-2">
                             <small class="text-muted">Current file: </small>
                             <a href="<%= buyerItem.bankDetailsPdf %>" target="_blank" class="btn btn-sm btn-outline-info">
-                                <i class="fas fa-file-pdf me-1"></i> View Current PDF
+                                <i class="fas fa-file-pdf me-1"></i> View Current file
                             </a>
                         </div>
                     <% } %>
@@ -186,6 +190,16 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
+
+
+ const contactInput = document.getElementById('contactNumber');
+  contactInput.addEventListener('input', () => {
+    contactInput.value = contactInput.value.replace(/\D/g, ''); // Remove non-digits
+    if (contactInput.value.length > 10) {
+      contactInput.value = contactInput.value.slice(0, 10); // Max 10 digits
+    }
+  });
+
         const form = document.getElementById("editTrustedBuyerForm");
         const submitButton = document.getElementById("updateBuyerSubmitBtn");
         

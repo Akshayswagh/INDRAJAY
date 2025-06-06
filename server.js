@@ -37,8 +37,8 @@ const {
 } = require("./middlewares/adminAuthMiddleware");
 
 const publicEnquiryRoutes = require("./routes/publicEnquiryRoutes");
-const adminTrustedBuyerPageRoutes = require('./routes/adminTrustedBuyerPageRoutes');
-const adminTrustedBuyerApiRoutes = require('./routes/adminTrustedBuyerApiRoutes');
+const adminTrustedBuyerPageRoutes = require("./routes/adminTrustedBuyerPageRoutes");
+const adminTrustedBuyerApiRoutes = require("./routes/adminTrustedBuyerApiRoutes");
 
 const adminEnquiryPageRoutes = require("./routes/adminEnquiryPageRoutes");
 const adminEnquiryApiRoutes = require("./routes/adminEnquiryApiRoutes");
@@ -62,6 +62,14 @@ const adminUserPageRoutes = require("./routes/adminUserPageRoutes"); // <<< NEW 
 const adminEventPageRoutes = require("./routes/adminEventPageRoutes");
 const adminEventApiRoutes = require("./routes/adminEventApiRoutes");
 const publicEventApiRoutes = require("./routes/publicEventApiRoutes"); // Your existing API router for events
+
+const publicJobApplicationRoutes = require("./routes/publicJobApplicationRoutes");
+const adminJobApplicationPageRoutes = require("./routes/adminJobApplicationPageRoutes");
+const adminJobApplicationApiRoutes = require("./routes/adminJobApplicationApiRoutes");
+
+const vendorRoutes = require("./routes/vendorRegister");
+
+// const accessVendor = require("./routes/accessVendors");
 
 connectDB();
 
@@ -223,11 +231,31 @@ app.use(
   ensureAdminRole,
   adminEnquiryApiRoutes
 );
+app.use(
+  "/public/enquiry",
+
+  publicEnquiryRoutes
+);
 // Mount Admin Page Routes for Trusted Buyers
-app.use('/admin/trusted-buyers', adminTrustedBuyerPageRoutes);
-app.use('/admin/api/trusted-buyers', adminTrustedBuyerApiRoutes);
+app.use("/admin/trusted-buyers", adminTrustedBuyerPageRoutes);
+app.use("/admin/api/trusted-buyers", adminTrustedBuyerApiRoutes);
+
+// Public route for submitting job applications
+app.use("/careers", publicJobApplicationRoutes);
+
+// Admin routes for managing job applications
+app.use("/admin/job-applications", adminJobApplicationPageRoutes);
+app.use("/admin/api/job-applications", adminJobApplicationApiRoutes);
+// ...
+
+// app.use("/admin/vendors", accessVendor);
+
+app.use("/api/vendor", vendorRoutes);
 
 // Admin creation route
+
+// use postman tool to use these
+
 app.post("/create-admin", async (req, res) => {
   try {
     const { email, name, contactNumber, password } = req.body;
@@ -247,7 +275,9 @@ app.post("/create-admin", async (req, res) => {
       role: "admin", // Force the role to admin
     });
 
-    res.status(201).json({ message: "Admin user created", userId: adminUser._id });
+    res
+      .status(201)
+      .json({ message: "Admin user created", userId: adminUser._id });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error", error: error.message });
@@ -393,7 +423,7 @@ app.get("/fruits", async (req, res) => {
       fruits, // passing fruits to ejs template
     });
   } catch (err) {
-    console.log("error fetching fruits:", err);
+    // console.log("error fetching fruits:", err);
     res.status(500).send("Internal server Error");
   }
 });
@@ -627,7 +657,7 @@ app.get("/events", async (req, res) => {
     const events = await event.find().sort({ created_at: -1 }).lean(); // Add .lean() for better performance
 
     // Verify events data before rendering
-    console.log("Fetched events:", events);
+    // console.log("Fetched events:", events);
 
     res.render("client/e", {
       // Try without .ejs extension
@@ -703,7 +733,7 @@ app.get("/api/consultations/view/:id", async (req, res) => {
   try {
     const consultation = await ConsultService.findById(req.params.id);
     if (!consultation) {
-      console.log("❌ Consultation not found for ID:", req.params.id);
+      // console.log("❌ Consultation not found for ID:", req.params.id);
       return res.status(404).send("Consultation not found");
     }
     res.render("client/consult-details", {

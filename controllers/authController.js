@@ -23,7 +23,7 @@ const register = async (req, res) => {
     // Validate role
     const validRoles = ["admin", "vendor", "user"];
     if (!validRoles.includes(role)) {
-      console.log(" form submitted but invalid role");
+      // console.log(" form submitted but invalid role");
       return res.status(400).json({ message: "Invalid role provided" });
     }
 
@@ -190,7 +190,7 @@ const forgotPassword = async (req, res) => {
     const resetUrl = `${req.protocol}://${req.get(
       "host"
     )}/reset-password/${token}`;
-    console.log("Reset URL:", resetUrl); // Log URL
+    // console.log("Reset URL:", resetUrl); // Log URL
 
     await transporter.sendMail({
       to: user.email,

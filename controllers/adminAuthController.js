@@ -18,8 +18,8 @@ const showAdminLoginPage = (req, res) => {
 
 // Handle Admin Login Submission (Simplified)
 const processAdminLogin = async (req, res) => {
-    console.log("--- processAdminLogin function started ---");
-    console.log("Request body:", req.body);
+    // console.log("--- processAdminLogin function started ---");
+    // console.log("Request body:", req.body);
 
     const { email, password } = req.body;
 
@@ -30,12 +30,12 @@ const processAdminLogin = async (req, res) => {
     }
 
     try {
-        console.log(`Attempting to find admin user: ${email}`);
+        // console.log(`Attempting to find admin user: ${email}`);
         const adminUser = await User.findOne({ email: email.toLowerCase(), role: 'admin' }).select('+password');
         // console.log("Admin user from DB:", adminUser ? adminUser.email : "null");
 
         if (!adminUser) {
-            console.log("Admin user not found in DB or not an admin.");
+            // console.log("Admin user not found in DB or not an admin.");
             req.flash('error_msg', 'Admin account not found or invalid credentials.');
             return res.redirect('/admin/auth/login');
         }
@@ -45,12 +45,12 @@ const processAdminLogin = async (req, res) => {
         // console.log("Password match status:", isMatch);
 
         if (!isMatch) {
-            console.log("Password does not match.");
+            // console.log("Password does not match.");
             req.flash('error_msg', 'Invalid credentials.');
             return res.redirect('/admin/auth/login');
         }
 
-        console.log("Password matches. Creating session.");
+        // console.log("Password matches. Creating session.");
         // Store essential, non-sensitive user info in the session
         req.session.user = {
             id: adminUser._id,
@@ -58,13 +58,13 @@ const processAdminLogin = async (req, res) => {
             email: adminUser.email,
             role: adminUser.role
         };
-        console.log('Admin session created:', JSON.stringify(req.session.user));
+        // console.log('Admin session created:', JSON.stringify(req.session.user));
 
         req.flash('success_msg', 'You are now logged in as Admin.');
         const redirectUrl = req.session.returnTo || '/admin'; // Or /admin/dashboard
         delete req.session.returnTo; // Clean up returnTo from session
 
-        console.log("Redirecting to:", redirectUrl);
+        // console.log("Redirecting to:", redirectUrl);
         res.redirect(redirectUrl);
         // console.log("--- Redirect sent from processAdminLogin (try block) ---");
 

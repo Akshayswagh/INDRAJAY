@@ -10,6 +10,8 @@ router.get('/contact-us', enquiryController.showPublicEnquiryForm);
 // POST route to handle the form submission
 router.post('/submit-enquiry', enquiryController.submitPublicEnquiry);
 
+
+
 // GET route for the thank you page
 router.get('/contact-thank-you', (req, res) => {
     res.render('client/thank_you', { // You need to create views/public/thank_you.ejs

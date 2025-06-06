@@ -85,14 +85,14 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     // Optional: Close mobile sidebar when a link is clicked
-    // const sidebarLinks = document.querySelectorAll('#sidebar-wrapper .list-group-item');
-    // sidebarLinks.forEach(link => {
-    //     link.addEventListener('click', function() {
-    //         if (window.innerWidth < DESKTOP_BREAKPOINT && wrapper.classList.contains('toggled')) {
-    //             wrapper.classList.remove('toggled');
-    //             localStorage.setItem('sidebarToggled', 'false'); // Reflect that it's now closed on mobile
-    //             updateToggleIcon();
-    //         }
-    //     });
-    // });
+    const sidebarLinks = document.querySelectorAll('#sidebar-wrapper .list-group-item');
+    sidebarLinks.forEach(link => {
+        link.addEventListener('click', function() {
+            if (window.innerWidth < DESKTOP_BREAKPOINT && wrapper.classList.contains('toggled')) {
+                wrapper.classList.remove('toggled');
+                localStorage.setItem('sidebarToggled', 'false'); // Reflect that it's now closed on mobile
+                updateToggleIcon();
+            }
+        });
+    });
 });

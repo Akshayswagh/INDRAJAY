@@ -15,7 +15,7 @@ const getMulterUploader = (folderName) => {
       public_id: (req, file) => {
         // Create a custom name like: events-uuid.ext
         const ext = file.originalname.split(".").pop().toLowerCase();
-        return `${folderName}-${uuidv4()}.${ext}`;
+        return `${folderName}-${uuidv4()}`;
       },
     },
   });
@@ -24,14 +24,14 @@ const getMulterUploader = (folderName) => {
     storage,
     limits: { fileSize: 5 * 1024 * 1024 }, // 5 MB
     fileFilter: (req, file, cb) => {
-      const allowedTypes = /jpeg|jpg|png|gif|webp|pdf/;
+      const allowedTypes = /jpeg|jpg|png/;
       const extname = allowedTypes.test(file.originalname.toLowerCase());
       const mimetype = allowedTypes.test(file.mimetype);
 
       if (extname && mimetype) {
         cb(null, true);
       } else {
-        cb(new Error("Only images (jpeg, jpg, png, gif, webp) are allowed!"));
+        cb(new Error("Only images (jpeg, jpg, png) are allowed!"));
       }
     },
   });

@@ -19,13 +19,13 @@ router.get(
 );
 
 // all can  access these Routes (admin, users, users)
-router.get(
-  "/user",
-  verifyToken,
-  authorizeRoles("admin", "vender", "user"),
-  (req, res) => {
-    res.json({ messgae: "welcome user" });
-  }
-);
+// router.get(
+//   "/user",
+//   verifyToken,
+//   authorizeRoles("admin", "vender", "user"),
+//   (req, res) => {
+//     res.json({ messgae: "welcome user" });
+//   }
+// );
 
 module.exports = router;

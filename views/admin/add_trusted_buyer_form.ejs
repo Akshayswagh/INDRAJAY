@@ -96,14 +96,17 @@
 
           <div class="col-md-6 mb-3">
             <label for="contactNumber" class="form-label">Contact Number <span class="text-danger">*</span></label>
-            <input
-              type="tel"
-              class="form-control <%= hasError('contactNumber') ? 'is-invalid' : '' %>"
-              id="contactNumber"
-              name="contactNumber"
-              value="<%= getVal('contactNumber') %>"
-              required
-            />
+           <input
+  type="tel"
+  pattern="\d{10}"
+  maxlength="10"
+  title="Please enter a 10-digit contact number"
+  class="form-control <%= hasError('contactNumber') ? 'is-invalid' : '' %>"
+  id="contactNumber"
+  name="contactNumber"
+  value="<%= getVal('contactNumber') %>"
+  required
+/>
             <div class="invalid-feedback"><%= getError('contactNumber', 'Contact number is required.') %></div>
           </div>
         </div>
@@ -152,7 +155,7 @@
         <!-- Bank Details PDF -->
         <div class="mb-3">
           <label for="bankDetailsPdf" class="form-label">
-            Bank Details (PDF, max 2MB)
+            Bank Details (img, jpg, jpeg only. max 2MB)
             <% if (typeof isBankPdfRequiredOnForm !== 'undefined' && isBankPdfRequiredOnForm) { %>
               <span class="text-danger">*</span>
             <% } %>
@@ -162,7 +165,7 @@
             class="form-control <%= hasError('bankDetailsPdf') ? 'is-invalid' : '' %>"
             id="bankDetailsPdf"
             name="bankDetailsPdf"
-            accept="application/pdf"
+           accept="image/jpeg, image/jpg, image/png"
             <% if (typeof isBankPdfRequiredOnForm !== 'undefined' && isBankPdfRequiredOnForm) { %>required<% } %>
           />
           <div class="invalid-feedback" id="bankPdfFeedback">
@@ -197,6 +200,17 @@
 
 <script>
   document.addEventListener("DOMContentLoaded", function () {
+
+ const contactInput = document.getElementById('contactNumber');
+  contactInput.addEventListener('input', () => {
+    contactInput.value = contactInput.value.replace(/\D/g, ''); // Remove non-digits
+    if (contactInput.value.length > 10) {
+      contactInput.value = contactInput.value.slice(0, 10); // Max 10 digits
+    }
+  });
+
+
+    
     const form = document.getElementById("addTrustedBuyerForm");
     const submitButton = document.getElementById("addBuyerSubmitBtn");
     const bankPdfInput = document.getElementById("bankDetailsPdf");
@@ -219,9 +233,11 @@
             isCustomPdfValidationValid = false;
           } else if (bankPdfInput.files.length > 0) {
             const file = bankPdfInput.files[0];
-            if (file.type !== "application/pdf") {
-              bankPdfFeedback.textContent = "Invalid file type. Only PDF is allowed.";
-              bankPdfInput.classList.add("is-invalid");
+            const allowedTypes = ["image/jpeg", "image/jpg", "image/png"];
+
+           if (!allowedTypes.includes(file.type)) {
+    bankPdfFeedback.textContent = "Invalid file type. Only JPG, JPEG, or PNG images are allowed.";
+    bankPdfInput.classList.add("is-invalid");
               isCustomPdfValidationValid = false;
             } else if (file.size > 2 * 1024 * 1024) {
               bankPdfFeedback.textContent = "File is too large. Maximum size is 2MB.";

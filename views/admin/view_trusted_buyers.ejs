@@ -41,7 +41,7 @@
                                     </td>
                                     <td>
                                         <% if (buyer.bankDetailsPdf) { %>
-                                            <a href="<%= buyer.bankDetailsPdf %>" target="_blank" class="btn btn-sm btn-outline-info"><i class="fas fa-file-pdf me-1"></i> View PDF</a>
+                                            <a href="<%= buyer.bankDetailsPdf.url %>" target="_blank" class="btn btn-sm btn-outline-info"><i class="fas fa-file-pdf me-1"></i> View Document</a>
                                         <% } else { %>
                                             Not Provided
                                         <% } %>

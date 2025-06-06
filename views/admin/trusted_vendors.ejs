@@ -1,18 +1,18 @@
-<%# views/admin/view_vendors.ejs %>
+<%# views/admin/trusted_vendors.ejs %>
 <%- include('../partials/admin_sidebar', { activePage: activePage, currentUser: currentUser }) %>
 
-<div class="main-content"> <%# Assuming a main content wrapper from your layout %>
+<div class="main-content">
     <div class="container-fluid">
         <div class="page-header d-flex justify-content-between align-items-center mb-4">
             <h1><%= title %></h1>
-            <a href="/admin/trusted-vendors" class="btn btn-info">View Trusted Vendors</a>
+            <a href="/admin/vendors" class="btn btn-secondary">View All Vendors</a>
         </div>
 
 
         <div class="card shadow-sm">
             <div class="card-header">
                 <div class="d-flex justify-content-end">
-                    <a href="?sort=desc" class="btn btn-sm <%= (currentSort === 'desc') ? 'btn-primary' : 'btn-outline-primary' %> me-2">
+                     <a href="?sort=desc" class="btn btn-sm <%= (currentSort === 'desc') ? 'btn-primary' : 'btn-outline-primary' %> me-2">
                         <i class="fas fa-sort-amount-down me-1"></i> Newest First
                     </a>
                     <a href="?sort=asc" class="btn btn-sm <%= currentSort === 'asc' ? 'btn-primary' : 'btn-outline-primary' %>">
@@ -31,7 +31,6 @@
                                 <th>Contact Person</th>
                                 <th>Contact No.</th>
                                 <th>Product/Service</th>
-                                <th>Status</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -43,33 +42,18 @@
                                 <td><%= vendor.contactPersonName || 'N/A' %></td>
                                 <td><%= vendor.contactNumber || 'N/A' %></td>
                                 <td><%= vendor.productOrService || 'N/A' %></td>
-                                <td>
-                                    <% if (vendor.isTrusted) { %>
-                                        <span class="badge bg-success"><i class="fas fa-check-circle"></i> Trusted</span>
-                                    <% } else { %>
-                                        <span class="badge bg-warning text-dark"><i class="fas fa-user-clock"></i> Not Trusted</span>
-                                    <% } %>
-                                </td>
                                 <td class="text-nowrap">
-                                    <button type="button" class="btn btn-sm btn-outline-info me-1 view-vendor-btn"
+                                     <button type="button" class="btn btn-sm btn-outline-info me-1 view-vendor-btn"
                                             title="View Details"
                                             data-bs-toggle="modal"
                                             data-bs-target="#vendorDetailsModal"
                                             data-vendor="<%= JSON.stringify(vendor) %>">
                                         <i class="fas fa-eye"></i>
                                     </button>
-
-                                    <% if (vendor.isTrusted) { %>
-                                        <form action="/admin/vendors/<%= vendor._id %>/untrust?_method=PATCH" method="POST" style="display: inline;" onsubmit="return confirm('Remove <%= vendor.firmName %> from trusted list?');">
-                                            <button type="submit" class="btn btn-sm btn-warning me-1" title="Mark as Not Trusted"><i class="fas fa-user-times"></i></button>
-                                        </form>
-                                    <% } else { %>
-                                        <form action="/admin/vendors/<%= vendor._id %>/trust?_method=PATCH" method="POST" style="display: inline;" onsubmit="return confirm('Mark <%= vendor.firmName %> as a trusted vendor?');">
-                                            <button type="submit" class="btn btn-sm btn-success me-1" title="Mark as Trusted"><i class="fas fa-user-check"></i></button>
-                                        </form>
-                                    <% } %>
-
-                                    <form action="/admin/vendors/delete/<%= vendor._id %>" method="POST" style="display: inline;" onsubmit="return confirm('Are you sure you want to PERMANENTLY DELETE vendor: <%= vendor.firmName || vendor.contactPersonName %>? This action cannot be undone.');">
+                                    <form action="/admin/vendors/<%= vendor._id %>/untrust?_method=PATCH" method="POST" style="display: inline;" onsubmit="return confirm('Remove <%= vendor.firmName %> from trusted list?');">
+                                        <button type="submit" class="btn btn-sm btn-warning me-1" title="Mark as Not Trusted"><i class="fas fa-user-times"></i></button>
+                                    </form>
+                                     <form action="/admin/vendors/delete/<%= vendor._id %>" method="POST" style="display: inline;" onsubmit="return confirm('Are you sure you want to PERMANENTLY DELETE vendor: <%= vendor.firmName || vendor.contactPersonName %>? This action cannot be undone.');">
                                         <button type="submit" class="btn btn-sm btn-danger" title="Delete Vendor"><i class="fas fa-trash"></i></button>
                                     </form>
                                 </td>
@@ -80,20 +64,21 @@
                 </div>
                 <% } else { %>
                 <div class="alert alert-info m-3 text-center" role="alert">
-                    No vendors found.
+                    No trusted vendors found.
                 </div>
                 <% } %>
             </div>
-            <% if (vendors && vendors.length > 0) { %>
+             <% if (vendors && vendors.length > 0) { %>
             <div class="card-footer text-muted">
-                Displaying <%= vendors.length %> vendor(s).
+                Displaying <%= vendors.length %> trusted vendor(s).
             </div>
             <% } %>
         </div>
     </div>
 </div>
 
-<!-- Bootstrap Modal for Vendor Details (copied from previous response) -->
+<!-- Re-use the same Bootstrap Modal and JS from view_vendors.ejs or include as a partial -->
+<!-- For simplicity, copying the modal and script here. In a real app, make modal a partial. -->
 <div class="modal fade" id="vendorDetailsModal" tabindex="-1" aria-labelledby="vendorDetailsModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-scrollable">
         <div class="modal-content">
@@ -102,7 +87,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div id="modalVendorContent">
+                 <div id="modalVendorContent">
                     <p><strong>Firm Name:</strong> <span id="modalFirmName"></span></p>
                     <p><strong>Contact Person:</strong> <span id="modalContactPersonName"></span></p>
                     <p><strong>Email:</strong> <span id="modalEmail"></span></p>
@@ -115,8 +100,8 @@
                     <p><strong>Registered On:</strong> <span id="modalRegisteredOn"></span></p>
                     <p><strong>Trusted Status:</strong> <span id="modalTrustedStatus"></span></p>
                     <hr>
-                    <!-- <p><strong>Full Data (JSON):</strong></p> -->
-                    <!-- <pre id="modalFullData" style="max-height: 200px; overflow-y: auto; background-color: #f8f9fa; padding: 10px; border-radius: 4px;"></pre> -->
+                    <!-- <p><strong>Full Data (JSON):</strong></p>
+                    <pre id="modalFullData" style="max-height: 200px; overflow-y: auto; background-color: #f8f9fa; padding: 10px; border-radius: 4px;"></pre> -->
                 </div>
             </div>
             <div class="modal-footer">
@@ -129,29 +114,24 @@
 <%- include('../partials/admin_footer') %>
 
 <script>
+// Same JavaScript for modal as in view_vendors.ejs
 document.addEventListener('DOMContentLoaded', function () {
-    // Ensure Bootstrap Modal instance is correctly initialized if not done globally
-    // const vendorDetailsModalEl = document.getElementById('vendorDetailsModal');
-    // const vendorDetailsModal = vendorDetailsModalEl ? new bootstrap.Modal(vendorDetailsModalEl) : null;
-
     const viewButtons = document.querySelectorAll('.view-vendor-btn');
     viewButtons.forEach(button => {
         button.addEventListener('click', function () {
             const vendorDataString = this.getAttribute('data-vendor');
             try {
                 const vendor = JSON.parse(vendorDataString);
-
                 document.getElementById('modalFirmName').textContent = vendor.firmName || 'N/A';
                 document.getElementById('modalContactPersonName').textContent = vendor.contactPersonName || 'N/A';
                 document.getElementById('modalEmail').innerHTML = vendor.email ? `<a href="mailto:${vendor.email}">${vendor.email}</a>` : 'N/A';
                 document.getElementById('modalContactNumber').textContent = vendor.contactNumber || 'N/A';
-                document.getElementById('modalAddress').textContent = vendor.Address || 'N/A'; // Check casing 'Address' vs 'address'
+                document.getElementById('modalAddress').textContent = vendor.Address || 'N/A';
                 document.getElementById('modalProductOrService').textContent = vendor.productOrService || 'N/A';
                 document.getElementById('modalGstNumber').textContent = vendor.gstNumber || 'N/A';
                 document.getElementById('modalPanNumber').textContent = vendor.panNumber || 'N/A';
                 document.getElementById('modalRegisteredOn').textContent = vendor.createdAt ? new Date(vendor.createdAt).toLocaleString() : 'N/A';
                 document.getElementById('modalTrustedStatus').innerHTML = vendor.isTrusted ? '<span class="badge bg-success">Trusted</span>' : '<span class="badge bg-warning text-dark">Not Trusted</span>';
-
 
                 const bankPdfSpan = document.getElementById('modalBankDetailsPdf');
                 let pdfUrlToUse = '';
@@ -167,11 +147,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 } else {
                     bankPdfSpan.textContent = 'Not Available';
                 }
-
                 // document.getElementById('modalFullData').textContent = JSON.stringify(vendor, null, 2);
-                // Bootstrap 5 should handle showing the modal via data-bs-toggle.
-                // If not, uncomment: if(vendorDetailsModal) vendorDetailsModal.show();
-
             } catch (e) {
                 console.error("Error parsing vendor data or populating modal:", e);
                 document.getElementById('modalVendorContent').innerHTML = '<p class="text-danger">Could not load vendor details.</p>';

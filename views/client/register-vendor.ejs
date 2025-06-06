@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vendor Registration</title> <%# Added a title %>
     <%- include('../partials/head'); %>
     <style>
-      /* Base Styles */
+      /* Base Styles (Copied from your theme) */
       :root {
-        --primary-color: #f47321;
+        --primary-color: #f47321; /* Main theme color */
         --primary-hover: #e0661b;
         --text-color: #333;
         --muted-text: #6c757d;
@@ -25,6 +26,8 @@
         line-height: 1.6;
         color: var(--text-color);
         background-color: var(--background);
+        margin: 0; /* Ensure no default margin */
+        padding: 0; /* Ensure no default padding */
       }
 
       /* Layout */
@@ -35,12 +38,13 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        box-sizing: border-box;
       }
 
       .form-container {
         width: 100%;
-        max-width: 540px;
-        margin: 0 auto;
+        max-width: 600px; /* Slightly wider for more fields */
+        margin: 20px auto; /* Add some margin for smaller screens if not centered by flex */
       }
 
       .form-card {
@@ -48,7 +52,6 @@
         border-radius: 8px;
         box-shadow: var(--shadow);
         overflow: hidden;
-        animation: fadeInUp 0.5s ease;
       }
 
       .form-content {
@@ -64,96 +67,90 @@
         color: var(--muted-text);
         margin-bottom: 1rem;
         font-size: 1.1rem;
-        font-weight: 500;
+        font-weight: 600; /* Make section titles a bit bolder */
+        border-bottom: 1px solid var(--border-color); /* Add a subtle separator */
+        padding-bottom: 0.5rem;
       }
 
       .input-group {
         position: relative;
-        margin-bottom: 1rem;
+        margin-bottom: 1.25rem; /* Slightly more space */
       }
 
-      .form-input {
+      .form-input, .form-file-input { /* Style file input similarly */
         width: 100%;
-        padding: 1rem;
+        padding: 0.9rem; /* Adjusted padding */
         font-size: 1rem;
         border: 1px solid var(--border-color);
         border-radius: 4px;
         transition: border-color 0.2s;
+        box-sizing: border-box; /* Important for consistent sizing */
+      }
+      .form-file-input {
+        padding: 0.65rem 0.9rem; /* Adjust padding for file input */
       }
 
-      .form-input:focus {
+
+      .form-input:focus, .form-file-input:focus {
         border-color: var(--primary-color);
         outline: none;
+        box-shadow: 0 0 0 0.2rem rgba(244, 115, 33, 0.25); /* Focus ring */
       }
 
       .input-label {
         position: absolute;
-        top: 1rem;
-        left: 1rem;
+        top: 0.9rem; /* Aligned with input padding */
+        left: 0.9rem;
         color: var(--muted-text);
         transition: all 0.2s ease;
         pointer-events: none;
         background: var(--white);
-        padding: 0 0.2rem;
+        padding: 0 0.25rem; /* Space for label background */
       }
+      /* Label for file input might need different positioning if not using floating */
+      .file-input-label {
+          display: block; /* Make it a block to sit above */
+          margin-bottom: 0.5rem;
+          font-weight: 500;
+          color: var(--muted-text);
+      }
+
 
       .form-input:focus + .input-label,
       .form-input:not(:placeholder-shown) + .input-label {
-        top: -0.5rem;
+        top: -0.6rem; /* Adjusted for new padding */
         left: 0.8rem;
         font-size: 0.8rem;
         color: var(--primary-color);
       }
 
-      .password-wrapper {
-        position: relative;
-      }
-
-      .password-toggle {
-        position: absolute;
-        top: 50%;
-        right: 10px;
-        transform: translateY(-50%);
-        cursor: pointer;
-        color: var(--muted-text);
-      }
-
-      /* Checkbox */
-      .checkbox-group {
-        display: flex;
-        align-items: center;
-        margin-bottom: 1.5rem;
-      }
-
-      .checkbox-input {
-        margin-right: 0.5rem;
-      }
 
       /* Button */
       .submit-button {
         width: 100%;
-        padding: 0.8rem;
+        padding: 0.9rem;
         background-color: var(--primary-color);
         color: var(--white);
         border: none;
         border-radius: 4px;
         font-size: 1.1rem;
-        font-weight: 500;
+        font-weight: 600; /* Bolder button text */
         cursor: pointer;
         transition: background-color 0.2s;
-        margin-bottom: 1.5rem;
+        margin-top: 1rem; /* Space above button */
       }
 
       .submit-button:hover {
         background-color: var(--primary-hover);
       }
 
-      .button-content {
+      .button-content { /* For loader if you add it */
         display: flex;
         justify-content: center;
         align-items: center;
         gap: 0.5rem;
       }
+
 
       /* Form Header */
       .form-header {
@@ -163,121 +160,36 @@
 
       .form-icon {
         font-size: 3.5rem;
-        color: var(--primary-color);
+        color: var(--primary-color); /* Using primary theme color */
         margin-bottom: 1rem;
       }
 
       .form-title {
-        font-size: 1.75rem;
+        font-size: 1.85rem; /* Slightly larger */
         font-weight: 700;
         margin-bottom: 0.5rem;
       }
 
       .form-subtitle {
         color: var(--muted-text);
-      }
-
-      /* Footer Links */
-      .form-footer {
-        text-align: center;
-      }
-
-      .footer-link {
-        color: var(--primary-color);
-        text-decoration: none;
-        font-weight: 600;
-      }
-
-      .footer-link:hover {
-        text-decoration: underline;
-      }
-
-      /* Message Box */
-      .message-box {
-        padding: 1rem;
-        border-radius: 4px;
-        margin-top: 1.5rem;
-        display: none;
-      }
-
-      .error-message {
-        background-color: #f8d7da;
-        color: #721c24;
-        border: 1px solid #f5c6cb;
-      }
-
-      .success-message {
-        background-color: #d4edda;
-        color: #155724;
-        border: 1px solid #c3e6cb;
+        font-size: 1rem;
       }
 
       /* Invalid Feedback */
       .invalid-feedback {
         color: var(--error-color);
-        font-size: 0.8rem;
-        margin-top: 0.25rem;
-        display: none;
+        font-size: 0.875rem; /* Slightly larger feedback */
+        margin-top: 0.3rem;
+        display: none; /* Hidden by default */
       }
 
-      .input-error {
-        border-color: var(--error-color);
+      .form-input.input-error, .form-file-input.input-error { /* Apply error style to file input too */
+        border-color: var(--error-color) !important; /* Ensure override */
+      }
+      .form-input.input-error:focus, .form-file-input.input-error:focus {
+        box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
       }
 
-      /* Modal */
-      .modal-overlay {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: rgba(0, 0, 0, 0.5);
-        z-index: 1000;
-        justify-content: center;
-        align-items: center;
-      }
-
-      .modal-content {
-        background-color: var(--white);
-        border-radius: 8px;
-        width: 90%;
-        max-width: 400px;
-        overflow: hidden;
-        animation: fadeInUp 0.3s ease;
-      }
-
-      .modal-header {
-        padding: 1rem;
-        background-color: var(--primary-color);
-        color: var(--white);
-      }
-
-      .modal-body {
-        padding: 1.5rem;
-        text-align: center;
-      }
-
-      .modal-icon {
-        font-size: 3rem;
-        color: var(--success-color);
-        margin-bottom: 1rem;
-      }
-
-      .modal-footer {
-        padding: 1rem;
-        display: flex;
-        justify-content: center;
-      }
-
-      .modal-button {
-        padding: 0.5rem 1.5rem;
-        background-color: var(--primary-color);
-        color: var(--white);
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-      }
 
       /* Animations */
       @keyframes fadeInUp {
@@ -290,403 +202,302 @@
           transform: translateY(0);
         }
       }
-
-      @keyframes spin {
-        0% {
-          transform: rotate(0deg);
-        }
-        100% {
-          transform: rotate(360deg);
-        }
+      .animate__fadeInUp { /* If using animate.css, otherwise define fadeInUp */
+        animation: fadeInUp 0.6s ease-out;
       }
 
-      .spinner {
-        animation: spin 1s linear infinite;
+      /* Message Box for server responses */
+      .message-box {
+        padding: 1rem;
+        border-radius: 4px;
+        margin-top: 1.5rem;
+        text-align: center;
+        display: none; /* Hidden by default */
+      }
+      .message-box.error-message {
+        background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb;
+      }
+      .message-box.success-message {
+        background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb;
       }
 
-      /* Utility Classes */
-      .hidden {
-        display: none;
-      }
-
-      /* Responsive */
-      @media (max-width: 576px) {
-        .form-content {
-          padding: 1.5rem;
-        }
-      }
-      /* Reuse same styles as user registration */
-      .form-icon {
-        color: #4caf50;
-      } /* Different color for vendor */
     </style>
-  </head>
-  <body>
+</head>
+<body>
     <%- include('../partials/navbar'); %>
+
     <div class="page-container">
-      <div class="form-container">
-        <div class="form-card animate__animated animate__fadeInUp">
-          <div class="form-content">
-            <div class="form-header">
-              <div class="form-icon">
-                <i class="fas fa-store"></i>
-              </div>
-              <h1 class="form-title">Vendor Registration</h1>
-              <p class="form-subtitle">Register your business account</p>
+        <div class="form-container">
+            <div class="form-card animate__fadeInUp">
+                <div class="form-content">
+                    <div class="form-header">
+                        <div class="form-icon"><i class="fas fa-briefcase"></i></div>
+                        <h1 class="form-title">New Vendor Registration</h1>
+                        <p class="form-subtitle">Provide your business details to get started.</p>
+                    </div>
+
+                    <form id="newVendorForm" method="POST" action="/api/vendor/register" enctype="multipart/form-data">
+                        <%# The action should point to your backend route for vendor registration %>
+
+                        <div class="form-section">
+                            <h2 class="section-title">Business Details</h2>
+                            <div class="input-group">
+                                <input type="text" id="firmName" name="firmName" class="form-input" placeholder=" " required />
+                                <label for="firmName" class="input-label">Firm Name / Business Name</label>
+                                <div class="invalid-feedback">Firm name is required.</div>
+                            </div>
+
+                            <div class="input-group">
+                                <input type="text" id="contactPersonName" name="contactPersonName" class="form-input" placeholder=" " required />
+                                <label for="contactPersonName" class="input-label">Contact Person Name</label>
+                                <div class="invalid-feedback">Contact person's name is required.</div>
+                            </div>
+
+                            <div class="input-group">
+                                <input type="email" id="email" name="email" class="form-input" placeholder=" " required />
+                                <label for="email" class="input-label">Business Email</label>
+                                <div class="invalid-feedback">Please enter a valid email address.</div>
+                            </div>
+
+                            <div class="input-group">
+                                <input type="tel" id="contactNumber" name="contactNumber" class="form-input" placeholder=" " required pattern="[0-9]{10}" title="Enter a 10-digit contact number" />
+                                <label for="contactNumber" class="input-label">Contact Number (10 digits)</label>
+                                <div class="invalid-feedback">Must be a 10-digit number.</div>
+                            </div>
+                             <div class="input-group">
+                                <textarea id="Address" name="Address" class="form-input" placeholder=" " rows="3" required></textarea>
+                                <label for="Address" class="input-label">Full Business Address</label>
+                                <div class="invalid-feedback">Business address is required.</div>
+                            </div>
+                        </div>
+
+
+                        <div class="form-section">
+                            <h2 class="section-title">Products & Services</h2>
+                            <div class="input-group">
+                                <input type="text" id="productOrService" name="productOrService" class="form-input" placeholder=" " required />
+                                <label for="productOrService" class="input-label">Primary Product or Service Offered</label>
+                                <div class="invalid-feedback">Product/Service description is required.</div>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h2 class="section-title">Tax Information</h2>
+                            <div class="input-group">
+                                <input type="text" id="gstNumber" name="gstNumber" class="form-input" placeholder=" " required pattern="^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$" title="Enter a valid GST number (e.g., 22AAAAA0000A1Z5)" />
+                                <label for="gstNumber" class="input-label">GST Number</label>
+                                <div class="invalid-feedback">Invalid GST number format.</div>
+                            </div>
+
+                            <div class="input-group">
+                                <input type="text" id="panNumber" name="panNumber" class="form-input" placeholder=" " required pattern="^[A-Z]{5}[0-9]{4}[A-Z]{1}$" title="Enter a valid PAN number (e.g., ABCDE1234F)" />
+                                <label for="panNumber" class="input-label">PAN Number</label>
+                                <div class="invalid-feedback">Invalid PAN number format.</div>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h2 class="section-title">Bank Details</h2>
+                             <div class="input-group">
+                                <label for="bankDetailsPDF" class="file-input-label">Bank Details Document (PDF only, max 5MB)</label>
+                                <input type="file" id="bankDetailsPDF" name="bankDetailsPdf" class="form-file-input" accept=".pdf" required />
+                                <div class="invalid-feedback">Please upload your bank details in PDF format (max 5MB).</div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="submit-button">Register Vendor</button>
+                    </form>
+                     <div id="formResponseMessage" class="message-box"></div>
+                </div>
             </div>
-
-            <form action="/api/auth/register" method="POST" id="vendorForm">
-              <!-- Business Information -->
-              <div class="form-section">
-                <h2 class="section-title">Business Information</h2>
-                <!-- Add this new input group for name -->
-                <div class="input-group">
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    class="form-input"
-                    placeholder=" "
-                    required
-                  />
-                  <label for="name" class="input-label">Your Full Name</label>
-                  <div class="invalid-feedback">
-                    Please provide your full name.
-                  </div>
-                </div>
-
-                <div class="input-group">
-                  <input
-                    type="text"
-                    id="firmName"
-                    name="firmName"
-                    class="form-input"
-                    placeholder=" "
-                    required
-                  />
-                  <label for="firmName" class="input-label"
-                    >Business Name</label
-                  >
-                  <div class="invalid-feedback">
-                    Please provide your business name.
-                  </div>
-                </div>
-
-                <div class="input-group">
-                  <input
-                    type="email"
-                    id="vendorEmail"
-                    name="email"
-                    class="form-input"
-                    placeholder=" "
-                    required
-                  />
-                  <label for="vendorEmail" class="input-label"
-                    >Business Email</label
-                  >
-                  <div class="invalid-feedback">
-                    Please provide a valid email.
-                  </div>
-                </div>
-
-                <div class="input-group">
-                  <input
-                    type="tel"
-                    id="vendorPhone"
-                    name="contactNumber"
-                    class="form-input"
-                    placeholder=" "
-                    required
-                    pattern="[0-9]{10}"
-                    maxlength="10"
-                    oninput="this.value = this.value.replace(/[^0-9]/g, '');"
-                  />
-                  <label for="vendorPhone" class="input-label"
-                    >Contact Number</label
-                  >
-                  <div class="invalid-feedback">
-                    Please provide a valid 10-digit number.
-                  </div>
-                </div>
-              </div>
-
-              <!-- Business Address -->
-              <div class="form-section">
-                <h2 class="section-title">Business Address</h2>
-                <div class="input-group">
-                  <input
-                    type="text"
-                    id="businessAddress"
-                    name="address"
-                    class="form-input"
-                    placeholder=" "
-                    required
-                  />
-                  <label for="businessAddress" class="input-label"
-                    >Business Address</label
-                  >
-                  <div class="invalid-feedback">
-                    Please provide your business address.
-                  </div>
-                </div>
-              </div>
-
-              <!-- Account Security -->
-              <div class="form-section">
-                <h2 class="section-title">Account Security</h2>
-
-                <div class="input-group password-wrapper">
-                  <input
-                    type="password"
-                    id="vendorPassword"
-                    name="password"
-                    class="form-input"
-                    placeholder=" "
-                    required
-                    pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,12}$"
-                  />
-                  <label for="vendorPassword" class="input-label"
-                    >Password</label
-                  >
-                  <span class="password-toggle">
-                    <i class="far fa-eye"></i>
-                  </span>
-                  <div class="invalid-feedback">
-                    Password must contain 8-12 characters with uppercase,
-                    lowercase, number, and special character.
-                  </div>
-                </div>
-
-                <input type="hidden" name="role" value="vendor" />
-
-                <div class="checkbox-group">
-                  <input
-                    type="checkbox"
-                    id="vendorTerms"
-                    name="terms"
-                    class="checkbox-input"
-                    required
-                  />
-                  <label for="vendorTerms">
-                    I agree to the
-                    <a href="#" class="footer-link">Vendor Agreement</a>
-                  </label>
-                  <div class="invalid-feedback">
-                    You must agree to the Vendor Agreement
-                  </div>
-                </div>
-              </div>
-
-              <button type="submit" class="submit-button">
-                <div class="button-content">
-                  <span class="button-text">Register Business</span>
-                  <span class="button-loader hidden">
-                    <i class="fas fa-spinner spinner"></i>
-                  </span>
-                </div>
-              </button>
-
-              <div class="form-footer">
-                <p>
-                  Already have an account?
-                  <a href="/login-vendor" class="footer-link">Vendor Login</a>
-                </p>
-              </div>
-            </form>
-            <!-- Add this after the form footer -->
-            <div id="responseMessage" class="message-box" role="alert"></div>
-          </div>
         </div>
-      </div>
     </div>
-    <!-- Success Modal -->
-    <div class="modal-overlay" id="successModal">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4>Success!</h4>
-        </div>
-        <div class="modal-body">
-          <div class="modal-icon">
-            <i class="fas fa-check-circle"></i>
-          </div>
-          <h5>Account Created Successfully</h5>
-          <p>Thank you for registering your business!</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="modal-button" id="successModalClose">
-            Continue
-          </button>
-        </div>
-      </div>
-    </div>
+
     <%- include('../partials/footer'); %>
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        const form = document.getElementById("vendorForm");
-        const responseBox = document.getElementById("responseMessage");
-        const passwordToggle = document.querySelector(".password-toggle");
-        const passwordInput = document.getElementById("vendorPassword");
-        const successModal = document.getElementById("successModal");
-
-        // Password toggle functionality
-        passwordToggle.addEventListener("click", function () {
-          const icon = this.querySelector("i");
-          const type = passwordInput.type === "password" ? "text" : "password";
-          passwordInput.type = type;
-          icon.classList.toggle("fa-eye");
-          icon.classList.toggle("fa-eye-slash");
-        });
-
-        // Form validation and submission
-        const fieldsToValidate = [
-          "name",
-          "firmName",
-          "email",
-          "contactNumber",
-          "address",
-          "password",
-          "terms",
-        ];
-
-        function validateField(field) {
-          if (!field.checkValidity()) {
-            field.classList.add("input-error");
-            let errorElement = field.nextElementSibling;
-            while (errorElement) {
-              if (errorElement.classList.contains("invalid-feedback")) {
-                errorElement.style.display = "block";
-                break;
-              }
-              errorElement = errorElement.nextElementSibling;
-            }
-            return false;
-          } else {
-            field.classList.remove("input-error");
-            let errorElement = field.nextElementSibling;
-            while (errorElement) {
-              if (errorElement.classList.contains("invalid-feedback")) {
-                errorElement.style.display = "none";
-                break;
-              }
-              errorElement = errorElement.nextElementSibling;
-            }
-            return true;
-          }
-        }
-
-        function handleServerErrors(result) {
-          if (result.errors) {
-            result.errors.forEach((error) => {
-              const field = form.elements[error.field];
-              if (field) {
-                field.classList.add("input-error");
-                let errorElement = field.nextElementSibling;
-                while (errorElement) {
-                  if (errorElement.classList.contains("invalid-feedback")) {
-                    errorElement.textContent = error.message;
-                    errorElement.style.display = "block";
-                    break;
-                  }
-                  errorElement = errorElement.nextElementSibling;
-                }
-              }
-            });
-
-            responseBox.className = "message-box error-message";
-            responseBox.textContent = "Please fix the highlighted errors.";
-            responseBox.style.display = "block";
-          } else {
-            responseBox.className = "message-box error-message";
-            responseBox.textContent = result.message || "Registration failed!";
-            responseBox.style.display = "block";
-          }
-        }
-
-        function showSuccessModal() {
-          successModal.style.display = "flex";
-        }
-
-        form.addEventListener("submit", async function (event) {
-          event.preventDefault();
-          responseBox.style.display = "none";
-
-          let isValid = true;
-          fieldsToValidate.forEach((fieldName) => {
-            const field = form.elements[fieldName];
-            if (field && !validateField(field)) {
-              isValid = false;
-            }
-          });
-
-          if (!isValid) return;
-
-          const submitBtn = form.querySelector('button[type="submit"]');
-          const btnText = submitBtn.querySelector(".button-text");
-          const btnLoader = submitBtn.querySelector(".button-loader");
-
-          btnText.style.display = "none";
-          btnLoader.style.display = "block";
-
-          try {
-            const response = await fetch("/api/auth/register", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                name: form.elements.name.value,
-                email: form.elements.email.value,
-                contactNumber: form.elements.contactNumber.value,
-                firmName: form.elements.firmName.value,
-                address: form.elements.address.value,
-                password: form.elements.password.value,
-                role: "vendor",
-              }),
-            });
-
-            const result = await response.json();
-
-            if (response.ok) {
-              showSuccessModal();
-              form.reset();
-              responseBox.className = "message-box success-message";
-              responseBox.textContent =
-                result.message || "Vendor account created successfully!";
-              responseBox.style.display = "block";
-
-              // Auto-hide after 3 seconds
-              setTimeout(() => {
-                responseBox.style.display = "none";
-              }, 3000);
-            } else {
-              handleServerErrors(result);
-              setTimeout(() => {
-                responseBox.style.display = "none";
-              }, 3000);
-            }
-          } catch (error) {
-            console.error("Error:", error);
-            responseBox.className = "message-box error-message";
-            responseBox.textContent = "An unexpected error occurred.";
-            responseBox.style.display = "block";
-
-            setTimeout(() => {
-              responseBox.style.display = "none";
-            }, 3000);
-          } finally {
-            btnText.style.display = "block";
-            btnLoader.style.display = "none";
-          }
-        });
-
-        // Redirect on success modal close
-        const successModalBtn = document.getElementById("successModalClose");
-        successModalBtn.addEventListener("click", function () {
-          successModal.style.display = "none";
-          window.location.href = "/vendor-dashboard";
-        });
-      });
-    </script>
     <%- include('../partials/scripts'); %>
-  </body>
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const vendorForm = document.getElementById('newVendorForm');
+        const responseMessageDiv = document.getElementById('formResponseMessage');
+
+        // --- Helper function to show/hide validation error messages ---
+        function setFieldValidity(field, isValid, message) {
+            const feedbackDiv = field.parentElement.querySelector('.invalid-feedback');
+            if (isValid) {
+                field.classList.remove('input-error');
+                if (feedbackDiv) feedbackDiv.style.display = 'none';
+            } else {
+                field.classList.add('input-error');
+                if (feedbackDiv) {
+                    feedbackDiv.textContent = message || field.title || feedbackDiv.dataset.defaultError || "Invalid input.";
+                    feedbackDiv.style.display = 'block';
+                }
+            }
+        }
+
+        // --- Real-time validation for specific fields ---
+        const contactNumberInput = document.getElementById('contactNumber');
+        contactNumberInput.addEventListener('input', function() {
+            this.value = this.value.replace(/[^0-9]/g, ''); // Allow only numbers
+            if (this.value.length > 10) {
+                this.value = this.value.slice(0, 10); // Max 10 digits
+            }
+            const isValid = /^[0-9]{10}$/.test(this.value);
+            setFieldValidity(this, this.value === '' || isValid, 'Must be a 10-digit number.');
+        });
+
+        const gstInput = document.getElementById('gstNumber');
+        gstInput.addEventListener('input', function() {
+            this.value = this.value.toUpperCase();
+            const isValid = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/.test(this.value);
+             setFieldValidity(this, this.value === '' || isValid, this.title || 'Invalid GST format.');
+        });
+
+        const panInput = document.getElementById('panNumber');
+        panInput.addEventListener('input', function() {
+            this.value = this.value.toUpperCase();
+            const isValid = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(this.value);
+            setFieldValidity(this, this.value === '' || isValid, this.title || 'Invalid PAN format.');
+        });
+
+        const emailInput = document.getElementById('email');
+        emailInput.addEventListener('input', function() {
+            const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.value);
+            setFieldValidity(this, this.value === '' || isValid, 'Please enter a valid email.');
+        });
+
+        const fileInput = document.getElementById('bankDetailsPDF');
+        fileInput.addEventListener('change', function() {
+            responseMessageDiv.style.display = 'none'; // Hide previous messages
+            responseMessageDiv.className = 'message-box';
+            if (this.files.length > 0) {
+                const file = this.files[0];
+                const fiveMB = 5 * 1024 * 1024;
+                let fileError = null;
+
+                if (file.type !== "application/pdf") {
+                    fileError = "Only PDF files are allowed.";
+                } else if (file.size > fiveMB) {
+                    fileError = "File size must be less than 5MB.";
+                }
+
+                if (fileError) {
+                    setFieldValidity(this, false, fileError);
+                    this.value = ''; // Clear the invalid file
+                } else {
+                    setFieldValidity(this, true);
+                }
+            }
+        });
+
+
+        // --- Form Submission Handling ---
+        vendorForm.addEventListener('submit', async function(event) {
+            event.preventDefault();
+            responseMessageDiv.style.display = 'none';
+            responseMessageDiv.className = 'message-box'; // Reset class
+
+            let formIsValid = true;
+
+            // Validate all required fields
+            vendorForm.querySelectorAll('[required]').forEach(field => {
+                if (!field.value.trim() && field.type !== 'file') { // Check trim for text inputs
+                    setFieldValidity(field, false, (field.previousElementSibling?.textContent || field.name) + ' is required.');
+                    formIsValid = false;
+                } else if (field.type === 'file' && field.files.length === 0) {
+                     setFieldValidity(field, false, 'Please select a file.');
+                     formIsValid = false;
+                } else if (field.pattern && !new RegExp(field.pattern).test(field.value)) {
+                    setFieldValidity(field, false, field.title || 'Invalid format.');
+                    formIsValid = false;
+                }
+                else {
+                    // For fields that passed basic check, re-check specific patterns if any error was previously shown
+                    if (!field.classList.contains('input-error')) {
+                         setFieldValidity(field, true);
+                    } else {
+                        // If it already has input-error, it means a specific validator failed
+                        formIsValid = false;
+                    }
+                }
+            });
+
+            // Re-validate file specifically for type and size (if a file is selected)
+            if (fileInput.files.length > 0) {
+                const file = fileInput.files[0];
+                const fiveMB = 5 * 1024 * 1024;
+                if (file.type !== "application/pdf") {
+                     setFieldValidity(fileInput, false, "Only PDF files are allowed.");
+                     formIsValid = false;
+                } else if (file.size > fiveMB) {
+                     setFieldValidity(fileInput, false, "File size must be less than 5MB.");
+                     formIsValid = false;
+                }
+            } else if (fileInput.required) { // If required and no file
+                setFieldValidity(fileInput, false, 'Bank details PDF is required.');
+                formIsValid = false;
+            }
+
+
+            if (!formIsValid) {
+                responseMessageDiv.textContent = 'Please correct the errors in the form.';
+                responseMessageDiv.className = 'message-box error-message';
+                responseMessageDiv.style.display = 'block';
+                return;
+            }
+
+            const submitButton = vendorForm.querySelector('button[type="submit"]');
+            submitButton.disabled = true;
+            submitButton.textContent = 'Registering...';
+
+            const formData = new FormData(vendorForm); // Use FormData for multipart
+
+            try {
+                const response = await fetch(vendorForm.action, {
+                    method: 'POST',
+                    body: formData // Send FormData directly
+                    // DO NOT set Content-Type header, browser does it for FormData
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    responseMessageDiv.textContent = result.message || 'Vendor registered successfully!';
+                    responseMessageDiv.className = 'message-box success-message';
+                    vendorForm.reset();
+                    // Optionally, redirect or show a success modal
+                    // window.location.href = '/thank-you-vendor';
+                } else {
+                    responseMessageDiv.textContent = result.message || 'Registration failed. Please try again.';
+                     if (result.error && typeof result.error === 'string') {
+                         responseMessageDiv.textContent += ` Error: ${result.error}`;
+                     } else if (result.errors && Array.isArray(result.errors)) { // For Mongoose validation errors
+                        let errorText = 'Please correct the following: ';
+                        result.errors.forEach(err => {
+                            errorText += `${err.path}: ${err.msg || err.message}. `;
+                            const field = vendorForm.elements[err.path];
+                            if (field) setFieldValidity(field, false, err.msg || err.message);
+                        });
+                        responseMessageDiv.textContent = errorText;
+                    }
+                    responseMessageDiv.className = 'message-box error-message';
+                }
+            } catch (error) {
+                console.error('Form submission error:', error);
+                responseMessageDiv.textContent = 'An unexpected error occurred during submission. Please try again.';
+                responseMessageDiv.className = 'message-box error-message';
+            } finally {
+                responseMessageDiv.style.display = 'block';
+                submitButton.disabled = false;
+                submitButton.textContent = 'Register Vendor';
+                setTimeout(() => { // Auto-hide message after a few seconds
+                     if (responseMessageDiv.style.display !== 'none') {
+                        responseMessageDiv.style.display = 'none';
+                     }
+                }, 7000);
+            }
+        });
+    });
+    </script>
+</body>
 </html>
