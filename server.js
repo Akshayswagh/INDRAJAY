@@ -284,51 +284,51 @@ app.post("/create-admin", async (req, res) => {
   }
 });
 
-app.post("/submit-form", async (req, res) => {
-  const token = req.body["g-recaptcha-response"];
+// app.post("/submit-form", async (req, res) => {
+//   const token = req.body["g-recaptcha-response"];
 
-  if (!token) {
-    return res.status(400).send("Please complete the reCAPTCHA");
-  }
+//   if (!token) {
+//     return res.status(400).send("Please complete the reCAPTCHA");
+//   }
 
-  try {
-    const response = await axios.post(
-      `https://www.google.com/recaptcha/api/siteverify`,
-      null,
-      {
-        params: {
-          secret: process.env.SECRET_KEY,
-          response: token,
-        },
-      }
-    );
+//   try {
+//     const response = await axios.post(
+//       `https://www.google.com/recaptcha/api/siteverify`,
+//       null,
+//       {
+//         params: {
+//           secret: process.env.SECRET_KEY,
+//           response: token,
+//         },
+//       }
+//     );
 
-    const data = response.data;
+//     const data = response.data;
 
-    if (data.success) {
-      return res.send("✅ CAPTCHA verified, form submitted successfully!");
-    } else {
-      return res.status(400).send("❌ CAPTCHA verification failed");
-    }
-  } catch (err) {
-    console.error("Error verifying reCAPTCHA:", err);
-    return res.status(500).send("Server error during CAPTCHA verification");
-  }
-});
+//     if (data.success) {
+//       return res.send("✅ CAPTCHA verified, form submitted successfully!");
+//     } else {
+//       return res.status(400).send("❌ CAPTCHA verification failed");
+//     }
+//   } catch (err) {
+//     console.error("Error verifying reCAPTCHA:", err);
+//     return res.status(500).send("Server error during CAPTCHA verification");
+//   }
+// });
 
 // register user
-app.get("/register-user", async (req, res) => {
-  res.render("client/register-user", {
-    title: "User Register | Indrajay Enterprises",
-  });
-});
+// app.get("/register-user", async (req, res) => {
+//   res.render("client/register-user", {
+//     title: "User Register | Indrajay Enterprises",
+//   });
+// });
 
-// log in user
-app.get("/login-user", async (req, res) => {
-  res.render("client/login-user", {
-    title: "User Login | Indrajay Enterprises",
-  });
-});
+// // log in user
+// app.get("/login-user", async (req, res) => {
+//   res.render("client/login-user", {
+//     title: "User Login | Indrajay Enterprises",
+//   });
+// });
 
 // register vendor
 app.get("/register-vendor", async (req, res) => {
@@ -338,11 +338,11 @@ app.get("/register-vendor", async (req, res) => {
 });
 
 // log in vendor
-app.get("/login-vendor", async (req, res) => {
-  res.render("client/login-vendor", {
-    title: "Vendor Login | Indrajay Enterprises",
-  });
-});
+// app.get("/login-vendor", async (req, res) => {
+//   res.render("client/login-vendor", {
+//     title: "Vendor Login | Indrajay Enterprises",
+//   });
+// });
 
 // Admin auth Routes
 // register admin
@@ -360,50 +360,50 @@ app.get("/login-admin", async (req, res) => {
 });
 
 // password forgot
-app.get("/forgot-password", async (req, res) => {
-  res.render("client/forgot-password", {
-    title: "Password forgot| Indrajay Enterprises",
-  });
-});
+// app.get("/forgot-password", async (req, res) => {
+//   res.render("client/forgot-password", {
+//     title: "Password forgot| Indrajay Enterprises",
+//   });
+// });
 
-// Serve reset password page
-app.get("/reset-password/:token", async (req, res) => {
-  try {
-    const token = req.params.token;
+// // Serve reset password page
+// app.get("/reset-password/:token", async (req, res) => {
+//   try {
+//     const token = req.params.token;
 
-    // `Check `if token exists and is valid
-    const tokenDoc = await PasswordResetToken.findOne({ token }).populate(
-      "userId"
-    );
+//     // `Check `if token exists and is valid
+//     const tokenDoc = await PasswordResetToken.findOne({ token }).populate(
+//       "userId"
+//     );
 
-    if (!tokenDoc) {
-      return res.render("client/reset-password", {
-        title: "Reset Password | Indrajay Enterprises",
-        valid: false,
-      });
-    }
+//     if (!tokenDoc) {
+//       return res.render("client/reset-password", {
+//         title: "Reset Password | Indrajay Enterprises",
+//         valid: false,
+//       });
+//     }
 
-    // Check if token has expired
-    const valid = new Date(tokenDoc.expiresAt) > new Date();
+//     // Check if token has expired
+//     const valid = new Date(tokenDoc.expiresAt) > new Date();
 
-    if (!valid) {
-      // Optionally delete expired tokens
-      await PasswordResetToken.deleteOne({ _id: tokenDoc._id });
-    }
+//     if (!valid) {
+//       // Optionally delete expired tokens
+//       await PasswordResetToken.deleteOne({ _id: tokenDoc._id });
+//     }
 
-    res.render("client/reset-password", {
-      title: "Reset Password | Indrajay Enterprises",
-      valid,
-      token: valid ? token : null,
-    });
-  } catch (error) {
-    console.error("Password reset error:", error);
-    res.render("client/reset-password", {
-      title: "Reset Password | Indrajay Enterprises",
-      valid: false,
-    });
-  }
-});
+//     res.render("client/reset-password", {
+//       title: "Reset Password | Indrajay Enterprises",
+//       valid,
+//       token: valid ? token : null,
+//     });
+//   } catch (error) {
+//     console.error("Password reset error:", error);
+//     res.render("client/reset-password", {
+//       title: "Reset Password | Indrajay Enterprises",
+//       valid: false,
+//     });
+//   }
+// });
 
 // Home Page Rendering
 app.get("/", async (req, res) => {
@@ -412,6 +412,16 @@ app.get("/", async (req, res) => {
   } catch (error) {
     res.status(500).send("Failed to fetch products");
   }
+});
+
+
+// app.get('/logistic', (req, res) => {
+//     res.sendFile(path.join(__dirname, 'views/client', 'logistic.html'));
+// });
+app.get("/logistic", async (req, res) => {
+
+    res.render("client/logistic", { title: "Indrajay Enterprises" });
+  
 });
 
 // Fruits
