@@ -817,8 +817,8 @@
                 min="1"
               />
               <select id="goods-weight-unit">
-                <option value="KG" selected>KG</option>
-                <option value="TON">TON</option>
+                <option value="kg" selected>KG</option>
+                <option value="ton">TON</option>
               </select>
             </div>
           </div>
@@ -906,6 +906,9 @@
         hamburgerBtn.setAttribute("aria-expanded", !isExpanded);
       });
 
+      // --- All your other existing JavaScript code from the top... ---
+      // (This part is mostly fine, so we'll keep it)
+
       const LOCATIONIQ_API_KEY = "pk.4e2c0bf159879665a37dcec3ef872fe0";
 
       let currentActiveView = "location";
@@ -988,10 +991,9 @@
         selectedTruck = null,
         selectedGoodsType = null,
         goodsWeight = null,
-        goodsWeightUnit = "KG",
+        goodsWeightUnit = "kg",
         mobileNumber = null;
 
-      // === UPDATED TRUCK TYPES WITH FARE RATES ===
       const truckTypes = [
         {
           id: "Mini_Truck",
@@ -1002,7 +1004,6 @@
           rateMin: 15,
           rateMax: 25,
         },
-
         {
           id: "LVC",
           name: "Light Commercial Vehicle",
@@ -1015,7 +1016,7 @@
         {
           id: "6-Wheeler_Truck",
           name: "6-Wheeler Truck",
-          capacity: "9-11 TON", // Adjusted capacity to match rate
+          capacity: "9-11 TON",
           imageUrl:
             "https://truckcdn.cardekho.com/in/eicher/pro-2095-xp/eicher-pro-2095-xp-84068.jpg",
           rateMin: 40,
@@ -1058,8 +1059,10 @@
         { id: "construction", name: "Construction Material" },
       ];
 
+      // --- All other helper functions like switchView, populateTruckOptions, etc. ---
+      // (They are correct, so we keep them as is)
       function switchView(viewToShow) {
-        console.log("Switching view to:", viewToShow);
+        // console.log("Switching view to:", viewToShow);
         locationBookingView.classList.add("hidden");
         detailsEntryView.classList.add("hidden");
         mobileVerificationView.classList.add("hidden");
@@ -1072,7 +1075,6 @@
         currentActiveView = viewToShow;
         window.scrollTo(0, 0);
       }
-
       function initApp() {
         pickupDisplay.addEventListener("click", () => openModal("pickup"));
         deliveryDisplay.addEventListener("click", () => openModal("delivery"));
@@ -1113,9 +1115,8 @@
           )
             closeCustomDropdown("goods");
         });
-        console.log("App Initialized.");
+        // console.log("App Initialized.");
       }
-
       function getShortLocationName(fullName, maxLength = 20) {
         if (!fullName) return "N/A";
         const parts = fullName.split(",");
@@ -1126,7 +1127,6 @@
           ? shortName.substring(0, maxLength - 3) + "..."
           : shortName;
       }
-
       function handleCheckFareSubmit(event) {
         event.preventDefault();
         if (!pickupLocationDetails || !deliveryLocationDetails) {
@@ -1155,8 +1155,6 @@
         }
         switchView("details");
       }
-
-      // === UPDATED FUNCTION WITH FARE CALCULATION ===
       function handleDetailsNext() {
         if (!selectedTruck) {
           showStatus("Please select a truck type.", true);
@@ -1173,11 +1171,8 @@
           goodsWeightInput.focus();
           return;
         }
-
-        // Fare Calculation Logic
-        const distanceText = summaryDistanceEl.textContent; // "Distance: 123 KM"
+        const distanceText = summaryDistanceEl.textContent;
         const distance = parseFloat(distanceText.replace(/[^0-9.]/g, ""));
-
         if (isNaN(distance) || distance <= 0) {
           showStatus(
             "Could not determine distance. Please re-select locations.",
@@ -1186,13 +1181,9 @@
           switchView("location");
           return;
         }
-
         const fareMin = Math.round(distance * selectedTruck.rateMin);
         const fareMax = Math.round(distance * selectedTruck.rateMax);
-
         estimatedFareDisplay.textContent = `₹${fareMin} - ₹${fareMax}`;
-
-        // Update OTP screen summary
         otpSummaryPickupEl.textContent = `Pickup: ${getShortLocationName(
           pickupLocationDetails.description
         )}`;
@@ -1203,10 +1194,8 @@
           "Distance: ",
           ""
         )}`;
-
         switchView("otp");
       }
-
       function handleSendOtp() {
         mobileNumber = mobileNumberInput.value.trim();
         if (!/^[6-9]\d{9}$/.test(mobileNumber)) {
@@ -1231,101 +1220,6 @@
           sendOtpBtn.disabled = false;
         }, 30000);
       }
-
-      function handleVerifyOtp() {
-        const enteredOtp = otpInput.value.trim();
-        if (enteredOtp.length !== 6) {
-          showStatus("Please enter the 6-digit OTP.", true);
-          otpInput.focus();
-          return;
-        }
-
-        if (enteredOtp === simulatedOTP) {
-          showStatus("OTP Verified! Booking Confirmed.", false, 5000);
-
-          const bookingData = {
-            pickup: pickupLocationDetails,
-            delivery: deliveryLocationDetails,
-            distance: summaryDistanceEl.textContent.replace("Distance: ", ""),
-            estimatedFare: estimatedFareDisplay.textContent,
-            truck: selectedTruck,
-            goodsType: selectedGoodsType,
-            weight: goodsWeight,
-            weightUnit: goodsWeightUnit,
-            mobile: mobileNumber,
-          };
-
-          // ✅ Send booking data to server
-          fetch("/api/book", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(bookingData),
-          })
-            .then((res) => res.json())
-            .then((data) => {
-              console.log("Server Response:", data);
-            })
-            .catch((error) => {
-              console.error("Error submitting booking:", error);
-            });
-
-          console.log(
-            "Booking Confirmed (Simulated) with details:",
-            bookingData
-          );
-
-          setTimeout(() => {
-            // ✅ Reset UI after submission
-            pickupLocationDetails = null;
-            deliveryLocationDetails = null;
-            selectedTruck = null;
-            selectedGoodsType = null;
-            goodsWeight = null;
-            mobileNumber = null;
-            simulatedOTP = "";
-
-            pickupDisplay.textContent = pickupDisplay.dataset.placeholder;
-            pickupDisplay.classList.remove("has-value");
-            deliveryDisplay.textContent = deliveryDisplay.dataset.placeholder;
-            deliveryDisplay.classList.remove("has-value");
-            document.getElementById("pickup-coords").textContent = "";
-            document.getElementById("delivery-coords").textContent = "";
-
-            if (truckTypeSelectDisplay.querySelector(".placeholder")) {
-              truckTypeSelectDisplay.querySelector(".placeholder").textContent =
-                "Select Truck";
-              truckTypeSelectDisplay.querySelector(".placeholder").style.color =
-                "#777";
-            }
-
-            selectedTruckInfoDiv.style.display = "none";
-
-            if (goodsTypeSelectDisplay.querySelector(".placeholder")) {
-              goodsTypeSelectDisplay.querySelector(".placeholder").textContent =
-                "Select Goods Type";
-              goodsTypeSelectDisplay.querySelector(".placeholder").style.color =
-                "#777";
-            }
-
-            selectedGoodsInfoDiv.style.display = "none";
-            goodsWeightInput.value = "";
-            mobileNumberInput.value = "";
-            otpInput.value = "";
-            estimatedFareDisplay.textContent = "--";
-            otpInputGroup.classList.add("hidden");
-            sendOtpBtn.textContent = "Send OTP";
-
-            switchView("location");
-          }, 3000);
-        } else {
-          showStatus("Invalid OTP. Please try again.", true);
-          otpInput.focus();
-          otpInput.value = "";
-        }
-      }
-
       function populateTruckOptions() {
         truckTypeOptionsContainer.innerHTML = "";
         truckTypes.forEach((truck) => {
@@ -1518,10 +1412,164 @@
             statusMessageEl.classList.remove("show");
           }, duration);
         }
-        console.log("Status:", message);
+        // console.log("Status:", message);
       }
 
-      document.addEventListener("DOMContentLoaded", initApp);
+      // =========================================================================
+      // ===               CORE LOGIC & BACKEND INTEGRATION                    ===
+      // =========================================================================
+
+      function resetFormUI() {
+        pickupLocationDetails = null;
+        deliveryLocationDetails = null;
+        selectedTruck = null;
+        selectedGoodsType = null;
+        goodsWeight = null;
+        mobileNumber = null;
+        simulatedOTP = "";
+
+        pickupDisplay.textContent = pickupDisplay.dataset.placeholder;
+        pickupDisplay.classList.remove("has-value");
+        deliveryDisplay.textContent = deliveryDisplay.dataset.placeholder;
+        deliveryDisplay.classList.remove("has-value");
+
+        if (document.getElementById("pickup-coords"))
+          document.getElementById("pickup-coords").textContent = "";
+        if (document.getElementById("delivery-coords"))
+          document.getElementById("delivery-coords").textContent = "";
+
+        if (truckTypeSelectDisplay.querySelector(".placeholder")) {
+          truckTypeSelectDisplay.querySelector(".placeholder").textContent =
+            "Select Truck";
+          truckTypeSelectDisplay.querySelector(".placeholder").style.color =
+            "#777";
+        }
+        selectedTruckInfoDiv.style.display = "none";
+
+        if (goodsTypeSelectDisplay.querySelector(".placeholder")) {
+          goodsTypeSelectDisplay.querySelector(".placeholder").textContent =
+            "Select Goods Type";
+          goodsTypeSelectDisplay.querySelector(".placeholder").style.color =
+            "#777";
+        }
+        selectedGoodsInfoDiv.style.display = "none";
+
+        goodsWeightInput.value = "";
+        mobileNumberInput.value = "";
+        otpInput.value = "";
+        estimatedFareDisplay.textContent = "--";
+        otpInputGroup.classList.add("hidden");
+        sendOtpBtn.disabled = false;
+        sendOtpBtn.textContent = "Send OTP";
+
+        switchView("location");
+      }
+
+      function handleVerifyOtp() {
+        const enteredOtp = otpInput.value.trim();
+        if (enteredOtp.length !== 6) {
+          showStatus("Please enter the 6-digit OTP.", true);
+          otpInput.focus();
+          return;
+        }
+
+        if (enteredOtp === simulatedOTP) {
+          showStatus("OTP Verified! Submitting your booking...", false, 0); // Stays until next message
+
+          const bookingData = {
+            pickup: {
+              // Map the 'description' from your location object to the 'address' field
+              address: pickupLocationDetails
+                ? pickupLocationDetails.description
+                : "N/A",
+              coordinates: pickupLocationDetails
+                ? pickupLocationDetails.geometry
+                : null,
+            },
+            delivery: {
+              // Do the same for the delivery location
+              address: deliveryLocationDetails
+                ? deliveryLocationDetails.description
+                : "N/A",
+              coordinates: deliveryLocationDetails
+                ? deliveryLocationDetails.geometry
+                : null,
+            },
+            distance: summaryDistanceEl.textContent.replace("Distance: ", ""),
+            estimatedFare: estimatedFareDisplay.textContent,
+            truck: selectedTruck ? selectedTruck.name : "N/A",
+            goodsType: selectedGoodsType ? selectedGoodsType.name : "N/A",
+            weight: goodsWeight,
+            weightUnit: goodsWeightUnit, // This will now be 'kg' or 'ton' (lowercase)
+            mobile: mobileNumber,
+          };
+
+          // --- FINAL ROBUST FETCH CALL ---
+          fetch("/logistics", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(bookingData),
+          })
+            .then(async (response) => {
+              // This block now handles all response types correctly
+
+              // First, check if the content is JSON before trying to parse
+              const contentType = response.headers.get("content-type");
+              if (
+                contentType &&
+                contentType.indexOf("application/json") !== -1
+              ) {
+                const data = await response.json();
+                if (!response.ok) {
+                  // Server responded with an error status (4xx, 5xx) and a JSON body
+                  throw new Error(
+                    data.message || "An unknown server error occurred."
+                  );
+                }
+                // Server responded with a success status (2xx) and a JSON body
+                return data;
+              } else {
+                // The response is NOT JSON (it's likely an HTML error page or redirect)
+                // This handles the original error case gracefully.
+                if (response.status === 401 || response.status === 403) {
+                  throw new Error(
+                    "Your session has expired. Please refresh the page and log in."
+                  );
+                }
+                throw new Error(
+                  "Server sent an invalid response. Expected JSON."
+                );
+              }
+            })
+            .then((data) => {
+              // This block only runs on a successful booking
+              console.log("SUCCESS: Server responded with:", data);
+              showStatus(
+                data.message || "Booking confirmed successfully!",
+                false,
+                4000
+              );
+
+              // Reset the UI only after a successful booking
+              setTimeout(() => {
+                resetFormUI(); // Assuming you have a resetFormUI function
+              }, 2000);
+            })
+            .catch((error) => {
+              // This single block catches all failures: network, server errors, auth errors.
+              console.error("Error submitting booking:", error);
+              showStatus(`Booking Failed: ${error.message}`, true, 6000);
+            });
+        } else {
+          showStatus("Invalid OTP. Please try again.", true);
+          otpInput.focus();
+          otpInput.value = "";
+        }
+      }
+      // --- CORRECTED: Call initApp directly without DOMContentLoaded ---
+      initApp();
     </script>
   </body>
 </html>

@@ -1,4 +1,3 @@
-
 <div class="bg-dark border-end" id="sidebar-wrapper">
   <div class="sidebar-heading border-bottom bg-dark text-white">
     <i class="fas fa-cogs me-2"></i>Admin Panel
@@ -36,20 +35,19 @@
       >
         <i class="fas fa-user-friends me-2"></i>View Users
       </a> -->
-       <a
+      <a
         href="/admin/trusted-vendors"
         class="list-group-item list-group-item-action list-group-item-dark p-3 ps-5 <%= (typeof activePage !== 'undefined' && activePage === 'trusted_vendors') ? 'active' : '' %>"
       >
         <i class="fas fa-store me-2"></i>Trusted Vendors
       </a>
-      
+
       <a
         href="/admin/vendors"
         class="list-group-item list-group-item-action list-group-item-dark p-3 ps-5 <%= (typeof activePage !== 'undefined' && activePage === 'view_vendors') ? 'active' : '' %>"
       >
         <i class="fas fa-store me-2"></i>View Vendors
       </a>
-     
 
       <a
         href="/admin/admins"
@@ -228,6 +226,13 @@
       <i class="fas fa-envelope-open-text me-2"></i>Manage Enquiries <%# Or fas
       fa-question-circle %>
     </a>
+    <a
+      href="/admin/logistics"
+      class="list-group-item list-group-item-action list-group-item-dark p-3 <%= (typeof activePage !== 'undefined' && activePage === 'view-logistic') ? 'active' : '' %>"
+    >
+      <i class="fas fa-envelope-open-text me-2"></i>Logistic Enquiries <%# Or
+      fas fa-question-circle %>
+    </a>
 
     <!-- Trusted Buyers Submenu -->
     <a
@@ -295,4 +300,3 @@
     });
   });
 </script> -->
-

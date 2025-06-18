@@ -36,6 +36,13 @@ const {
   ensureAdminRole,
 } = require("./middlewares/adminAuthMiddleware");
 
+
+
+const adminLogisticPageRoutes = require('./routes/adminlogitsicPageRoutes');
+const adminLogisticApiRoutes = require('./routes/adminLogisticApiRoutes');
+const clientLogisticApiRoutes = require('./routes/clientLogisticApiRoutes');
+
+
 const publicEnquiryRoutes = require("./routes/publicEnquiryRoutes");
 const adminTrustedBuyerPageRoutes = require("./routes/adminTrustedBuyerPageRoutes");
 const adminTrustedBuyerApiRoutes = require("./routes/adminTrustedBuyerApiRoutes");
@@ -58,7 +65,7 @@ const adminServiceApiRoutes = require("./routes/adminIndServiceApiRoutes");
 const adminExportPageRoutes = require("./routes/adminExportPageRoutes");
 const adminExportApiRoutes = require("./routes/adminExportApiRoutes");
 const clientExportRoutes = require("./routes/clientExportRoutes");
-const adminUserPageRoutes = require("./routes/adminUserPageRoutes"); // <<< NEW ROUTER
+const adminUserPageRoutes = require("./routes/adminUserPageRoutes"); 
 const adminEventPageRoutes = require("./routes/adminEventPageRoutes");
 const adminEventApiRoutes = require("./routes/adminEventApiRoutes");
 const publicEventApiRoutes = require("./routes/publicEventApiRoutes"); // Your existing API router for events
@@ -114,19 +121,22 @@ app.use(flash());
 
 // Global variables for templates (IMPORTANT for EJS pages)
 app.use((req, res, next) => {
-  res.locals.success_msg = req.flash("success_msg");
-  res.locals.error_msg = req.flash("error_msg");
-  res.locals.error = req.flash("error"); // General error
-  res.locals.info_msg = req.flash("info_msg");
-  res.locals.currentUser = req.session.user || null; // User from session
-  res.locals.isAdmin = !!(
-    req.session.user && req.session.user.role === "admin"
-  ); // Boolean helper
+  // Create a single 'messages' object for flash messages
+  res.locals.messages = {
+      success_msg: req.flash('success_msg'),
+      error_msg: req.flash('error_msg'),
+      error: req.flash('error'),
+      info_msg: req.flash('info_msg')
+  };
+  // Other global variables remain the same
+  res.locals.currentUser = req.session.user || null;
+  res.locals.isAdmin = !!(req.session.user && req.session.user.role === "admin");
   next();
 });
 
 // Routes mapping
 app.use("/industrialservices", clientServiceRoutes); // e.g., yoursite.com/services and yoursite.com/services/123
+
 app.use("/admin/auth", adminAuthRoutes);
 app.use(
   "/admin/industrialservices",
@@ -246,6 +256,13 @@ app.use("/careers", publicJobApplicationRoutes);
 // Admin routes for managing job applications
 app.use("/admin/job-applications", adminJobApplicationPageRoutes);
 app.use("/admin/api/job-applications", adminJobApplicationApiRoutes);
+
+
+
+// Use a prefix for all admin routes for better organization
+app.use('/admin/logistics', adminLogisticPageRoutes);
+app.use('/admin/api/logistics', adminLogisticApiRoutes);
+app.use('/logistics', clientLogisticApiRoutes);
 // ...
 
 // app.use("/admin/vendors", accessVendor);
@@ -415,9 +432,7 @@ app.get("/", async (req, res) => {
 });
 
 
-// app.get('/logistic', (req, res) => {
-//     res.sendFile(path.join(__dirname, 'views/client', 'logistic.html'));
-// });
+
 app.get("/logistic", async (req, res) => {
 
     res.render("client/logistic", { title: "Indrajay Enterprises" });
@@ -767,11 +782,6 @@ app.get("/is", async (req, res) => {
   }
 });
 
-app.get("/transportlogistic", (req, res) => {
-  res.render("client/transportlogistics", {
-    title: "Transport Logistics  | Indrajay Enterprises",
-  });
-});
 
 // admin dashboard route
 app.get("/admin", ensureAuthenticated, ensureAdminRole, async (req, res) => {
