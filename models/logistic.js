@@ -57,7 +57,7 @@ const logisticSchema = new mongoose.Schema({
   status: {
     type: String,
     default: 'pending',
-    enum: ['pending', 'confirmed', 'Froad', 'cancelled'] // Added more states
+    enum: ['pending', 'confirmed', 'spam', 'cancelled'] // Added more states
   }
 });
 

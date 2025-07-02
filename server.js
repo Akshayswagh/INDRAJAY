@@ -425,17 +425,27 @@ app.get("/login-admin", async (req, res) => {
 // Home Page Rendering
 app.get("/", async (req, res) => {
   try {
-    res.render("client/home", { title: "Indrajay Enterprises" });
+    const Exports = await Export.find(); // fetch all Exports
+    res.render("client/home", {
+      title: "Indrajay Enterprises",
+      Exports,
+    
+    });
+    // console.log(Exports);
   } catch (error) {
-    res.status(500).send("Failed to fetch products");
+    console.error("Error fetching Exports:", error.message);
+    // Pass empty array if fetching fails
+    res.render("client/home", {
+      title: "Indrajay Enterprises",
+      Exports: [],
+    });
   }
 });
 
 
-
 app.get("/logistic", async (req, res) => {
 
-    res.render("client/logistic", { title: "Indrajay Enterprises" });
+    res.render("client/comingsoon", { title: "Indrajay Enterprises" });
   
 });
 
@@ -684,7 +694,7 @@ app.get("/events", async (req, res) => {
     // Verify events data before rendering
     // console.log("Fetched events:", events);
 
-    res.render("client/e", {
+    res.render("client/comingsoon", {
       // Try without .ejs extension
       title: "Events | Indrajay Enterprises",
       events: events || [], // Ensure events is always defined

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- All your head content remains the same -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Truck Booking - With Fare Calculation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+    <style>
+      /* All your CSS remains exactly the same */
+      * { margin: 0; padding: 0; box-sizing: border-box; } body { font-family: "Open Sans", sans-serif; line-height: 1.6; color: #333; background-color: #f4f4f4; } .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; } .hidden { display: none !important; } header { background-color: #fff; padding: 15px 0; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); position: sticky; top: 0; z-index: 1000; } .header-container { display: flex; justify-content: space-between; align-items: center; } .logo img { height: 40px; display: block; } header .main-nav ul { display: flex; list-style: none; } header .main-nav ul li { margin-left: 25px; } header .main-nav ul li a { color: #004a8f; font-weight: 600; font-size: 0.9rem; text-decoration: none; transition: color 0.3s ease; } header .main-nav ul li a:hover { color: #ff6600; } .contact-info { text-align: right; } .contact-info span { display: block; font-size: 0.7rem; color: #777; text-transform: uppercase; margin-bottom: -2px; } .contact-info a { font-size: 1.2rem; font-weight: 700; color: #ff6600; text-decoration: none; } .hamburger-menu { display: none; border: none; cursor: pointer; z-index: 1010; } .hamburger-menu .bar { display: block; width: 25px; height: 3px; margin: 5px auto; background-color: #004a8f; transition: all 0.3s ease-in-out; } #status-message { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background-color: rgba(0, 0, 0, 0.7); color: white; padding: 10px 20px; border-radius: 5px; z-index: 2000; opacity: 0; transition: opacity 0.5s ease; pointer-events: none; } #status-message.show { opacity: 1; } @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } } @keyframes fadeInLeft { from { opacity: 0; transform: translateX(-50px); } to { opacity: 1; transform: translateX(0); } } @keyframes fadeInRight { from { opacity: 0; transform: translateX(50px); } to { opacity: 1; transform: translateX(0); } } .view-section { background-color: #fff; min-height: calc(100vh - 70px); } .hero { background-image: linear-gradient( rgba(0, 50, 100, 0.85), rgba(0, 30, 70, 0.95) ), url("https://images.unsplash.com/photo-1587089843609-714890960514?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"); background-color: #002d5c; background-size: cover; background-position: center center; color: #fff; padding: 60px 0; display: flex; align-items: center; } .hero-content-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; } .hero-text-and-image h1 { font-size: 2.8rem; font-weight: 700; margin-bottom: 30px; line-height: 1.3; animation: fadeInDown 1s ease-out; } .truck-image { max-width: 100%; height: auto; border-radius: 8px; animation: fadeInLeft 1s 0.3s ease-out both; } .booking-form-container { display: flex; justify-content: center; animation: fadeInRight 1s 0.6s ease-out both; } .booking-form-card { background-color: #fff; color: #333; padding: 30px; border-radius: 12px; box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2); width: 100%; max-width: 400px; } .booking-form-card h2 { font-size: 1.8rem; margin-bottom: 25px; text-align: center; color: #004a8f; } .form-group { margin-bottom: 20px; } .location-display-field { width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 6px; font-size: 1rem; background-color: #fff; cursor: pointer; color: #555; transition: border-color 0.3s ease, color 0.3s ease; min-height: 48px; display: flex; align-items: center; } .location-display-field.has-value { color: #333; } .location-display-field:hover { border-color: #004a8f; } .coordinates-feedback { font-size: 0.8em; color: #666; margin-top: 3px; min-height: 1.2em; } .btn-submit-fare, .next-step-btn, .otp-button { background-color: #004a8f; color: #fff; border: none; padding: 12px 20px; font-size: 1.1rem; font-weight: 600; border-radius: 6px; width: 100%; cursor: pointer; transition: background-color 0.3s ease, transform 0.2s ease; margin-top: 10px; } .btn-submit-fare:hover, .next-step-btn:hover, .otp-button:hover { background-color: #003b73; transform: translateY(-2px); } .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); display: none; justify-content: center; align-items: center; z-index: 1051; } .modal-overlay.show { display: flex; } .modal-content { background-color: white; padding: 0; border-radius: 8px; width: 90%; max-width: 450px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); overflow: hidden; transform: translateY(-30px) scale(0.95); transition: transform 0.3s ease-out 0.1s, opacity 0.3s ease-out; opacity: 0; } .modal-overlay.show .modal-content { transform: translateY(0) scale(1); opacity: 1; } .modal-header { background-color: #004a8f; color: #fff; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; } .modal-header h3 { font-size: 1.2rem; margin: 0; } .modal-close { background: none; border: none; color: #fff; cursor: pointer; font-size: 1.8em; line-height: 1; padding: 0 5px; } .modal-close:hover { opacity: 0.8; } .modal-body { padding: 20px; } #modal-search-input { width: 100%; padding: 12px 15px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 5px; font-size: 1rem; } #modal-search-input:focus { outline: none; border-color: #004a8f; box-shadow: 0 0 0 2px rgba(0, 74, 143, 0.2); } #modal-results-list { list-style: none; padding: 0; margin: 0; max-height: 250px; overflow-y: auto; border: 1px solid #eee; border-radius: 5px; } #modal-results-list li { padding: 10px 15px; cursor: pointer; border-bottom: 1px solid #eee; font-size: 0.95rem; } #modal-results-list li:last-child { border-bottom: none; } #modal-results-list li:hover { background-color: #f0f0f0; } .route-summary-bar { background-color: #f0f3f5; padding: 15px 0; border-bottom: 1px solid #e0e0e0; } .route-summary-content { display: flex; justify-content: space-between; align-items: center; font-size: 0.95rem; } .route-summary-content .location { max-width: 38%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } .route-summary-content .arrow { font-size: 1.5em; color: #004a8f; margin: 0 10px; } .route-summary-content .distance { font-weight: 600; color: #004a8f; } .back-button { font-size: 1.5rem; color: #555; cursor: pointer; background: none; border: none; margin-right: 15px; padding: 5px; } .back-button:hover { color: #000; } .selection-area, .verification-area { padding: 25px 20px; max-width: 500px; margin: 0 auto; } .selection-group, .verification-group { margin-bottom: 25px; } .selection-group h3, .verification-group h3 { font-size: 1.3rem; margin-bottom: 15px; color: #333; border-bottom: 2px solid #004a8f; padding-bottom: 8px; } .custom-select-label, .input-label { display: block; font-weight: 600; margin-bottom: 8px; color: #555; font-size: 1rem; } .custom-select-wrapper { position: relative; margin-bottom: 10px; } .custom-select-display { background-color: #fff; padding: 12px 15px; border: 1px solid #ccc; border-radius: 6px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 1rem; } .custom-select-display.open { border-color: #004a8f; box-shadow: 0 0 0 2px rgba(0, 74, 143, 0.2); } .custom-select-display .placeholder { color: #777; } .custom-select-display .arrow-down { transition: transform 0.2s ease-in-out; } .custom-select-display.open .arrow-down { transform: rotate(180deg); } .custom-select-options { display: none; position: absolute; top: 100%; left: 0; right: 0; background-color: #fff; border: 1px solid #ccc; border-top: none; border-radius: 0 0 6px 6px; z-index: 100; max-height: 280px; overflow-y: auto; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); } .custom-select-options.open { display: block; } .custom-select-options .option { padding: 12px 15px; cursor: pointer; display: flex; align-items: center; border-bottom: 1px solid #eee; } .custom-select-options .option:last-child { border-bottom: none; } .custom-select-options .option:hover { background-color: #f0f0f0; } .custom-select-options .option img { width: 50px; height: auto; margin-right: 15px; object-fit: contain; } .custom-select-options .option .item-name { font-weight: 600; flex-grow: 1; } .custom-select-options .option .item-detail { font-size: 0.85rem; color: #555; margin-left: auto; } .weight-input-container { display: flex; align-items: center; } #goods-weight-input, #mobile-number-input, #otp-input { flex-grow: 1; padding: 12px 15px; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; } #mobile-number-input, #otp-input { border-radius: 6px; } #goods-weight-input { border-radius: 6px 0 0 6px; border-right: none; } #goods-weight-unit { padding: 12px 10px; border: 1px solid #ccc; border-radius: 0 6px 6px 0; font-size: 1rem; background-color: #f8f9fa; cursor: pointer; -webkit-appearance: none; -moz-appearance: none; appearance: none; background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23555%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E"); background-repeat: no-repeat; background-position: right 8px center; background-size: 10px; padding-right: 30px; } #goods-weight-input:focus, #goods-weight-unit:focus, #mobile-number-input:focus, #otp-input:focus { outline: none; border-color: #004a8f; box-shadow: 0 0 0 2px rgba(0, 74, 143, 0.2); } #goods-weight-input:focus + #goods-weight-unit { border-color: #004a8f; box-shadow: 0 0 0 2px rgba(0, 74, 143, 0.2); border-left: 1px solid #004a8f; } .selected-info-display { margin-top: 15px; padding: 10px; background-color: #f0f8ff; border: 1px solid #cce5ff; border-radius: 5px; display: none; font-size: 0.9rem; } .selected-info-display strong { color: #004a8f; } .next-button-container { text-align: center; margin-top: 30px; } .fare-display-box { background-color: #e6f4ff; border: 1px solid #b3e0ff; border-radius: 8px; padding: 15px 20px; text-align: center; margin-bottom: 25px; } .fare-display-box h4 { margin: 0 0 5px 0; color: #004a8f; font-size: 1rem; font-weight: 600; text-transform: uppercase; } .fare-display-box p { margin: 0; font-size: 1.5rem; font-weight: 700; color: #003b73; } @media (max-width: 992px) { .hamburger-menu { display: block; } .contact-info { display: none; } .main-nav { position: fixed; top: 0; right: -100%; width: 250px; height: 100vh; background-color: #004a8f; padding-top: 80px; box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2); transition: right 0.4s ease-in-out; z-index: 1005; } .main-nav.nav-open { right: 0; } .main-nav ul { flex-direction: column; align-items: center; } .main-nav ul li { margin: 15px 0; width: 100%; text-align: center; } .main-nav ul li a { color: #fff; font-size: 1.1rem; } .main-nav ul li a:hover { color: #ffc107; } .hamburger-menu.active .bar:nth-child(2) { opacity: 0; } .hamburger-menu.active .bar:nth-child(1) { transform: translateY(8px) rotate(45deg); } .hamburger-menu.active .bar:nth-child(3) { transform: translateY(-8px) rotate(-45deg); } .hero-content-grid { grid-template-columns: 1fr; gap: 50px; text-align: center; } .hero-text-and-image { order: 2; } .booking-form-container { order: 1; } .truck-image { margin: 0 auto; } .route-summary-content { flex-direction: column; align-items: flex-start; gap: 8px; } .route-summary-content .location { max-width: 100%; } .route-summary-content .arrow { display: none; } } @media (max-width: 768px) { .container { padding: 0 15px; } .hero { padding: 40px 0; } .hero-text-and-image h1 { font-size: 2.2rem; margin-bottom: 20px; } .booking-form-card { padding: 25px 20px; } .booking-form-card h2 { font-size: 1.5rem; } .selection-area, .verification-area { padding: 25px 15px; } .selection-group h3, .verification-group h3 { font-size: 1.2rem; } }
+    </style>
+  </head>
+  <body>
+    <!-- All your HTML body content remains the same -->
+    <header>
+      <div class="container header-container">
+        <div class="logo">
+          <img src="/public/upload/logo.jpg" alt="Indrajay " style="height: 50px" />
+        </div>
+        <button class="hamburger-menu" id="hamburger-btn" aria-label="Toggle navigation" aria-expanded="false">
+          <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+        </button>
+        <nav class="main-nav" id="main-nav">
+          <ul>
+            <li><a style="text-decoration: none; font-size: 1.2rem" href="/">Home</a></li>
+          </ul>
+        </nav>
+        <div class="contact-info">
+          <span>GET IN TOUCH</span><a href="tel:9999999999">+91 999999999</a>
+        </div>
+      </div>
+    </header>
+    <main id="main-content">
+      <section id="location-booking-view" class="hero view-section">
+        <div class="container hero-content-grid">
+          <div class="hero-text-and-image">
+            <h1>Online Truck Booking Made Easy</h1>
+            <img src="https://i.pinimg.com/736x/24/40/8b/24408b43c55bd2d8c6e00386eb2b3241.jpg" alt="Logistics Truck" class="truck-image" />
+          </div>
+          <div class="booking-form-container">
+            <div class="booking-form-card">
+              <h2>Book Truck Transport</h2>
+              <form id="truck-booking-form">
+                <div class="form-group">
+                  <div id="pickup-location-display" class="location-display-field" data-placeholder="Pick Up City Location">Pick Up City Location</div>
+                  <div id="pickup-coords" class="coordinates-feedback"></div>
+                </div>
+                <div class="form-group">
+                  <div id="delivery-location-display" class="location-display-field" data-placeholder="Delivery City Location">Delivery City Location</div>
+                  <div id="delivery-coords" class="coordinates-feedback"></div>
+                </div>
+                <button type="submit" class="btn-submit-fare">Check Transport Fare</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section id="details-entry-view" class="view-section hidden">
+        <div class="route-summary-bar">
+          <div class="container route-summary-content">
+            <button id="back-to-location" class="back-button" title="Go Back">❮</button>
+            <div id="summary-pickup-location" class="location">Pickup: Not set</div>
+            <div class="arrow">→</div>
+            <div id="summary-delivery-location" class="location">Delivery: Not set</div>
+            <div id="summary-distance" class="distance">Distance: -- KM</div>
+          </div>
+        </div>
+        <div class="container selection-area">
+          <div class="selection-group">
+            <h3>Truck Type</h3>
+            <div class="custom-select-wrapper">
+              <div id="truck-type-select-display" class="custom-select-display">
+                <span class="placeholder">Select Truck</span><span class="arrow-down">▾</span>
+              </div>
+              <div id="truck-type-options" class="custom-select-options"></div>
+            </div>
+            <div id="selected-truck-info" class="selected-info-display">Selected Truck: <strong id="selected-truck-name"></strong></div>
+          </div>
+          <div class="selection-group">
+            <h3>Select Goods Type</h3>
+            <div class="custom-select-wrapper">
+              <div id="goods-type-select-display" class="custom-select-display">
+                <span class="placeholder">Select Goods Type</span><span class="arrow-down">▾</span>
+              </div>
+              <div id="goods-type-options" class="custom-select-options"></div>
+            </div>
+            <div id="selected-goods-info" class="selected-info-display">Selected Goods: <strong id="selected-goods-name"></strong></div>
+          </div>
+          <div class="selection-group">
+            <h3>Enter Weight</h3>
+            <label for="goods-weight-input" class="input-label">Goods Weight</label>
+            <div class="weight-input-container">
+              <input type="number" id="goods-weight-input" placeholder="e.g., 1000" min="1" />
+              <select id="goods-weight-unit">
+                <option value="kg" selected>KG</option>
+                <option value="ton">TON</option>
+              </select>
+            </div>
+          </div>
+          <div class="next-button-container">
+            <button id="details-next-btn" class="next-step-btn">Next</button>
+          </div>
+        </div>
+      </section>
+      <section id="mobile-verification-view" class="view-section hidden">
+        <div class="route-summary-bar">
+          <div class="container route-summary-content">
+            <button id="back-to-details" class="back-button" title="Go Back">❮</button>
+            <div class="location" id="otp-summary-pickup">Pickup: ...</div>
+            <div class="arrow">→</div>
+            <div class="location" id="otp-summary-delivery">Delivery: ...</div>
+            <div class="distance" id="otp-summary-distance">Dist: ... KM</div>
+          </div>
+        </div>
+        <div class="container verification-area">
+          <div class="fare-display-box">
+            <h4>Estimated Fare</h4>
+            <p id="estimated-fare-display">--</p>
+          </div>
+          <div class="verification-group">
+            <h3>Mobile Verification</h3>
+            <label for="mobile-number-input" class="input-label">Enter Mobile Number</label>
+            <input type="tel" id="mobile-number-input" placeholder="10-digit mobile number" maxlength="10" />
+            <button id="send-otp-btn" class="otp-button">Send OTP</button>
+          </div>
+          <div id="otp-input-group" class="verification-group hidden">
+            <label for="otp-input" class="input-label">Enter OTP</label>
+            <input type="text" id="otp-input" placeholder="6-digit OTP" maxlength="6" />
+            <button id="verify-otp-btn" class="otp-button">Verify OTP & Book</button>
+          </div>
+        </div>
+      </section>
+    </main>
+    <div id="location-modal" class="modal-overlay">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 id="modal-title">Select Location</h3>
+          <button id="modal-close-btn" class="modal-close">×</button>
+        </div>
+        <div class="modal-body">
+          <input type="text" id="modal-search-input" placeholder="Search for a location..." />
+          <ul id="modal-results-list"></ul>
+        </div>
+      </div>
+    </div>
+    <div id="status-message"></div>
+
+    <script>
+      // --- START OF MODERN GOOGLE MAPS INTEGRATION ---
+      const GOOGLE_MAPS_API_KEY = "AIzaSyCsBS5s1gEXq1WB5VjYv6wRWKo_ix-vSTQ"; // <-- STEP 1: PASTE YOUR KEY HERE
+      let Place;
+      let distanceMatrixService;
+      
+      // This function will now be called by the Google Maps script's `callback` parameter.
+      async function initGoogleMaps() {
+        try {
+            // Use the new `importLibrary` syntax
+            const { Map } = await google.maps.importLibrary("maps");
+            const placesLib = await google.maps.importLibrary("places");
+            const routesLib = await google.maps.importLibrary("routes");
+            
+            // Assign the services to our global variables
+            Place = placesLib.Place;
+            distanceMatrixService = new routesLib.DistanceMatrixService();
+            
+            console.log("Google Maps Services Initialized (Modern API).");
+            
+            // Now that services are ready, initialize the rest of your app
+            initApp();
+        } catch (error) {
+            console.error("Failed to load Google Maps services:", error);
+            showStatus("Error: Could not load mapping service. Check API Key and console.", true, 0);
+        }
+      }
+      // --- END OF MODERN GOOGLE MAPS INTEGRATION SETUP ---
+
+      // All of your other application logic remains the same.
+      // NOTE: The minified functions have been un-minified for clarity.
+      const hamburgerBtn=document.getElementById("hamburger-btn"),mainNav=document.getElementById("main-nav");hamburgerBtn.addEventListener("click",()=>{mainNav.classList.toggle("nav-open"),hamburgerBtn.classList.toggle("active");const e=hamburgerBtn.getAttribute("aria-expanded")==="true";hamburgerBtn.setAttribute("aria-expanded",!e)});
+      let currentActiveView="location",simulatedOTP="",currentEditingField=null,debounceTimeout;
+      const locationBookingView=document.getElementById("location-booking-view"),detailsEntryView=document.getElementById("details-entry-view"),mobileVerificationView=document.getElementById("mobile-verification-view"),pickupDisplay=document.getElementById("pickup-location-display"),deliveryDisplay=document.getElementById("delivery-location-display"),truckBookingForm=document.getElementById("truck-booking-form"),backToLocationBtn=document.getElementById("back-to-location"),summaryPickupLocationEl=document.getElementById("summary-pickup-location"),summaryDeliveryLocationEl=document.getElementById("summary-delivery-location"),summaryDistanceEl=document.getElementById("summary-distance"),truckTypeSelectDisplay=document.getElementById("truck-type-select-display"),truckTypeOptionsContainer=document.getElementById("truck-type-options"),selectedTruckInfoDiv=document.getElementById("selected-truck-info"),selectedTruckNameSpan=document.getElementById("selected-truck-name"),goodsTypeSelectDisplay=document.getElementById("goods-type-select-display"),goodsTypeOptionsContainer=document.getElementById("goods-type-options"),selectedGoodsInfoDiv=document.getElementById("selected-goods-info"),selectedGoodsNameSpan=document.getElementById("selected-goods-name"),goodsWeightInput=document.getElementById("goods-weight-input"),goodsWeightUnitSelect=document.getElementById("goods-weight-unit"),detailsNextBtn=document.getElementById("details-next-btn"),backToDetailsBtn=document.getElementById("back-to-details"),otpSummaryPickupEl=document.getElementById("otp-summary-pickup"),otpSummaryDeliveryEl=document.getElementById("otp-summary-delivery"),otpSummaryDistanceEl=document.getElementById("otp-summary-distance"),estimatedFareDisplay=document.getElementById("estimated-fare-display"),mobileNumberInput=document.getElementById("mobile-number-input"),sendOtpBtn=document.getElementById("send-otp-btn"),otpInputGroup=document.getElementById("otp-input-group"),otpInput=document.getElementById("otp-input"),verifyOtpBtn=document.getElementById("verify-otp-btn"),modalOverlay=document.getElementById("location-modal"),modalTitle=document.getElementById("modal-title"),modalSearchInput=document.getElementById("modal-search-input"),modalResultsList=document.getElementById("modal-results-list"),modalCloseBtn=document.getElementById("modal-close-btn"),statusMessageEl=document.getElementById("status-message");
+      let pickupLocationDetails=null,deliveryLocationDetails=null,selectedTruck=null,selectedGoodsType=null,goodsWeight=null,goodsWeightUnit="kg",mobileNumber=null;
+      const truckTypes=[{id:"Mini_Truck",name:"TATA ACE / PICKUP",capacity:"1.5 TON",imageUrl:"https://truckcdn.cardekho.com/in/ashok-leyland/dost/ashok-leyland-dost-59041.jpg",rateMin:15,rateMax:25},{id:"LVC",name:"Light Commercial Vehicle",capacity:"1-1.5 TON",imageUrl:"https://5.imimg.com/data5/CH/DD/MY-38766146/eicher-17-feet-commercial-vehicle-for-rental-basis-500x500.jpg",rateMin:25,rateMax:40},{id:"6-Wheeler_Truck",name:"6-Wheeler Truck",capacity:"9-11 TON",imageUrl:"https://truckcdn.cardekho.com/in/eicher/pro-2095-xp/eicher-pro-2095-xp-84068.jpg",rateMin:40,rateMax:85},{id:"container20",name:"20FT - 40FT CONTAINER",capacity:"-",imageUrl:"https://5.imimg.com/data5/SELLER/Default/2022/3/QQ/JZ/XN/2252489/40-ft-container-trailer-service.JPG",rateMin:80,rateMax:150},{id:"10-Wheeler_TRUCK",name:"10-Wheeler Truck",capacity:"16-20 TON",imageUrl:"https://cdn.trucksfloor.com/vehicles/truck/trf/bharat-benz-hdt-r-4232-r-tanker-6775-sleeper/bharat-benz-hdt-r-4232-r-tanker-6775-sleeper-1.jpg",rateMin:50,rateMax:100},{id:"Multi-Axle",name:"Multi-Axle Truck",capacity:"25 - 40 TON",imageUrl:"https://c8.alamy.com/comp/2WA4YCR/yellow-volvo-fh-540-truck-in-front-of-heavy-load-on-multi-axle-low-loader-trailer-parked-on-truck-stop-oversize-load-salo-finland-march-31-2019-2WA4YCR.jpg",rateMin:55,rateMax:120}];
+      const goodsTypes=[{id:"machinery",name:"Industrial Machinery"},{id:"household",name:"Household Goods"},{id:"parcel",name:"Parcel Service / luggage transport"},{id:"fresh",name:"Fresh Fruits / Vegetables / Coconut"},{id:"electronics",name:"Old Servers / Computers / Laptops"},{id:"construction",name:"Construction Material"}];
+
+      function switchView(e){locationBookingView.classList.add("hidden"),detailsEntryView.classList.add("hidden"),mobileVerificationView.classList.add("hidden"),"location"===e?locationBookingView.classList.remove("hidden"):"details"===e?detailsEntryView.classList.remove("hidden"):"otp"===e&&mobileVerificationView.classList.remove("hidden"),currentActiveView=e,window.scrollTo(0,0)}
+      function initApp(){pickupDisplay.addEventListener("click",()=>openModal("pickup")),deliveryDisplay.addEventListener("click",()=>openModal("delivery")),modalCloseBtn.addEventListener("click",closeModal),modalOverlay.addEventListener("click",e=>{e.target===modalOverlay&&closeModal()}),modalSearchInput.addEventListener("input",handleModalSearchInput),truckBookingForm.addEventListener("submit",handleCheckFareSubmit),backToLocationBtn.addEventListener("click",()=>switchView("location")),detailsNextBtn.addEventListener("click",handleDetailsNext),backToDetailsBtn.addEventListener("click",()=>switchView("details")),sendOtpBtn.addEventListener("click",handleSendOtp),verifyOtpBtn.addEventListener("click",handleVerifyOtp),truckTypeSelectDisplay.addEventListener("click",()=>toggleCustomDropdown("truck")),populateTruckOptions(),goodsTypeSelectDisplay.addEventListener("click",()=>toggleCustomDropdown("goods")),populateGoodsOptions(),document.addEventListener("click",function(e){truckTypeSelectDisplay&&!truckTypeSelectDisplay.contains(e.target)&&truckTypeOptionsContainer&&!truckTypeOptionsContainer.contains(e.target)&&closeCustomDropdown("truck"),goodsTypeSelectDisplay&&!goodsTypeSelectDisplay.contains(e.target)&&goodsTypeOptionsContainer&&!goodsTypeOptionsContainer.contains(e.target)&&closeCustomDropdown("goods")}),console.log("App Initialized.")}
+      function getShortLocationName(e,t=20){if(!e)return"N/A";const o=e.split(","),a=o[0]+(o.length>1?`, ${o[1].trim()}`:"");return a.length>t?a.substring(0,t-3)+"...":a}
+      function handleCheckFareSubmit(e){e.preventDefault(),pickupLocationDetails&&deliveryLocationDetails?pickupLocationDetails.place_id&&deliveryLocationDetails.place_id?(showStatus("Calculating distance...",!1,0),distanceMatrixService.getDistanceMatrix({origins:[{placeId:pickupLocationDetails.place_id}],destinations:[{placeId:deliveryLocationDetails.place_id}],travelMode:google.maps.TravelMode.DRIVING,unitSystem:google.maps.UnitSystem.METRIC}).then(e=>{if("OK"===e.status&&e.rows[0].elements[0].status==="OK"){const t=e.rows[0].elements[0].distance.value/1e3;summaryPickupLocationEl.textContent=`Pickup: ${getShortLocationName(pickupLocationDetails.description)}`,summaryDeliveryLocationEl.textContent=`Delivery: ${getShortLocationName(deliveryLocationDetails.description)}`,summaryDistanceEl.textContent=`Distance: ${t.toFixed(0)} KM`,showStatus("Distance calculated.",!1,1500),switchView("details")}else showStatus("Could not calculate driving distance. Please try different locations.",!0),console.error("Distance Matrix Error:",e.status,e),summaryDistanceEl.textContent="Distance: Error"}).catch(e=>{showStatus("An error occurred during distance calculation.",!0),console.error(e)})):showStatus("Invalid location data. Please re-select from the suggestions.",!0):showStatus("Please select both Pickup and Delivery locations.",!0)}
+      function handleDetailsNext(){if(!selectedTruck)return void showStatus("Please select a truck type.",!0);if(!selectedGoodsType)return void showStatus("Please select a goods type.",!0);if(goodsWeight=parseFloat(goodsWeightInput.value),goodsWeightUnit=goodsWeightUnitSelect.value,isNaN(goodsWeight)||goodsWeight<=0)return showStatus("Please enter a valid weight for the goods.",!0),void goodsWeightInput.focus();const e=summaryDistanceEl.textContent,t=parseFloat(e.replace(/[^0-9.]/g,""));if(isNaN(t)||t<=0)return showStatus("Could not determine distance. Please re-select locations.",!0),void switchView("location");const o=Math.round(t*selectedTruck.rateMin),a=Math.round(t*selectedTruck.rateMax);estimatedFareDisplay.textContent=`₹${o} - ₹${a}`,otpSummaryPickupEl.textContent=`Pickup: ${getShortLocationName(pickupLocationDetails.description)}`,otpSummaryDeliveryEl.textContent=`Delivery: ${getShortLocationName(deliveryLocationDetails.description)}`,otpSummaryDistanceEl.textContent=`Dist: ${summaryDistanceEl.textContent.replace("Distance: ","")}`,switchView("otp")}
+      function handleSendOtp(){if(mobileNumber=mobileNumberInput.value.trim(),!/^[6-9]\d{9}$/.test(mobileNumber))return showStatus("Please enter a valid 10-digit Indian mobile number.",!0),void mobileNumberInput.focus();simulatedOTP=Math.floor(1e5+9e5*Math.random()).toString(),showStatus(`SIMULATED: OTP for ${mobileNumber} is ${simulatedOTP}`,!1,7e3),otpInputGroup.classList.remove("hidden"),otpInput.focus(),sendOtpBtn.textContent="Resend OTP",sendOtpBtn.disabled=!0,setTimeout(()=>{sendOtpBtn.disabled=!1},3e4)}
+      function populateTruckOptions(){truckTypeOptionsContainer.innerHTML="",truckTypes.forEach(e=>{const t=document.createElement("div");t.classList.add("option"),t.innerHTML=`<img src="${e.imageUrl}" alt="${e.name}"><span class="item-name">${e.name}</span><span class="item-detail">${e.capacity}</span>`,t.addEventListener("click",()=>selectTruckType(e)),truckTypeOptionsContainer.appendChild(t)})}
+      function populateGoodsOptions(){goodsTypeOptionsContainer.innerHTML="",goodsTypes.forEach(e=>{const t=document.createElement("div");t.classList.add("option"),t.innerHTML=`<span class="item-name">${e.name}</span>`,t.addEventListener("click",()=>selectGoodsType(e)),goodsTypeOptionsContainer.appendChild(t)})}
+      function toggleCustomDropdown(e){const t="truck"===e?truckTypeSelectDisplay:goodsTypeSelectDisplay,o="truck"===e?truckTypeOptionsContainer:goodsTypeOptionsContainer;o.classList.toggle("open"),t.classList.toggle("open")}
+      function closeCustomDropdown(e){const t="truck"===e?truckTypeSelectDisplay:goodsTypeSelectDisplay,o="truck"===e?truckTypeOptionsContainer:goodsTypeOptionsContainer;o.classList.remove("open"),t.classList.remove("open")}
+      function selectTruckType(e){selectedTruck=e,truckTypeSelectDisplay.querySelector(".placeholder")&&(truckTypeSelectDisplay.querySelector(".placeholder").textContent=`${e.name} (${e.capacity})`,truckTypeSelectDisplay.querySelector(".placeholder").style.color="#333"),closeCustomDropdown("truck"),selectedTruckNameSpan.textContent=`${e.name} (${e.capacity})`,selectedTruckInfoDiv.style.display="block",showStatus(`Selected Truck: ${e.name}`,!1,2e3)}
+      function selectGoodsType(e){selectedGoodsType=e,goodsTypeSelectDisplay.querySelector(".placeholder")&&(goodsTypeSelectDisplay.querySelector(".placeholder").textContent=e.name,goodsTypeSelectDisplay.querySelector(".placeholder").style.color="#333"),closeCustomDropdown("goods"),selectedGoodsNameSpan.textContent=e.name,selectedGoodsInfoDiv.style.display="block",showStatus(`Selected Goods Type: ${e.name}`,!1,2e3)}
+      function openModal(e){currentEditingField=e,modalSearchInput.value="",modalResultsList.innerHTML="",modalTitle.textContent=`Select ${e.charAt(0).toUpperCase()+e.slice(1)} Location`,modalSearchInput.placeholder=`Search ${e.charAt(0).toUpperCase()+e.slice(1)}...`,modalOverlay.classList.add("show"),setTimeout(()=>modalSearchInput.focus(),50)}
+      function closeModal(){modalOverlay.classList.remove("show"),currentEditingField=null}
+      function handleModalSearchInput(event){const query=event.target.value;clearTimeout(debounceTimeout);modalResultsList.innerHTML="";if(query.length<3)return;debounceTimeout=setTimeout(()=>{fetchGooglePlacesPredictions(query)},300)}
+      async function fetchGooglePlacesPredictions(query){if(!Place){showStatus("ERROR: Google Places service not ready.",true);return}modalResultsList.innerHTML="<li>Searching...</li>";try{const request={textQuery:query,fields:["displayName","formattedAddress","location","id"],includedType:"locality",language:"en-US",region:"in",};const{places}=await Place.searchByText(request);if(places.length){displayGooglePredictions(places)}else{modalResultsList.innerHTML=`<li>No results found for "${query}"</li>`}}catch(error){console.error("Place Search error:",error);modalResultsList.innerHTML="<li>Error fetching results.</li>"}}
+      function displayGooglePredictions(places){modalResultsList.innerHTML="";places.forEach((place)=>{const li=document.createElement("li");li.textContent=place.displayName;li.dataset.placeId=place.id;li.addEventListener("click",()=>handleGooglePredictionClick(place.id));modalResultsList.appendChild(li)})}
+      async function handleGooglePredictionClick(placeId){if(!Place){showStatus("ERROR: Google Places service not ready.",true);return}try{const place=new Place({id:placeId});await place.fetchFields({fields:["id","displayName","location"]});if(!place.location){showStatus("Could not retrieve location details. Please try again.",true);return}const d={place_id:place.id,description:place.displayName,geometry:{lat:place.location.lat(),lng:place.location.lng()}};const fieldElement=currentEditingField==='pickup'?pickupDisplay:deliveryDisplay;const coordsId=currentEditingField==='pickup'?'pickup-coords':'delivery-coords';if(currentEditingField==='pickup'){pickupLocationDetails=d}else if(currentEditingField==='delivery'){deliveryLocationDetails=d}fieldElement.textContent=d.description;fieldElement.classList.add("has-value");document.getElementById(coordsId).textContent=`Lat: ${d.geometry.lat.toFixed(4)}, Lng: ${d.geometry.lng.toFixed(4)}`;showStatus(`${currentEditingField.charAt(0).toUpperCase()+currentEditingField.slice(1)}: ${getShortLocationName(d.description)}`);closeModal()}catch(error){showStatus("Could not retrieve location details. Please try again.",true);console.error("Place Details fetch error:",error)}}
+      let statusTimeout;function showStatus(e,t=!1,o=3e3){statusMessageEl.textContent=e,statusMessageEl.style.backgroundColor=t?"rgba(200,0,0,0.8)":"rgba(0,0,0,0.7)",statusMessageEl.classList.add("show"),clearTimeout(statusTimeout),0!==o&&(statusTimeout=setTimeout(()=>{statusMessageEl.classList.remove("show")},o))}
+      function resetFormUI(){pickupLocationDetails=null,deliveryLocationDetails=null,selectedTruck=null,selectedGoodsType=null,goodsWeight=null,mobileNumber=null,simulatedOTP="",pickupDisplay.textContent=pickupDisplay.dataset.placeholder,pickupDisplay.classList.remove("has-value"),deliveryDisplay.textContent=deliveryDisplay.dataset.placeholder,deliveryDisplay.classList.remove("has-value"),document.getElementById("pickup-coords")&&(document.getElementById("pickup-coords").textContent=""),document.getElementById("delivery-coords")&&(document.getElementById("delivery-coords").textContent=""),truckTypeSelectDisplay.querySelector(".placeholder")&&(truckTypeSelectDisplay.querySelector(".placeholder").textContent="Select Truck",truckTypeSelectDisplay.querySelector(".placeholder").style.color="#777"),selectedTruckInfoDiv.style.display="none",goodsTypeSelectDisplay.querySelector(".placeholder")&&(goodsTypeSelectDisplay.querySelector(".placeholder").textContent="Select Goods Type",goodsTypeSelectDisplay.querySelector(".placeholder").style.color="#777"),selectedGoodsInfoDiv.style.display="none",goodsWeightInput.value="",mobileNumberInput.value="",otpInput.value="",estimatedFareDisplay.textContent="--",otpInputGroup.classList.add("hidden"),sendOtpBtn.disabled=!1,sendOtpBtn.textContent="Send OTP",switchView("location")}
+      function handleVerifyOtp(){const e=otpInput.value.trim();if(6!==e.length)return showStatus("Please enter the 6-digit OTP.",!0),void otpInput.focus();if(e===simulatedOTP){showStatus("OTP Verified! Submitting your booking...",!1,0);const t={pickup:{address:pickupLocationDetails?pickupLocationDetails.description:"N/A",coordinates:pickupLocationDetails?pickupLocationDetails.geometry:null},delivery:{address:deliveryLocationDetails?deliveryLocationDetails.description:"N/A",coordinates:deliveryLocationDetails?deliveryLocationDetails.geometry:null},distance:summaryDistanceEl.textContent.replace("Distance: ",""),estimatedFare:estimatedFareDisplay.textContent,truck:selectedTruck?selectedTruck.name:"N/A",goodsType:selectedGoodsType?selectedGoodsType.name:"N/A",weight:goodsWeight,weightUnit:goodsWeightUnit,mobile:mobileNumber};fetch("/logistics",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(t)}).then(async e=>{const t=e.headers.get("content-type");if(t&&-1!==t.indexOf("application/json")){const t=await e.json();if(!e.ok)throw new Error(t.message||"An unknown server error occurred.");return t}if(401===e.status||403===e.status)throw new Error("Your session has expired. Please refresh the page and log in.");throw new Error("Server sent an invalid response. Expected JSON.")}).then(e=>{console.log("SUCCESS: Server responded with:",e),showStatus(e.message||"Booking confirmed successfully!",!1,4e3),setTimeout(()=>{resetFormUI()},2e3)}).catch(e=>{console.error("Error submitting booking:",e),showStatus(`Booking Failed: ${e.message}`,!0,6e3)})}else showStatus("Invalid OTP. Please try again.",!0),otpInput.focus(),otpInput.value=""}
+      
+      // We no longer call initGoogleMaps() here. The callback parameter will do it for us.
+      
+    </script>
+
+    <!-- 
+      MODIFIED SCRIPT TAG:
+      - Replace YOUR_GOOGLE_MAPS_API_KEY with your actual key.
+      - We added `&callback=initGoogleMaps` which solves the "google is not defined" error.
+    -->
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&loading=async&libraries=places,routes&callback=initGoogleMaps"
+      async
+    ></script>
+  </body>
+</html>
