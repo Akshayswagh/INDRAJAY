@@ -445,7 +445,7 @@ app.get("/", async (req, res) => {
 
 app.get("/logistic", async (req, res) => {
 
-    res.render("client/comingsoon", { title: "Indrajay Enterprises" });
+    res.render("client/logistic", { title: "Indrajay Enterprises" });
   
 });
 

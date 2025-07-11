@@ -2,6 +2,15 @@
 <html lang="en">
   <head>
     <%- include('../partials/head') %>
+    <style>
+      .testimonials .item {
+        height: 470px;
+      }
+      .testimonial-content {
+        position: absolute;
+        bottom: 10px;
+      }
+    </style>
   </head>
   <body>
     <%- include('../partials/navbar'); %>
@@ -271,7 +280,7 @@
             data-aos-duration="700"
           >
             <!-- <span>Exports</span> -->
-            <h2>Exports </h2>
+            <h2>Exports</h2>
           </div>
           <div class="owl-5 owl-carousel">
             <% Exports.forEach(Exports => { %>
@@ -362,10 +371,13 @@
                   <span>Supplier</span>
                   <h2 class="text-white">Join as vendor</h2>
                 </div>
-<a href="/register-vendor" class="btn btn-lg btn-warning fw-bold d-inline-flex align-items-center px-4 py-2 shadow">
-  Start Your Registration
-  <i class="bi bi-arrow-right ms-2"></i>
-</a>
+                <a
+                  href="/register-vendor"
+                  class="btn btn-lg btn-warning fw-bold d-inline-flex align-items-center px-4 py-2 shadow"
+                >
+                  Start Your Registration
+                  <i class="bi bi-arrow-right ms-2"></i>
+                </a>
               </div>
             </div>
           </div>
@@ -395,12 +407,16 @@
               </div>
               <div class="testimonial-quote">
                 <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Mauris ut mauris justo. Aenean in faucibus velit, ac
-                  consectetur elit. Quisque euismod nulla vitae turpis
-                  efficitur, vitae lobortis ipsum auctor. Vestibulum vitae nibh
-                  dui. Nunc et erat quam. Nam nec neque mattis, dictum arcu ac,
-                  condimentum quam.
+                  "Indrajay Enterprises has been a reliable and professional
+                  partner in our fresh produce imports. Their Indian red
+                  onions—especially the 55++ mm grade packed in 18 kg mesh
+                  bags—consistently meet our quality expectations and arrive in
+                  excellent condition. Their banana shipments are equally
+                  impressive, with uniform ripeness and careful packaging that
+                  ensures minimal spoilage. The team at Indrajay is responsive,
+                  transparent, and committed to long-term relationships. We’re
+                  proud to work with them and look forward to growing our
+                  business together."
                 </p>
               </div>
               <div class="testimonial-content">
@@ -408,13 +424,10 @@
                   <img src="upload/face.jpg" alt="" />
                 </div>
                 <div class="info">
-                  <h4>Name</h4>
-                  <p>City</p>
+                  <h4>— Fresh Produce Importer LLC</h4>
+                  <p>Dubai</p>
                 </div>
               </div>
-              <span class="testimonial-quote-icon"
-                ><i class="fas fa-quote-right"></i
-              ></span>
             </div>
 
             <div class="item">
@@ -427,12 +440,19 @@
               </div>
               <div class="testimonial-quote">
                 <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Mauris ut mauris justo. Aenean in faucibus velit, ac
-                  consectetur elit. Quisque euismod nulla vitae turpis
-                  efficitur, vitae lobortis ipsum auctor. Vestibulum vitae nibh
-                  dui. Nunc et erat quam. Nam nec neque mattis, dictum arcu ac,
-                  condimentum quam.
+                  Indrajay Enterprises has completely transformed our
+                  transportation experience. As a business that relies heavily
+                  on timely and secure deliveries, we were impressed by their
+                  punctuality, professionalism, and attention to detail. Their
+                  fleet is well-maintained, and their drivers are courteous and
+                  reliable. From local shipments to long-haul logistics, every
+                  consignment was handled with care and precision. What stood
+                  out most was their proactive communication—we were always kept
+                  in the loop, and any challenges were resolved swiftly without
+                  disrupting our operations. Thanks to Indrajay Enterprises,
+                  we’ve reduced delays, improved customer satisfaction, and
+                  streamlined our supply chain. They’re not just a transport
+                  provider—they’re a logistics partner we trust."
                 </p>
               </div>
               <div class="testimonial-content">
@@ -440,13 +460,124 @@
                   <img src="upload/face.jpg" alt="" />
                 </div>
                 <div class="info">
-                  <h4>Name</h4>
-                  <p>City</p>
+                  <h4>— Rajesh Kulkarni, Logistics Head</h4>
+                  <p>Pune</p>
                 </div>
               </div>
-              <span class="testimonial-quote-icon"
-                ><i class="fas fa-quote-right"></i
-              ></span>
+            </div>
+
+            <div class="item">
+              <div class="testimonial-rate">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+              </div>
+              <div class="testimonial-quote">
+                <p>
+                  Working with Indrajay Enterprises has truly elevated our green
+                  mango supply operations. As a farm rooted in tradition and
+                  quality, Bankar Farms has always prioritized freshness and
+                  sustainability. Indrajay Enterprises understood our values
+                  from the start and helped us scale our distribution without
+                  compromising on quality. Their logistics and packaging
+                  solutions ensured that our mangoes reached markets in pristine
+                  condition, retaining their natural aroma and taste. The team
+                  was responsive, transparent, and genuinely invested in our
+                  success. Thanks to this partnership, we’ve expanded our reach
+                  and built stronger relationships with retailers and customers
+                  alike. Indrajay Enterprises isn’t just a vendor—they’re a
+                  growth partner we trust."
+                </p>
+              </div>
+              <div class="testimonial-content">
+                <div class="img">
+                  <img src="upload/face.jpg" alt="" />
+                </div>
+                <div class="info">
+                  <h4>— Kunal Bankar, Co-Founder, Bankar Farms</h4>
+                  <p>Baramati</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="item">
+              <div class="testimonial-rate">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+              </div>
+              <div class="testimonial-quote">
+                <p>
+                  Partnering with Indrajay Enterprises for our industrial
+                  service needs was one of the best decisions we've made. Their
+                  team demonstrated exceptional technical expertise and a deep
+                  understanding of our operational challenges. From machinery
+                  maintenance to process optimization, every service was
+                  delivered with precision and professionalism. What impressed
+                  us most was their commitment to safety and efficiency. The
+                  turnaround time was swift, and their engineers were proactive
+                  in identifying potential issues before they became costly
+                  problems. Their customized solutions helped us reduce downtime
+                  and improve overall productivity. Indrajay Enterprises isn’t
+                  just a service provider—they’re a strategic ally in our
+                  growth. We look forward to continuing this partnership and
+                  highly recommend them to any organization seeking reliable and
+                  innovative industrial support."
+                </p>
+              </div>
+              <div class="testimonial-content">
+                <div class="img">
+                  <img src="upload/face.jpg" alt="" />
+                </div>
+                <div class="info">
+                  <h4>— Abhijeet Deshmukh, Operations Manager</h4>
+                  <p>Pune</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="item">
+              <div class="testimonial-rate">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+              </div>
+              <div class="testimonial-quote">
+                <p>
+                  "Our experience with Indrajay Enterprises was nothing short of
+                  extraordinary. From the moment we booked our trekking
+                  adventure, their team was attentive, professional, and
+                  incredibly knowledgeable. The travel arrangements were
+                  seamless, and every detail—from transport to accommodation—was
+                  handled with precision. The trekking route they curated was
+                  breathtaking, with guides who were not only skilled but also
+                  passionate about the outdoors. We felt safe, inspired, and
+                  completely immersed in nature. What truly stood out was their
+                  event management. We had a corporate retreat planned alongside
+                  the trek, and Indrajay Enterprises executed it flawlessly.
+                  From team-building activities to evening bonfires and local
+                  cultural showcases, everything was thoughtfully organized and
+                  beautifully delivered. I would highly recommend Indrajay
+                  Enterprises to anyone looking for a well-rounded, memorable
+                  travel and event experience. They don’t just plan trips—they
+                  craft journeys that stay with you forever."
+                </p>
+              </div>
+              <div class="testimonial-content">
+                <div class="img">
+                  <img src="upload/face.jpg" alt="" />
+                </div>
+                <div class="info">
+                  <h4>— Ravi Mehta</h4>
+                  <p>Pune</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
