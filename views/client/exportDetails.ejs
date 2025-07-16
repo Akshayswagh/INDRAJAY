@@ -114,7 +114,8 @@
         text-align: center;
       }
 
-      .product-details-content h2 { /* Changed from h1 as per your code */
+      .product-details-content h2 {
+        /* Changed from h1 as per your code */
         font-family: "Montserrat", sans-serif;
         font-size: 2.2em; /* REDUCED from 2.8em */
         color: #2c3e50;
@@ -144,12 +145,12 @@
 
       .enquire-now-btn {
         display: inline-block;
-        background-color: #4CAF50; /* Green, consistent with ribbon theme */
+        background-color: #4caf50; /* Green, consistent with ribbon theme */
         color: white;
         padding: 12px 30px; /* REDUCED padding for smaller text */
         border-radius: 50px; /* Pill shape */
         font-family: "Montserrat", sans-serif;
-        font-size: 1.0em; /* REDUCED from 1.15em */
+        font-size: 1em; /* REDUCED from 1.15em */
         font-weight: bold;
         text-decoration: none;
         text-transform: uppercase;
@@ -165,7 +166,6 @@
         box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
       }
       /* END NEW: Enquire Now Button Section Styles */
-
 
       /* Responsive adjustments */
       @media (max-width: 1200px) {
@@ -199,8 +199,8 @@
           max-height: 60vh;
         }
         .enquire-now-btn {
-            padding: 10px 25px; /* REDUCED padding */
-            font-size: 0.95em; /* REDUCED from 1.05em */
+          padding: 10px 25px; /* REDUCED padding */
+          font-size: 0.95em; /* REDUCED from 1.05em */
         }
       }
 
@@ -230,12 +230,12 @@
           padding: 0 10px;
         }
         .enquire-button-container {
-            margin-top: 30px;
+          margin-top: 30px;
         }
         .enquire-now-btn {
-            padding: 10px 22px; /* REDUCED padding */
-            font-size: 0.9em; /* REDUCED from 1em */
-            min-width: 160px; /* REDUCED min-width */
+          padding: 10px 22px; /* REDUCED padding */
+          font-size: 0.9em; /* REDUCED from 1em */
+          min-width: 160px; /* REDUCED min-width */
         }
       }
       @media (min-width: 425px) {
@@ -248,26 +248,20 @@
     <main class="product-showcase-container">
       <!-- Hero Product Image -->
       <section class="product-image-hero">
-        <img
-          src="<%= exportItem.image %>"
-          alt="<%= exportItem.name %>"
-        />
+        <img src="<%= exportItem.image %>" alt="<%= exportItem.name %>" />
       </section>
 
       <section class="product-details-content">
         <h2><%= exportItem.name %></h2>
         <div class="product-description">
-          <p>
-           <%= exportItem.description %>
-          </p>
+          <p style="white-space: pre-line"><%- exportItem.description %></p>
         </div>
 
         <!-- NEW ENQUIRE NOW BUTTON SECTION -->
         <div class="enquire-button-container">
-            <a href="/enquiry" class="enquire-now-btn">Enquire Now</a>
+          <a href="/enquiry" class="enquire-now-btn">Enquire Now</a>
         </div>
         <!-- END NEW ENQUIRE NOW BUTTON SECTION -->
-
       </section>
       <!-- Similar Products Ribbon - Commented out as per your provided code -->
       <!-- <div class="similar-products-ribbon">

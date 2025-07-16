@@ -11,7 +11,6 @@
       rel="stylesheet"
     />
     <style>
-      
       /* Main container for the "Care" page */
       .care-page-container {
         font-family: "Open Sans", sans-serif;
@@ -163,7 +162,7 @@
 
       <section class="care-content-details">
         <div class="care-description-text">
-          <p><%= care.description %></p>
+          <p style="white-space: pre-line"><%- care.description %></p>
         </div>
         <div class="care-enquire-button-wrapper">
           <a href="/enquiry" class="care-enquire-btn">Enquire Now</a>

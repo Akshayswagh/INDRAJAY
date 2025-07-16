@@ -3,325 +3,234 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Expert Consultation Services - Refined</title>
+    <title>Expert Consultation Services</title>
     <%- include('../partials/head'); %>
 
     <style>
-      /* Basic Reset & Root Variables */
-      :root {
-        --primary-color: #00796b; /* Dark Teal */
-        --secondary-color: #f39c12; /* Orange */
-        --text-dark: #2c3e50;
-        --text-light: #5a6a7a;
-        --bg-light: #f8f9fa;
-        --bg-white: #ffffff;
-        --card-shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
-        --card-hover-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+      html {
+        scroll-behavior: smooth;
       }
-
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-
       body {
-        font-family: "Roboto", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; /* Changed font for a cleaner look */
+        font-family: "Roboto", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
         line-height: 1.7;
-        color: var(--text-dark);
-        background-color: var(--bg-light);
+        color: #2c3e50; /* text-dark */
+        background-color: #f8f9fa; /* bg-light */
         overflow-x: hidden;
+        margin: 0;
       }
 
-      /* --- Keyframe Animations --- */
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-        }
-        to {
-          opacity: 1;
-        }
-      }
-
+      /* --- Keyframe Animations (Reused) --- */
+      @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
       @keyframes slideInFromBottom {
-        from {
-          opacity: 0;
-          transform: translateY(40px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      @keyframes underlineGrowPrimary {
+        from { width: 0; }
+        to { width: 70px; }
       }
 
-      @keyframes slideInFromLeftSubtle {
-        from {
-          opacity: 0;
-          transform: translateX(-30px);
-        }
-        to {
-          opacity: 1;
-          transform: translateX(0);
-        }
-      }
-
-      @keyframes underlineGrow {
-        from {
-          width: 0;
-        }
-        to {
-          width: 80px;
-        }
-      }
-
-      /* Container */
+      /* --- General Container --- */
       .consultation-container {
         max-width: 1200px;
         margin: 0 auto;
-        padding: 0 20px; /* Horizontal padding for all screen sizes */
+        padding: 0 20px;
+        position: relative;
+        z-index: 2;
       }
 
-      /* Header Section */
+      /* --- DYNAMIC HERO SECTION --- */
       .consultation-hero {
-        padding: 80px 0 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 90vh;
+        padding: 60px 0;
         text-align: center;
-        background-color: var(--bg-white); /* White background for hero */
-        border-bottom: 1px solid #e0e0e0;
-        animation: fadeIn 1s ease-out;
+        position: relative;
+        /* POWERFUL IMAGE + DARK OVERLAY FOR TEXT CONTRAST */
+        background: linear-gradient(rgba(28, 40, 51, 0.75), rgba(28, 40, 51, 0.75)),
+          url("https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=2232&auto=format&fit=crop")
+            center center/cover no-repeat;
       }
 
       .consultation-hero h1 {
-        font-size: clamp(2.2rem, 5vw, 2.8rem); /* Responsive font size */
-        color: var(--primary-color);
+        font-size: clamp(2.5rem, 6vw, 4rem);
+        color: #ffffff;
         margin-bottom: 20px;
         font-weight: 700;
+        line-height: 1.2;
+        text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
         opacity: 0;
-        animation: slideInFromBottom 0.8s ease-out 0.2s forwards;
+        animation: slideInFromBottom 0.8s ease-out 0.3s forwards;
       }
 
       .consultation-hero .tagline {
-        font-size: clamp(1rem, 2.5vw, 1.1rem);
-        color: var(--text-light);
+        font-size: clamp(1.1rem, 2.5vw, 1.25rem);
+        color: #e0e0e0;
         max-width: 750px;
-        margin: 0 auto 30px auto;
-        line-height: 1.8;
+        margin: 0 auto 35px auto;
+        line-height: 1.7;
         opacity: 0;
-        animation: slideInFromBottom 0.8s ease-out 0.4s forwards;
+        animation: slideInFromBottom 0.8s ease-out 0.5s forwards;
       }
 
-      .cta-button {
+      /* --- Hero Key Services Showcase --- */
+      .key-services-showcase {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+        margin: 0 auto 40px auto;
+        max-width: 900px;
+      }
+      .service-pill {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: #ffffff;
+        padding: 8px 18px;
+        border-radius: 50px;
+        font-size: 1rem;
+        font-weight: 500;
+        transition: background-color 0.3s, transform 0.3s;
+        opacity: 0;
+        animation: slideInFromBottom 0.7s ease-out forwards;
+      }
+      .service-pill:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-2px);
+      }
+      .service-pill:nth-child(1) { animation-delay: 0.7s; }
+      .service-pill:nth-child(2) { animation-delay: 0.8s; }
+      .service-pill:nth-child(3) { animation-delay: 0.9s; }
+      .service-pill:nth-child(4) { animation-delay: 1.0s; }
+
+      .hero-cta-button {
         display: inline-block;
-        background-color: var(--secondary-color);
-        color: var(--bg-white);
-        padding: 12px 30px;
-        border-radius: 50px; /* Pill shape */
+        background-color: #f39c12;
+        color: #ffffff;
+        padding: 14px 35px;
+        border-radius: 5px;
         text-decoration: none;
         font-weight: 600;
         font-size: 1.1rem;
         transition: background-color 0.3s ease, transform 0.3s ease;
         opacity: 0;
-        animation: slideInFromBottom 0.8s ease-out 0.6s forwards;
-        box-shadow: 0 4px 10px rgba(243, 156, 18, 0.3);
+        animation: slideInFromBottom 0.8s ease-out 1.1s forwards;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
       }
-
-      .cta-button:hover {
-        background-color: #e67e22; /* Darker orange */
+      .hero-cta-button:hover {
+        background-color: #e67e22;
         transform: translateY(-3px);
       }
 
-      /* Services Section */
+      /* --- SERVICES SECTION --- */
       .services-section {
-        padding: 70px 0;
+        padding: 80px 0;
       }
 
       .services-section .section-title {
         text-align: center;
-        font-size: clamp(1.8rem, 4vw, 2.2rem);
-        color: var(--text-dark);
-        margin-bottom: 20px;
+        font-size: clamp(1.8rem, 4vw, 2.6rem);
+        color: #2c3e50;
+        margin-bottom: 15px;
         font-weight: 700;
         opacity: 0;
-        animation: slideInFromBottom 0.7s ease-out 0.2s forwards; /* Stagger relative to section load */
+        animation: slideInFromBottom 0.6s ease-out 0.2s forwards;
         position: relative;
       }
 
       .services-section .section-title::after {
         content: "";
         display: block;
-        width: 0; /* Animated by keyframe */
-        height: 4px;
-        background-color: var(--primary-color);
-        margin: 15px auto 0;
+        width: 0;
+        height: 3px;
+        background-color: #f39c12;
+        margin: 12px auto 0;
         border-radius: 2px;
-        animation: underlineGrow 0.8s ease-out 1s forwards; /* Animate after title */
+        animation: underlineGrowPrimary 0.7s ease-out 0.8s forwards;
       }
 
       .services-section .section-subtitle {
         text-align: center;
-        font-size: clamp(0.9rem, 2vw, 1.1rem);
-        color: var(--text-light);
-        max-width: 600px;
+        font-size: clamp(1rem, 1.8vw, 1.1rem);
+        color: #5a6a7a;
+        max-width: 700px;
         margin: 0 auto 50px auto;
         opacity: 0;
-        animation: slideInFromBottom 0.7s ease-out 0.4s forwards;
+        animation: slideInFromBottom 0.6s ease-out 0.4s forwards;
       }
 
       .services-grid {
         display: flex;
         flex-wrap: wrap;
         gap: 30px;
-        justify-content: center; /* Center items if last row isn't full */
+        justify-content: center;
       }
 
       .service-card {
-        background-color: var(--bg-white);
-        border-radius: 12px;
-        padding: 30px 25px;
-        box-shadow: var(--card-shadow);
-        transition: transform 0.3s ease, box-shadow 0.3s ease,
-          border-top-color 0.3s ease;
-        width: calc(
-          33.333% - 20px
-        ); /* 3 cards per row, accounting for 30px gap (20px = 30px * 2/3) */
-        min-width: 280px; /* Minimum card width */
+        background-color: #ffffff;
+        border-radius: 8px;
+        padding: 25px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        width: calc(33.333% - 20px);
+        min-width: 290px;
         display: flex;
         flex-direction: column;
         opacity: 0;
-        animation: slideInFromBottom 0.6s ease-out forwards;
-        border-top: 4px solid transparent; /* Placeholder for hover effect */
-      }
-
-      /* Stagger card animations - can be extended */
-      .service-card:nth-child(1) {
-        animation-delay: 0.8s;
-      }
-      .service-card:nth-child(2) {
-        animation-delay: 0.9s;
-      }
-      .service-card:nth-child(3) {
-        animation-delay: 1s;
-      }
-      .service-card:nth-child(4) {
-        animation-delay: 1.1s;
-      }
-      .service-card:nth-child(5) {
-        animation-delay: 1.2s;
-      }
-      .service-card:nth-child(6) {
-        animation-delay: 1.3s;
-      }
-      .service-card:nth-child(7) {
-        animation-delay: 1.4s;
-      }
-      .service-card:nth-child(8) {
-        animation-delay: 1.5s;
-      }
-      /* ... and so on for all 15 services */
-      .service-card:nth-child(9) {
-        animation-delay: 1.6s;
-      }
-      .service-card:nth-child(10) {
-        animation-delay: 1.7s;
-      }
-      .service-card:nth-child(11) {
-        animation-delay: 1.8s;
-      }
-      .service-card:nth-child(12) {
-        animation-delay: 1.9s;
-      }
-      .service-card:nth-child(13) {
-        animation-delay: 2s;
-      }
-      .service-card:nth-child(14) {
-        animation-delay: 2.1s;
-      }
-      .service-card:nth-child(15) {
-        animation-delay: 2.2s;
+        border-left: 5px solid transparent;
+        animation: slideInFromBottom 0.5s ease-out forwards;
+        /* Use a CSS variable for the delay, set inline via EJS */
+        animation-delay: var(--card-delay, 0.3s);
       }
 
       .service-card:hover {
-        transform: translateY(-8px);
-        box-shadow: var(--card-hover-shadow);
-        border-top-color: var(--secondary-color); /* Orange accent on hover */
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+        border-left-color: #f39c12;
       }
 
       .service-card h3 {
-        font-size: 1.5rem;
-        color: var(--primary-color);
+        font-size: 1.4rem;
+        /* Using a more neutral dark color for the titles */
+        color: #2c3e50; 
         margin-bottom: 15px;
         font-weight: 600;
       }
 
       .service-card p {
-        color: var(--text-light);
-        font-size: 0.95rem;
-        flex-grow: 1; /* Ensures cards in a row have paragraphs extending to same visual height */
+        color: #5a6a7a;
+        font-size: 1rem;
+        flex-grow: 1;
         margin-bottom: 20px;
+        line-height: 1.6;
       }
 
       .service-card .learn-more {
-        color: var(--secondary-color);
+        color: #f39c12;
         text-decoration: none;
         font-weight: 600;
-        align-self: flex-start; /* Align button to the start if card is flex column */
+        align-self: flex-start;
         transition: color 0.3s ease;
+        font-size: 1rem;
       }
-
       .service-card .learn-more:hover {
-        color: #e67e22; /* Darker orange */
+        color: #e67e22;
       }
 
       /* Responsive Adjustments */
-      /* For Tablets */
-      @media (max-width: 992px) {
-        .service-card {
-          width: calc(50% - 15px); /* 2 cards per row */
-        }
+      @media (max-width: 1100px) {
+        .service-card { width: calc(50% - 15px); }
       }
-
-      /* For Mobile Phones */
       @media (max-width: 768px) {
-        .consultation-hero {
-          padding: 60px 0 40px;
-        }
-        .services-section {
-          padding: 50px 0;
-        }
+        .consultation-hero { min-height: 80vh; }
+        .services-section { padding: 60px 0; }
         .service-card {
-          width: 100%; /* 1 card per row */
-          min-width: unset; /* Reset min-width for single column */
-          animation-delay: 0.3s !important; /* Faster reveal when stacked */
-        }
-        .services-section .section-title::after {
-          animation-delay: 0.6s; /* Adjust underline animation delay */
-        }
-      }
-
-      @media (max-width: 480px) {
-        .consultation-hero h1 {
-          font-size: 1.8rem;
-        }
-        .consultation-hero .tagline {
-          font-size: 0.9rem;
-        }
-        .cta-button {
-          font-size: 1rem;
-          padding: 10px 25px;
-        }
-        .services-section .section-title {
-          font-size: 1.6rem;
-        }
-        .services-section .section-subtitle {
-          font-size: 0.85rem;
-        }
-        .service-card h3 {
-          font-size: 1.3rem;
-        }
-        .service-card p {
-          font-size: 0.9rem;
-        }
-        .services-grid {
-          gap: 20px;
+          width: 100%;
+          min-width: unset;
+          /* On mobile, animate all at once for a faster feel */
+          animation-delay: 0.2s !important; 
         }
       }
     </style>
@@ -329,19 +238,24 @@
   <body>
     <%- include('../partials/navbar'); %>
 
-    <!-- Assume Navbar is above this -->
-
-    <div class="consultation-hero">
+    <header class="consultation-hero">
       <div class="consultation-container">
-        <h1>Expert Consultation Services</h1>
+        <h1>Strategic Guidance for Peak Performance</h1>
         <p class="tagline">
-          Unlock your potential and overcome challenges with our tailored
-          strategies. We provide insightful guidance to drive growth and achieve
-          your personal & business objectives.
+          Unlock your potential with tailored strategies and expert insights to
+          drive growth and achieve your objectives.
         </p>
-        <a href="#services" class="cta-button">Explore Our Services</a>
+        <div class="key-services-showcase">
+          <div class="service-pill">Business Strategy</div>
+          <div class="service-pill">Leadership Development</div>
+          <div class="service-pill">Market Analysis</div>
+          <div class="service-pill">Operational Efficiency</div>
+        </div>
+        <a href="#services" class="hero-cta-button">
+          Explore Our Expertise
+        </a>
       </div>
-    </div>
+    </header>
 
     <section id="services" class="services-section">
       <div class="consultation-container">
@@ -352,28 +266,28 @@
         </p>
 
         <div class="services-grid">
-          <% if (consultations.length > 0) { %> <% consultations.forEach(consultation => { %>
-
-          <div class="service-card">
-            <h3><%-consultation.title %></h3>
-            <p style="text-align: justify">
-              <%= consultation.description.substring(0, 130) %>...
-            </p>
-            <a
-              href="/api/consultations/view/<%= consultation._id %>"
-              class="learn-more"
-              >Learn More →</a
-            >
-          </div>
-          <% }); %> <% } else { %>
-          <p>No  Consultation services available at this time.</p>
+          <% if (consultations.length > 0) { %> 
+            <% consultations.forEach((consultation, index) => { %>
+              <div class="service-card" style="--card-delay: <%= 0.3 + index * 0.1 %>s;">
+                <h3><%-consultation.title %></h3>
+                <p style="text-align: justify">
+                  <%= consultation.description.substring(0, 150) %>...
+                </p>
+                <a
+                  href="/api/consultations/view/<%= consultation._id %>"
+                  class="learn-more"
+                  >Learn More →</a
+                >
+              </div>
+            <% }); %> 
+          <% } else { %>
+            <p>No Consultation services available at this time.</p>
           <% } %>
         </div>
       </div>
     </section>
 
-    <%- include('../partials/footer'); %> <%- include('../partials/scripts'); %>
-
-    <!-- Assume Footer is below this -->
+    <%- include('../partials/footer'); %> 
+    <%- include('../partials/scripts'); %>
   </body>
 </html>

@@ -20,7 +20,7 @@
         line-height: 1.6;
       }
 
-      .container {
+      .events-section {
         width: 90%;
         max-width: 1200px;
         margin: 2rem auto;
@@ -123,17 +123,19 @@
         width: 100%;
         height: 100%;
         background-color: rgba(0, 0, 0, 0.5);
+        overflow-y: auto;
       }
 
       .modal-content {
         background-color: #fefefe;
-        margin: 10% auto;
+        margin: 5% auto;
         padding: 2rem;
         border-radius: 8px;
         width: 90%;
         max-width: 500px;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         animation: modalopen 0.3s;
+        position: relative;
       }
 
       @keyframes modalopen {
@@ -149,8 +151,10 @@
 
       .close {
         color: #aaa;
-        float: right;
-        font-size: 1.5rem;
+        position: absolute;
+        top: 10px;
+        right: 20px;
+        font-size: 1.8rem;
         font-weight: bold;
         cursor: pointer;
       }
@@ -160,7 +164,8 @@
       }
 
       .form-group {
-        margin-bottom: 1.5rem;
+        margin-bottom: 1rem;
+        position: relative;
       }
 
       .form-group label {
@@ -170,7 +175,8 @@
       }
 
       .form-group input,
-      .form-group select {
+      .form-group select,
+      .form-group textarea {
         width: 100%;
         padding: 0.8rem;
         border: 1px solid #ddd;
@@ -178,7 +184,17 @@
         font-size: 1rem;
       }
 
-      .submit-btn {
+      .form-group .input-error {
+        border-color: #e74c3c;
+      }
+      .validation-error-text {
+        color: #e74c3c;
+        font-size: 0.8rem;
+        margin-top: 4px;
+        display: none;
+      }
+
+      .modal-btn {
         background-color: #3498db;
         color: white;
         padding: 0.8rem 1.5rem;
@@ -187,19 +203,53 @@
         cursor: pointer;
         font-size: 1rem;
         width: 100%;
+        text-align: center;
+        margin-top: 1.5rem;
       }
 
-      .submit-btn:hover {
+      .modal-btn:hover {
         background-color: #2980b9;
       }
 
-      /* Success Message */
-      .success-message {
-        display: none;
+      .modal-helpline {
         text-align: center;
-        padding: 2rem;
+        padding: 10px;
+        background-color: #f2f2f2;
+        border-radius: 4px;
+        margin-bottom: 1.5rem;
+        font-weight: 500;
+      }
+      .modal-helpline i {
+        margin-right: 8px;
+        color: #3498db;
       }
 
+      .calculation-summary,
+      .payment-instructions,
+      .success-message {
+        text-align: center;
+        padding: 1rem 0;
+      }
+      .calculation-summary p {
+        margin-bottom: 0.8rem;
+        font-size: 1.1rem;
+      }
+      .calculation-summary .total {
+        font-weight: bold;
+        color: #2c3e50;
+        font-size: 1.3rem;
+        border-top: 1px solid #eee;
+        padding-top: 1rem;
+        margin-top: 1rem;
+      }
+      .payment-instructions {
+        background-color: #fffbe6;
+        border: 1px solid #ffe58f;
+        padding: 1rem;
+        border-radius: 4px;
+        margin: 1.5rem 0;
+        text-align: left;
+      }
       .success-message i {
         font-size: 3rem;
         color: #2ecc71;
@@ -207,7 +257,7 @@
       }
 
       .success-message h3 {
-        color: #2ecc71;
+        color: #2c3e50; /* Changed color to be more neutral */
         margin-bottom: 1rem;
       }
 
@@ -215,9 +265,8 @@
         .events-grid {
           grid-template-columns: 1fr;
         }
-
         .modal-content {
-          margin: 20% auto;
+          margin: 10% auto;
           width: 95%;
         }
       }
@@ -229,28 +278,22 @@
   </head>
   <body>
     <%- include('../partials/navbar'); %>
-    <div class="container">
+    <div class="events-section">
       <h1>Upcoming Events</h1>
 
       <div class="events-grid">
-        <!-- Event 1 -->
-
+        <!-- Event Loop Starts -->
         <% if (events.length > 0) { %> <% events.forEach(event => { %>
 
         <div class="event-card">
-          <img
-            src="<%= event.image %>"
-            alt="Music Festival"
-            class="event-image"
-          />
+          <img src="<%= event.image %>" alt="Event Image" class="event-image" />
           <div class="event-details">
             <h3 class="event-title"><%= event.title %></h3>
             <div class="event-date">
               <i class="far fa-calendar-alt"></i>
-              <%= event.date.toISOString().split('T')[0];  %>
+              <%= event.date.toISOString().split('T')[0]; %>
             </div>
             <div class="event-date">
-              <!-- For solid clock icon -->
               <i class="fas fa-clock"></i> <%= event.time %>
             </div>
             <div class="event-location">
@@ -258,9 +301,14 @@
               <%= event.venue %>
             </div>
             <p class="event-description"><%= event.description %></p>
+            <!-- 
+              MODIFICATION: Replaced onclick with data-* attributes.
+              This is the fix for the screenshot error. It separates data from JS code.
+            -->
             <button
               class="event-button"
-              onclick="openModal('Summer Music Festival')"
+              data-event-title="<%= event.title %>"
+              data-event-price="<%= event.price || 299 %>"
             >
               Get Tickets
             </button>
@@ -270,115 +318,309 @@
         <% }) %> <% } else { %>
         <p>No Events Available at this movement.</p>
         <% } %>
+        <!-- Event Loop Ends -->
       </div>
     </div>
 
-    <!-- Registration Modal -->
-    <div id="registrationModal" class="modal">
+    <!-- Modal with Validation -->
+    <div id="bookingModal" class="modal">
       <div class="modal-content">
-        <span class="close" onclick="closeModal()">&times;</span>
-        <div id="registrationForm">
+        <span class="close" onclick="closeModal()">×</span>
+
+        <div class="modal-helpline">
+          <i class="fas fa-headset"></i> Helpline: +91 12345 67890
+        </div>
+
+        <!-- Step 1: User Details -->
+        <div id="modalStep1">
           <h2>Event Registration</h2>
           <p
             id="selectedEvent"
             style="margin-bottom: 1.5rem; color: #3498db; font-weight: 500"
           ></p>
-
-          <form id="regForm" onsubmit="submitForm(event)">
+          <form id="bookingForm" onsubmit="return false;">
             <div class="form-group">
               <label for="name">Full Name</label>
-              <input type="text" id="name" required />
+              <input type="text" id="name" required minlength="3" />
+              <div class="validation-error-text" id="nameError"></div>
             </div>
-
+            <!-- MODIFICATION: Added Email Field -->
             <div class="form-group">
               <label for="email">Email Address</label>
               <input type="email" id="email" required />
+              <div class="validation-error-text" id="emailError"></div>
             </div>
-
             <div class="form-group">
               <label for="phone">Phone Number</label>
-              <input type="tel" id="phone" required />
+              <input type="tel" id="phone" required maxlength="10" />
+              <div class="validation-error-text" id="phoneError"></div>
             </div>
-
+            <div class="form-group">
+              <label for="address">Address</label>
+              <textarea
+                id="address"
+                rows="3"
+                required
+                minlength="10"
+              ></textarea>
+              <div class="validation-error-text" id="addressError"></div>
+            </div>
             <div class="form-group">
               <label for="tickets">Number of Tickets</label>
               <select id="tickets" required>
-                <option value="">Select</option>
+                <option value="">Select tickets</option>
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
                 <option value="4">4</option>
-                <option value="5">5+</option>
+                <option value="5">5</option>
               </select>
+              <div class="validation-error-text" id="ticketsError"></div>
             </div>
-
-            <button type="submit" class="submit-btn">
-              Submit Registration
+            <button type="button" class="modal-btn" onclick="goToStep2()">
+              Continue
             </button>
           </form>
         </div>
 
-        <div id="successMessage" class="success-message">
-          <i class="fas fa-check-circle"></i>
-          <h3>Registration Successful!</h3>
-          <p>
-            Thank you for registering. We've sent a confirmation to your email.
+        <!-- Step 2: Calculation & Payment Info -->
+        <div id="modalStep2" style="display: none">
+          <h2>Booking Summary</h2>
+          <div class="calculation-summary">
+            <p><strong>Name:</strong> <span id="summaryName"></span></p>
+            <!-- MODIFICATION: Added Email to summary -->
+            <p><strong>Email:</strong> <span id="summaryEmail"></span></p>
+            <p><strong>Phone:</strong> <span id="summaryPhone"></span></p>
+            <p><strong>Tickets:</strong> <span id="summaryTickets"></span></p>
+            <p>
+              <strong>Price per Ticket:</strong> ₹<span
+                id="summaryPrice"
+              ></span>
+            </p>
+            <p class="total">Total Amount: ₹<span id="summaryTotal"></span></p>
+          </div>
+          <!-- MODIFICATION: Updated payment instructions to professional English -->
+          <div class="payment-instructions">
+            <h4>Payment Instructions</h4>
+            <p>
+              To proceed, please complete the payment using your preferred
+              method. Once successful, you will receive a
+              <strong>UTR / Transaction ID.</strong>
+            </p>
+            <p>
+              Please enter this ID in the next step to help us confirm your
+              booking. Your tickets will be sent to your registered email upon
+              successful verification.
+            </p>
+          </div>
+          <button type="button" class="modal-btn" onclick="goToStep3()">
+            Payment Done, Enter UTR
+          </button>
+        </div>
+
+        <!-- Step 3: UTR Entry -->
+        <div id="modalStep3" style="display: none">
+          <h2>Confirm Booking</h2>
+          <p style="margin-bottom: 1rem">
+            Please enter the UTR / Transaction ID you received after payment to
+            confirm your booking.
           </p>
-          <button class="event-button" onclick="closeModal()">Close</button>
+          <form onsubmit="return false;">
+            <div class="form-group">
+              <label for="utr">UTR / Transaction ID</label>
+              <input
+                type="text"
+                id="utr"
+                placeholder="Enter transaction ID here"
+                required
+                minlength="6"
+              />
+              <div class="validation-error-text" id="utrError"></div>
+            </div>
+            <button type="button" class="modal-btn" onclick="submitBooking()">
+              Submit Booking
+            </button>
+          </form>
+        </div>
+
+        <!-- Step 4: Success Message -->
+        <div id="modalSuccess" class="success-message" style="display: none">
+          <!-- MODIFICATION: Changed success message to reflect verification step -->
+          <i class="fas fa-hourglass-half" style="color: #f39c12"></i>
+          <h3>Booking Received & Awaiting Confirmation</h3>
+          <p>
+            Thank you. We have received your booking details. Our team will now
+            verify the transaction. Once confirmed, your tickets will be sent to
+            your registered email.
+          </p>
+          <button class="modal-btn" onclick="closeModal()">Done</button>
         </div>
       </div>
     </div>
     <%- include('../partials/footer'); %>
 
     <script>
-      // Open modal with selected event name
-      function openModal(eventName) {
-        const modal = document.getElementById("registrationModal");
+      const modal = document.getElementById("bookingModal");
+      const step1 = document.getElementById("modalStep1");
+      const step2 = document.getElementById("modalStep2");
+      const step3 = document.getElementById("modalStep3");
+      const successStep = document.getElementById("modalSuccess");
+
+      let bookingData = {};
+
+      function openModal(eventName, price) {
+        bookingData = { event: eventName, pricePerTicket: parseFloat(price) };
         document.getElementById(
           "selectedEvent"
         ).textContent = `Event: ${eventName}`;
+        document.getElementById("bookingForm").reset();
+        document.getElementById("utr").value = "";
+        clearAllErrors();
+        step1.style.display = "block";
+        step2.style.display = "none";
+        step3.style.display = "none";
+        successStep.style.display = "none";
         modal.style.display = "block";
-        document.body.style.overflow = "hidden"; // Prevent scrolling
+        document.body.style.overflow = "hidden";
       }
 
-      // Close modal
       function closeModal() {
-        const modal = document.getElementById("registrationModal");
         modal.style.display = "none";
-        document.body.style.overflow = "auto"; // Re-enable scrolling
-
-        // Reset form and hide success message
-        document.getElementById("regForm").reset();
-        document.getElementById("registrationForm").style.display = "block";
-        document.getElementById("successMessage").style.display = "none";
+        document.body.style.overflow = "auto";
       }
 
-      // Submit form
-      function submitForm(e) {
-        e.preventDefault();
-
-        // Here you would typically send the form data to a server
-        // For this example, we'll just show the success message
-
-        // Hide form and show success message
-        document.getElementById("registrationForm").style.display = "none";
-        document.getElementById("successMessage").style.display = "block";
-
-        // In a real application, you would:
-        // 1. Collect form data
-        // 2. Send to server via AJAX
-        // 3. Show success/error message based on response
-        // 4. Maybe clear the form
+      function showError(inputId, message) {
+        const inputElement = document.getElementById(inputId);
+        const errorElement = document.getElementById(inputId + "Error");
+        inputElement.classList.add("input-error");
+        errorElement.textContent = message;
+        errorElement.style.display = "block";
       }
 
-      // Close modal when clicking outside
+      function clearAllErrors() {
+        const invalidInputs = document.querySelectorAll(".input-error");
+        invalidInputs.forEach((input) => input.classList.remove("input-error"));
+        const errorMessages = document.querySelectorAll(
+          ".validation-error-text"
+        );
+        errorMessages.forEach((msg) => (msg.style.display = "none"));
+      }
+
+      function goToStep2() {
+        clearAllErrors();
+        let isValid = true;
+
+        const name = document.getElementById("name").value.trim();
+        const email = document.getElementById("email").value.trim(); // Get email
+        const phone = document.getElementById("phone").value.trim();
+        const address = document.getElementById("address").value.trim();
+        const tickets = document.getElementById("tickets").value;
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const phoneRegex = /^\d{10}$/;
+
+        if (name.length < 3) {
+          showError("name", "Full name must be at least 3 characters long.");
+          isValid = false;
+        }
+
+        if (!emailRegex.test(email)) {
+          // Validate email
+          showError("email", "Please enter a valid email address.");
+          isValid = false;
+        }
+
+        if (!phoneRegex.test(phone)) {
+          showError("phone", "Please enter a valid 10-digit phone number.");
+          isValid = false;
+        }
+
+        if (address.length < 10) {
+          showError("address", "Address must be at least 10 characters long.");
+          isValid = false;
+        }
+
+        if (tickets === "") {
+          showError("tickets", "Please select the number of tickets.");
+          isValid = false;
+        }
+
+        if (!isValid) {
+          return;
+        }
+
+        bookingData.name = name;
+        bookingData.email = email; // Save email
+        bookingData.phone = phone;
+        bookingData.address = address;
+        bookingData.tickets = parseInt(tickets, 10);
+        bookingData.totalAmount =
+          bookingData.tickets * bookingData.pricePerTicket;
+
+        document.getElementById("summaryName").textContent = bookingData.name;
+        document.getElementById("summaryEmail").textContent = bookingData.email; // Show email in summary
+        document.getElementById("summaryPhone").textContent = bookingData.phone;
+        document.getElementById("summaryTickets").textContent =
+          bookingData.tickets;
+        document.getElementById("summaryPrice").textContent =
+          bookingData.pricePerTicket;
+        document.getElementById("summaryTotal").textContent =
+          bookingData.totalAmount;
+
+        step1.style.display = "none";
+        step2.style.display = "block";
+      }
+
+      function goToStep3() {
+        step2.style.display = "none";
+        step3.style.display = "block";
+      }
+
+      function submitBooking() {
+        clearAllErrors();
+        const utr = document.getElementById("utr").value.trim();
+
+        if (utr.length < 6) {
+          showError(
+            "utr",
+            "UTR/Transaction ID seems too short. Please check and enter again."
+          );
+          return;
+        }
+
+        bookingData.utr = utr;
+
+        console.log("Data to be sent to server:", bookingData);
+
+        step3.style.display = "none";
+        successStep.style.display = "block";
+      }
+
       window.onclick = function (event) {
-        const modal = document.getElementById("registrationModal");
         if (event.target == modal) {
           closeModal();
         }
       };
+
+      // MODIFICATION: Added Event Listener to fix the screenshot error.
+      // This code runs when the page loads.
+      document.addEventListener("DOMContentLoaded", () => {
+        // Find all "Get Tickets" buttons
+        const ticketButtons = document.querySelectorAll(".event-button");
+        // Add a click listener to each button
+        ticketButtons.forEach((button) => {
+          button.addEventListener("click", () => {
+            // Get the event title and price from the data attributes
+            const title = button.dataset.eventTitle;
+            const price = button.dataset.eventPrice;
+            // Call the openModal function with this data
+            openModal(title, price);
+          });
+        });
+      });
     </script>
     <%- include('../partials/scripts'); %>
   </body>
 </html>
+
+

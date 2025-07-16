@@ -694,7 +694,7 @@ app.get("/events", async (req, res) => {
     // Verify events data before rendering
     // console.log("Fetched events:", events);
 
-    res.render("client/comingsoon", {
+    res.render("client/e", {
       // Try without .ejs extension
       title: "Events | Indrajay Enterprises",
       events: events || [], // Ensure events is always defined
@@ -704,7 +704,7 @@ app.get("/events", async (req, res) => {
     console.error("Events fetch error:", err);
 
     // More robust error response
-    res.status(500).render("client/error", {
+    res.status(500).render("client/404", {
       title: "Error | Indrajay Enterprises",
       message: "Failed to load events. Please try again later.",
     });

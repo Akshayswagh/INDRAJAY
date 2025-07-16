@@ -1,20 +1,131 @@
-<%- include('../partials/head'); %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Canteen Services - Body</title>
+    <title>Canteen Services</title>
+    <%- include('../partials/head'); %>
     <!-- Link to Google Fonts used on the other page for consistency if desired -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Open+Sans:wght@400;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Roboto:wght@400;700&family=Open+Sans:wght@400;600&display=swap"
       rel="stylesheet"
     />
 
     <style>
-        /* Basic Reset (optional, but good practice) */
+        /* --- NEW HERO SECTION STYLES --- */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Keyframe Animations */
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideInFromBottom {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .canteen-hero {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 90vh;
+            padding: 60px 0;
+            text-align: center;
+            position: relative;
+            background: linear-gradient(rgba(28, 40, 51, 0.7), rgba(28, 40, 51, 0.75)),
+            url("https://images.unsplash.com/photo-1556909211-3a487115b7b5?q=80&w=1974&auto=format&fit=crop")
+                center center/cover no-repeat;
+        }
+
+        .canteen-hero h1.hero-title {
+            font-family: 'Roboto', sans-serif;
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            color: #ffffff;
+            margin-bottom: 20px;
+            font-weight: 700;
+            line-height: 1.2;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            animation: slideInFromBottom 0.8s ease-out 0.3s forwards;
+        }
+
+        .canteen-hero .tagline.hero-tagline {
+            font-family: 'Roboto', sans-serif;
+            font-size: clamp(1.1rem, 2.5vw, 1.25rem);
+            color: #e0e0e0;
+            max-width: 750px;
+            margin: 0 auto 35px auto;
+            line-height: 1.7;
+            font-style: normal; /* Override your italic style for hero */
+            opacity: 0;
+            animation: slideInFromBottom 0.8s ease-out 0.5s forwards;
+        }
+
+        .key-services-showcase {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin: 0 auto 40px auto;
+            max-width: 900px;
+        }
+        .service-pill {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            padding: 8px 18px;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: background-color 0.3s, transform 0.3s;
+            opacity: 0;
+            animation: slideInFromBottom 0.7s ease-out forwards;
+        }
+        .service-pill:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+        .service-pill:nth-child(1) { animation-delay: 0.7s; }
+        .service-pill:nth-child(2) { animation-delay: 0.8s; }
+        .service-pill:nth-child(3) { animation-delay: 0.9s; }
+        .service-pill:nth-child(4) { animation-delay: 1.0s; }
+
+        .hero-cta-button {
+            display: inline-block;
+            background-color: #f39c12;
+            color: #ffffff;
+            padding: 14px 35px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            opacity: 0;
+            animation: slideInFromBottom 0.8s ease-out 1.1s forwards;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        .hero-cta-button:hover {
+            background-color: #e67e22;
+            transform: translateY(-3px);
+        }
+
+        @media (max-width: 768px) {
+            .canteen-hero { min-height: 80vh; }
+        }
+        /* --- END OF NEW HERO SECTION STYLES --- */
+
+
+        /* --- YOUR ORIGINAL STYLES (UNCHANGED) --- */
         * {
             margin: 0;
             padding: 0;
@@ -28,7 +139,6 @@
             background-color: #f9f9f9; /* Light background for the page */
         }
 
-        /* Canteen Page Body Specific Styles - Themed */
         .canteen-page-body {
             max-width: 1100px;
             margin: 0 auto;
@@ -133,16 +243,15 @@
             flex-grow: 1; 
         }
 
-        /* NEW: Enquire Now Button Section Styles (Reused from product page) */
-        .enquire-button-section-canteen { /* Unique container name for this page if needed for spacing */
-            margin-top: 20px; /* Space above the button */
-            margin-bottom: 40px; /* Space below the button, before footer */
+        .enquire-button-section-canteen {
+            margin-top: 20px;
+            margin-bottom: 40px;
             text-align: center;
         }
 
-        .enquire-now-btn { /* This class style is reused */
+        .enquire-now-btn {
             display: inline-block;
-            background-color: #00796B; /* Dark Teal to match page theme */
+            background-color: #00796B;
             color: white;
             padding: 12px 30px; 
             border-radius: 50px; 
@@ -158,14 +267,11 @@
         }
 
         .enquire-now-btn:hover {
-            background-color: #005f56; /* Darker Teal */
+            background-color: #005f56;
             transform: translateY(-2px);
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
         }
-        /* END NEW: Enquire Now Button Section Styles */
 
-
-        /* Responsive adjustments */
         @media (max-width: 768px) {
             .canteen-header h1 {
                 font-size: 2.2em;
@@ -176,7 +282,6 @@
             .service-item, .option-item {
                 flex-basis: calc(50% - 12.5px); 
             }
-            /* Reused button responsive */
             .enquire-now-btn {
                 padding: 10px 25px;
                 font-size: 0.95em;
@@ -201,20 +306,39 @@
             .canteen-page-body {
                 padding: 20px 15px;
             }
-            /* Reused button responsive */
             .enquire-now-btn {
                 padding: 10px 22px;
                 font-size: 0.9em;
                 min-width: 160px;
             }
         }
-
     </style>
 </head>
 <body>
-        <%- include('../partials/navbar'); %>
+    <%- include('../partials/navbar'); %>
 
-    <main class="canteen-page-body">
+    <!-- NEW HERO SECTION -->
+    <header class="canteen-hero">
+        <div class="hero-container">
+            <h1 class="hero-title">Elevating the Everyday Dining Experience</h1>
+            <p class="tagline hero-tagline">
+                Delicious meals, exceptional service, and a welcoming atmosphere for your entire team.
+            </p>
+            <div class="key-services-showcase">
+              <div class="service-pill">Catering Services</div>
+              <div class="service-pill">Customized Menus</div>
+              <div class="service-pill">Meal Delivery</div>
+              <div class="service-pill">Healthy & Dietary Options</div>
+            </div>
+            <a href="#canteen-content" class="hero-cta-button">
+              Explore Our Offerings
+            </a>
+        </div>
+    </header>
+    <!-- END OF NEW HERO SECTION -->
+
+    <!-- YOUR ORIGINAL CONTENT (UNCHANGED) -->
+    <main id="canteen-content" class="canteen-page-body">
         <header class="canteen-header">
             <h1>Welcome to Our Canteen</h1>
             <p class="tagline">Delicious Meals, Exceptional Service, Right Here!</p>
@@ -271,15 +395,12 @@
             </div>
         </section>
 
-        <!-- NEW ENQUIRE NOW BUTTON SECTION FOR CANTEEN PAGE -->
         <section class="enquire-button-section-canteen">
             <a href="/enquiry" class="enquire-now-btn">Enquire About Our Canteen Services</a>
         </section>
-        <!-- END NEW ENQUIRE NOW BUTTON SECTION -->
 
     </main>
     <%- include('../partials/footer'); %>
     <%- include('../partials/scripts'); %>
-
 </body>
 </html>

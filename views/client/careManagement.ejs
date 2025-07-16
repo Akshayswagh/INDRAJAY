@@ -1,48 +1,280 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <link rel="stylesheet" href="/css/careManagement.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Care & Management Services</title>
     <%- include('../partials/head'); %>
+
+    <style>
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        font-family: "Roboto", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.7;
+        color: #2c3e50; /* text-dark */
+        background-color: #f8f9fa; /* bg-light */
+        overflow-x: hidden;
+        margin: 0;
+      }
+
+      /* --- Keyframe Animations --- */
+      @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+      @keyframes slideInFromBottom {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      @keyframes underlineGrowPrimary {
+        from { width: 0; }
+        to { width: 70px; }
+      }
+
+      /* --- General Container --- */
+      .page-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+        position: relative;
+        z-index: 2;
+      }
+
+      /* --- DYNAMIC HERO SECTION --- */
+      .care-hero {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 90vh;
+        padding: 60px 0;
+        text-align: center;
+        position: relative;
+        /* POWERFUL IMAGE + DARK OVERLAY FOR TEXT CONTRAST */
+        background: linear-gradient(rgba(28, 40, 51, 0.7), rgba(28, 40, 51, 0.75)),
+          url("https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?q=80&w=2070&auto=format&fit=crop")
+            center center/cover no-repeat;
+      }
+
+      .care-hero h1 {
+        font-size: clamp(2.5rem, 6vw, 4rem);
+        color: #ffffff;
+        margin-bottom: 20px;
+        font-weight: 700;
+        line-height: 1.2;
+        text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+        opacity: 0;
+        animation: slideInFromBottom 0.8s ease-out 0.3s forwards;
+      }
+
+      .care-hero .tagline {
+        font-size: clamp(1.1rem, 2.5vw, 1.25rem);
+        color: #e0e0e0;
+        max-width: 750px;
+        margin: 0 auto 35px auto;
+        line-height: 1.7;
+        opacity: 0;
+        animation: slideInFromBottom 0.8s ease-out 0.5s forwards;
+      }
+
+      /* --- Hero Key Services Showcase --- */
+      .key-services-showcase {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+        margin: 0 auto 40px auto;
+        max-width: 900px;
+      }
+      .service-pill {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: #ffffff;
+        padding: 8px 18px;
+        border-radius: 50px;
+        font-size: 1rem;
+        font-weight: 500;
+        transition: background-color 0.3s, transform 0.3s;
+        opacity: 0;
+        animation: slideInFromBottom 0.7s ease-out forwards;
+      }
+      .service-pill:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-2px);
+      }
+      .service-pill:nth-child(1) { animation-delay: 0.7s; }
+      .service-pill:nth-child(2) { animation-delay: 0.8s; }
+      .service-pill:nth-child(3) { animation-delay: 0.9s; }
+      .service-pill:nth-child(4) { animation-delay: 1.0s; }
+
+      .hero-cta-button {
+        display: inline-block;
+        background-color: #f39c12;
+        color: #ffffff;
+        padding: 14px 35px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 1.1rem;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+        opacity: 0;
+        animation: slideInFromBottom 0.8s ease-out 1.1s forwards;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      }
+      .hero-cta-button:hover {
+        background-color: #e67e22;
+        transform: translateY(-3px);
+      }
+
+      /* --- SERVICES SECTION --- */
+      .care-services-section {
+        padding: 80px 0;
+      }
+
+      .care-services-section .section-title {
+        text-align: center;
+        font-size: clamp(1.8rem, 4vw, 2.6rem);
+        color: #2c3e50;
+        margin-bottom: 15px;
+        font-weight: 700;
+        opacity: 0;
+        animation: slideInFromBottom 0.6s ease-out 0.2s forwards;
+        position: relative;
+      }
+
+      .care-services-section .section-title::after {
+        content: "";
+        display: block;
+        width: 0;
+        height: 3px;
+        background-color: #f39c12;
+        margin: 12px auto 0;
+        border-radius: 2px;
+        animation: underlineGrowPrimary 0.7s ease-out 0.8s forwards;
+      }
+
+      .care-services-section .section-subtitle {
+        text-align: center;
+        font-size: clamp(1rem, 1.8vw, 1.1rem);
+        color: #5a6a7a;
+        max-width: 700px;
+        margin: 0 auto 50px auto;
+        opacity: 0;
+        animation: slideInFromBottom 0.6s ease-out 0.4s forwards;
+      }
+
+      .care-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+        gap: 30px;
+      }
+
+      /* NEW IMAGE-FOCUSED CARD STYLE */
+      .care-card {
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        text-decoration: none; /* Remove underline from link */
+        overflow: hidden; /* Important for image radius */
+        opacity: 0;
+        animation: slideInFromBottom 0.5s ease-out forwards;
+        animation-delay: var(--card-delay, 0.3s);
+      }
+
+      .care-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+      }
+
+      .care-image-container {
+        width: 100%;
+        height: 220px; /* Taller image for care services */
+      }
+      
+      .care-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.4s ease;
+      }
+      .care-card:hover .care-image {
+        transform: scale(1.05);
+      }
+
+      .care-info {
+        padding: 20px 25px 25px;
+      }
+
+      .care-info h3 {
+        font-size: 1.4rem;
+        color: #2c3e50;
+        margin: 0;
+        font-weight: 600;
+      }
+
+      /* Responsive Adjustments */
+      @media (max-width: 768px) {
+        .care-hero { min-height: 80vh; }
+        .care-services-section { padding: 60px 0; }
+        .care-card {
+          animation-delay: 0.2s !important; 
+        }
+      }
+    </style>
   </head>
   <body>
     <%- include('../partials/navbar'); %>
 
-    <section class="caremanagement">
+    <header class="care-hero">
       <div class="page-container">
-        <div class="page-heading">
-          <h1>Care & Management</h1>
-          <p>
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eveniet
-            sunt consequatur dolores
-          </p>
+        <h1>Compassionate Care, Expertly Managed</h1>
+        <p class="tagline">
+          Providing dedicated and professional support to ensure the well-being and peace of mind for you and your loved ones.
+        </p>
+        <div class="key-services-showcase">
+          <div class="service-pill">Hospital Management</div>
+          <div class="service-pill">Home & Elderly Care</div>
+          <div class="service-pill">Child Care</div>
+          <div class="service-pill">Property & Financial Care</div>
         </div>
+        <a href="#care-services" class="hero-cta-button">
+          Discover Our Services
+        </a>
+      </div>
+    </header>
 
-        <div class="care-container">
-          <% if (care.length > 0) { %> <% care.forEach(careManagement => { %>
-          <a
-            href="/caremanegement/view/<%= careManagement._id %>"
-            class="care-link"
-          >
-            <div class="care-card">
-              <div class="care-image-container">
-                <img
-                  src="<%= careManagement.image %>"
-                  alt="<%= careManagement.title %>"
-                  class="care-image"
-                />
-              </div>
-              <div class="care-info">
-                <h3 class="care-name"><%= careManagement.title %></h3>
-              </div>
-            </div>
-          </a>
-          <% }) %> <% } else { %>
-          <p>No products Available in this category.</p>
+    <section id="care-services" class="care-services-section">
+      <div class="page-container">
+        <h2 class="section-title">Our Comprehensive Care Services</h2>
+        <p class="section-subtitle">
+          We offer a wide range of personalized care and management solutions to meet your unique needs with dignity and respect.
+        </p>
+
+        <div class="care-grid">
+          <% if (care.length > 0) { %> 
+            <% care.forEach((careManagement, index) => { %>
+              <a href="/caremanegement/view/<%= careManagement._id %>" class="care-card" style="--card-delay: <%= 0.3 + index * 0.08 %>s;">
+                <div class="care-image-container">
+                  <img
+                    src="<%= careManagement.image %>"
+                    alt="<%= careManagement.title %>"
+                    class="care-image"
+                  />
+                </div>
+                <div class="care-info">
+                  <h3><%= careManagement.title %></h3>
+                </div>
+              </a>
+            <% }) %> 
+          <% } else { %>
+            <p>No Care & Management services are available at this time.</p>
           <% } %>
         </div>
       </div>
     </section>
 
-    <%- include('../partials/footer'); %> <%- include('../partials/scripts'); %>
+    <%- include('../partials/footer'); %> 
+    <%- include('../partials/scripts'); %>
   </body>
 </html>
