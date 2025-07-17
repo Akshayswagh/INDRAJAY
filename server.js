@@ -711,6 +711,8 @@ app.get("/events", async (req, res) => {
   }
 });
 
+
+// 
 app.get("/careManagement", async (req, res) => {
   try {
     const care = await careManagement.find().sort({ created_at: -1 });
