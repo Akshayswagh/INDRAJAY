@@ -4,8 +4,9 @@
     <%- include('../partials/head') %>
     <style>
       .testimonials .item {
-        height: 470px;
+        height: max-content; /* increased height for screens ≤1250px */
       }
+
       .testimonial-content {
         position: absolute;
         bottom: 10px;
@@ -185,91 +186,6 @@
       </div>
       <!--what we offer our premium products  -->
 
-      <!-- our meal section starts -->
-      <!-- <div class="home_products bg-3 py-5 text-center">
-        <div class="container-fluid">
-          <div
-            class="heading text-center mb-4"
-            data-aos="fade-up"
-            data-aos-duration="700"
-          >
-            <span>Food Order</span>
-            <h2 class="text-white">Order Meal</h2>
-          </div>
-          <div
-            class="owl-5 owl-carousel"
-            data-aos="fade-right"
-            data-aos-duration="700"
-          >
-            <a
-              class="item"
-              href="enquirynow.html"
-              data-aos="fade-up"
-              data-aos-duration="700"
-            >
-              <div class="img">
-                <img class="w-100" src="upload/img7.jpg" loading="lazy" />
-                <span class="btn"><i class="fas fa-link"></i></span>
-              </div>
-              <h4>Burger <i class="fa fa-arrow-right"></i></h4>
-            </a>
-
-            <a
-              class="item"
-              href="enquirynow.html"
-              data-aos="fade-up"
-              data-aos-duration="700"
-            >
-              <div class="img">
-                <img class="w-100" src="upload/pizza.webp" loading="lazy" />
-                <span class="btn"><i class="fas fa-link"></i></span>
-              </div>
-              <h4>Pizza <i class="fa fa-arrow-right"></i></h4>
-            </a>
-
-            <a
-              class="item"
-              href="enquirynow.html"
-              data-aos="fade-up"
-              data-aos-duration="700"
-            >
-              <div class="img">
-                <img class="w-100" src="upload/momo.jpg" loading="lazy" />
-                <span class="btn"><i class="fas fa-link"></i></span>
-              </div>
-              <h4>Momos <i class="fa fa-arrow-right"></i></h4>
-            </a>
-
-            <a
-              class="item"
-              href="enquirynow.html"
-              data-aos="fade-up"
-              data-aos-duration="700"
-            >
-              <div class="img">
-                <img class="w-100" src="upload/fries.jpg" loading="lazy" />
-                <span class="btn"><i class="fas fa-link"></i></span>
-              </div>
-              <h4>French Fries <i class="fa fa-arrow-right"></i></h4>
-            </a>
-
-            <a
-              class="item"
-              href="enquirynow.html"
-              data-aos="fade-up"
-              data-aos-duration="700"
-            >
-              <div class="img">
-                <img class="w-100" src="upload/biryani.jpg" loading="lazy" />
-                <span class="btn"><i class="fas fa-link"></i></span>
-              </div>
-              <h4>Biryani <i class="fa fa-arrow-right"></i></h4>
-            </a>
-          </div>
-        </div>
-      </div> -->
-      <!-- our meal section ends -->
-
       <!-- Consultation service section starts here -->
       <% if (Exports && Exports.length > 0) { %>
       <div class="service2 py-5">
@@ -406,7 +322,7 @@
                 <i class="fas fa-star"></i>
               </div>
               <div class="testimonial-quote">
-                <p>
+                <p class="text-justify">
                   "Indrajay Enterprises has been a reliable and professional
                   partner in our fresh produce imports. Their Indian red
                   onions—especially the 55++ mm grade packed in 18 kg mesh
@@ -439,7 +355,7 @@
                 <i class="fas fa-star"></i>
               </div>
               <div class="testimonial-quote">
-                <p>
+                <p class="text-justify">
                   Indrajay Enterprises has completely transformed our
                   transportation experience. As a business that relies heavily
                   on timely and secure deliveries, we were impressed by their
@@ -475,7 +391,7 @@
                 <i class="fas fa-star"></i>
               </div>
               <div class="testimonial-quote">
-                <p>
+                <p class="text-justify">
                   Working with Indrajay Enterprises has truly elevated our green
                   mango supply operations. As a farm rooted in tradition and
                   quality, Bankar Farms has always prioritized freshness and
@@ -511,7 +427,7 @@
                 <i class="fas fa-star"></i>
               </div>
               <div class="testimonial-quote">
-                <p>
+                <p class="text-justify">
                   Partnering with Indrajay Enterprises for our industrial
                   service needs was one of the best decisions we've made. Their
                   team demonstrated exceptional technical expertise and a deep
@@ -549,7 +465,7 @@
                 <i class="fas fa-star"></i>
               </div>
               <div class="testimonial-quote">
-                <p>
+                <p class="text-justify">
                   "Our experience with Indrajay Enterprises was nothing short of
                   extraordinary. From the moment we booked our trekking
                   adventure, their team was attentive, professional, and

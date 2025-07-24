@@ -270,6 +270,86 @@
           width: 95%;
         }
       }
+      /*
+ * CSS for the Payment QR Code & Instructions Section
+ */
+
+      /* Container for the QR Code */
+      .qr-code-static-container {
+        text-align: center;
+        margin: 2rem 0;
+        padding: 1.5rem;
+        background-color: #f8f9fa;
+        /* A very light grey background */
+        border: 1px solid #e9ecef;
+        border-radius: 8px;
+      }
+
+      /* Heading above the QR code */
+      .qr-code-static-container h4 {
+        margin-top: 0;
+        margin-bottom: 1rem;
+        font-size: 1.1rem;
+        color: #495057;
+        font-weight: 600;
+      }
+
+      /* The QR Code Image */
+      #staticQrImage {
+        max-width: 220px;
+        /* A good size for scanning */
+        width: 100%;
+        height: auto;
+        display: block;
+        margin: 0 auto;
+        border-radius: 4px;
+        border: 1px solid #ddd;
+        /* A subtle border around the QR */
+        padding: 4px;
+        /* Adds a small white border inside the main border */
+        background-color: #fff;
+      }
+
+      /* Yellow Instructions Box */
+      .payment-instructions {
+        background-color: #fffbe6;
+        /* Light yellow for attention */
+        border: 1px solid #ffe58f;
+        padding: 1.5rem;
+        border-radius: 8px;
+        margin: 1.5rem 0;
+        text-align: left;
+        font-size: 0.95rem;
+        line-height: 1.6;
+      }
+
+      .payment-instructions h4 {
+        margin-top: 0;
+        margin-bottom: 1rem;
+        color: #856404;
+        /* Dark yellow/brown for the heading */
+      }
+
+      .payment-instructions p {
+        margin-bottom: 0.75rem;
+        color: #555;
+      }
+
+      .payment-instructions p:last-child {
+        margin-bottom: 0;
+      }
+
+      /* Emphasize important text like the manual amount entry instruction */
+      .payment-instructions strong {
+        color: #d9534f;
+        /* A reddish color to highlight important parts */
+        font-weight: 700;
+      }
+
+      /* This specifically targets the span that holds the total amount for consistency */
+      #summaryTotalForInstruction {
+        font-weight: bold;
+      }
     </style>
     <link
       rel="stylesheet"
@@ -288,7 +368,8 @@
         <div class="event-card">
           <img src="<%= event.image %>" alt="Event Image" class="event-image" />
           <div class="event-details">
-            <h3 class="event-title"><%= event.title %></h3>
+            <h3 class="event-title"><%= event.name %></h3>
+
             <div class="event-date">
               <i class="far fa-calendar-alt"></i>
               <%= event.date.toISOString().split('T')[0]; %>
@@ -301,15 +382,14 @@
               <%= event.venue %>
             </div>
             <p class="event-description"><%= event.description %></p>
-            <p class="event-description"> &#8377;
- <%= event.price %> Only</p>
+            <p class="event-description">&#8377; <%= event.price %> Only</p>
             <!-- 
               MODIFICATION: Replaced onclick with data-* attributes.
               This is the fix for the screenshot error. It separates data from JS code.
             -->
             <button
               class="event-button"
-              data-event-title="<%= event.title %>"
+              data-event-title="<%= event.name %>"
               data-event-price="<%= event.price || 0 %>"
             >
               Get Tickets
@@ -386,11 +466,11 @@
         </div>
 
         <!-- Step 2: Calculation & Payment Info -->
+        <!-- Step 2: Calculation & Payment Info -->
         <div id="modalStep2" style="display: none">
-          <h2>Booking Summary</h2>
+          <h2>Booking Summary & Payment</h2>
           <div class="calculation-summary">
             <p><strong>Name:</strong> <span id="summaryName"></span></p>
-            <!-- MODIFICATION: Added Email to summary -->
             <p><strong>Email:</strong> <span id="summaryEmail"></span></p>
             <p><strong>Phone:</strong> <span id="summaryPhone"></span></p>
             <p><strong>Tickets:</strong> <span id="summaryTickets"></span></p>
@@ -401,18 +481,38 @@
             </p>
             <p class="total">Total Amount: ₹<span id="summaryTotal"></span></p>
           </div>
-          <!-- MODIFICATION: Updated payment instructions to professional English -->
+
+          <!-- MODIFIED: Replaced dynamic QR container with a static image -->
+          <div class="qr-code-static-container">
+            <h4>Scan to Pay with any UPI App</h4>
+            <!-- 
+      IMPORTANT: Replace the src path below with the actual path to your QR code image.
+      For example: "/images/my-payment-qr.jpg" or "https://example.com/qr.png"
+    -->
+            <img
+              src="/public/payment QR.jpg"
+              alt="Payment QR Code"
+              id="staticQrImage"
+            />
+          </div>
+
+          <!-- MODIFIED: Updated payment instructions for static QR code -->
           <div class="payment-instructions">
             <h4>Payment Instructions</h4>
+            <p>1. Scan the QR code above with your UPI app.</p>
             <p>
-              To proceed, please complete the payment using your preferred
-              method. Once successful, you will receive a
-              <strong>UTR / Transaction ID.</strong>
+              2. You must
+              <strong
+                >manually enter the Total Amount of ₹<span
+                  id="summaryTotalForInstruction"
+                ></span
+              ></strong>
+              to complete the payment.
             </p>
             <p>
-              Please enter this ID in the next step to help us confirm your
-              booking. Your tickets will be sent to your registered email upon
-              successful verification.
+              3. After paying, you will receive a
+              <strong>UTR / Transaction ID.</strong> Enter this ID in the next
+              step to confirm your booking.
             </p>
           </div>
           <button type="button" class="modal-btn" onclick="goToStep3()">
@@ -471,10 +571,10 @@
       let bookingData = {};
 
       function openModal(eventName, price) {
-        bookingData = { event: title, pricePerTicket: parseFloat(price) };
+        bookingData = { event: eventName, pricePerTicket: parseFloat(price) };
         document.getElementById(
           "selectedEvent"
-        ).textContent = `Event: ${title}`;
+        ).textContent = `Event: ${eventName}`;
         console.log(bookingData);
         document.getElementById("bookingForm").reset();
         document.getElementById("utr").value = "";
@@ -578,26 +678,56 @@
         step2.style.display = "none";
         step3.style.display = "block";
       }
+async function submitBooking() { // Make the function async
+    clearAllErrors();
+    const utr = document.getElementById("utr").value.trim();
 
-      function submitBooking() {
-        clearAllErrors();
-        const utr = document.getElementById("utr").value.trim();
+    if (utr.length < 6) {
+        showError("utr", "UTR/Transaction ID seems too short. Please check and enter again.");
+        return;
+    }
 
-        if (utr.length < 6) {
-          showError(
-            "utr",
-            "UTR/Transaction ID seems too short. Please check and enter again."
-          );
-          return;
+    bookingData.utr = utr;
+
+    console.log("Sending this data to the server:", bookingData);
+
+    // Get the submit button and disable it to prevent multiple clicks
+    const submitBtn = document.querySelector('#modalStep3 .modal-btn');
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Submitting...';
+
+
+    try {
+        const response = await fetch('/api/bookings', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(bookingData)
+        });
+
+        const result = await response.json(); // Read the response from the server
+
+        if (!response.ok) {
+            // If the server responded with an error (e.g., 400, 500)
+            throw new Error(result.message || 'An unknown error occurred.');
         }
 
-        bookingData.utr = utr;
-
-        console.log("Data to be sent to server:", bookingData);
-
+        // If successful, show the success step
         step3.style.display = "none";
         successStep.style.display = "block";
-      }
+
+    } catch (error) {
+        // If there was an error with the fetch call or from the server
+        console.error('Submission failed:', error);
+        // Display the error message to the user right on the form
+        showError('utr', error.message);
+    } finally {
+        // Re-enable the button whether it succeeded or failed
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Submit Booking';
+    }
+}
 
       window.onclick = function (event) {
         if (event.target == modal) {
@@ -625,5 +755,3 @@
     <%- include('../partials/scripts'); %>
   </body>
 </html>
-
-

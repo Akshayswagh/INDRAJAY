@@ -15,7 +15,6 @@ const uploadPath = path.join(__dirname, "public", "uploads", "exports");
 const connectDB = require("./config/db");
 
 // Models
-const PasswordResetToken = require("./models/PasswordResetToken");
 const Export = require("./models/Export");
 const careManagement = require("./models/careManagement");
 const IndService = require("./models/IndService");
@@ -23,6 +22,8 @@ const Career = require("./models/careerModel");
 const event = require("./models/Event");
 const User = require("./models/User");
 const ConsultService = require("./models/ConsultService");
+const Booking = require('./models/Booking'); 
+
 
 // Routes
 // const userRoutes = require("./routes/userRoutes");
@@ -76,6 +77,8 @@ const adminJobApplicationApiRoutes = require("./routes/adminJobApplicationApiRou
 
 const vendorRoutes = require("./routes/vendorRegister");
 
+
+const adminBookingRoutes = require('./routes/adminBooking');
 // const accessVendor = require("./routes/accessVendors");
 
 connectDB();
@@ -263,6 +266,9 @@ app.use("/admin/api/job-applications", adminJobApplicationApiRoutes);
 app.use('/admin/logistics', adminLogisticPageRoutes);
 app.use('/admin/api/logistics', adminLogisticApiRoutes);
 app.use('/logistics', clientLogisticApiRoutes);
+
+app.use('/admin/api', adminBookingRoutes); 
+
 // ...
 
 // app.use("/admin/vendors", accessVendor);
@@ -698,7 +704,6 @@ app.get("/events", async (req, res) => {
       // Try without .ejs extension
       title: "Events | Indrajay Enterprises",
       events: events || [], // Ensure events is always defined
-      user: req.user || null, // Add if using authentication
     });
   } catch (err) {
     console.error("Events fetch error:", err);
@@ -710,6 +715,81 @@ app.get("/events", async (req, res) => {
     });
   }
 });
+
+
+
+// API Endpoint to create a new booking (CREATE)
+app.post('/api/bookings', async (req, res) => {
+    try {
+        // The data comes from the `fetch` call in your frontend script
+        const bookingData = req.body;
+        
+        console.log('Received booking data:', bookingData);
+
+        // Create a new booking document using the Mongoose model
+        const newBooking = new Booking({
+            event: bookingData.event,
+            name: bookingData.name,
+            email: bookingData.email,
+            phone: bookingData.phone,
+            address: bookingData.address,
+            tickets: bookingData.tickets,
+            totalAmount: bookingData.totalAmount,
+            utr: bookingData.utr
+            // isVerified is false by default
+        });
+
+        // Save the new booking to the database
+        await newBooking.save();
+
+        // Send a success response back to the frontend
+        res.status(201).json({ message: 'Booking received and is awaiting verification.' });
+
+    } catch (err) {
+        console.error('Error saving booking:', err);
+        // Handle potential duplicate UTR error
+        if (err.code === 11000) {
+             return res.status(400).json({ message: 'This Transaction ID (UTR) has already been used.' });
+        }
+        res.status(500).json({ message: 'An error occurred on the server.' });
+    }
+});
+
+
+
+// --- BOOKINGS MANAGEMENT ---
+
+// READ all bookings with pagination
+app.get('/admin/bookings', async (req, res) => {
+    try {
+        // Pagination ke liye settings
+        const page = parseInt(req.query.page) || 1;
+        const limit = 10; // Ek page par 10 bookings dikhayenge
+        const skip = (page - 1) * limit;
+
+        // 1. Database se saari bookings fetch karo (naye se purane order me)
+        const bookings = await Booking.find().sort({ bookingDate: -1 }).skip(skip).limit(limit);
+        
+        // Pagination ke liye total bookings count karo
+        const totalBookings = await Booking.countDocuments();
+        const totalPages = Math.ceil(totalBookings / limit);
+
+        // 2. 'admin/bookings_list.ejs' page ko render karo
+        //    aur usme 'bookings' ka data aur pagination ki info bhej do.
+        res.render('admin/eventBookings', {
+            title: 'Manage Bookings',
+            bookings: bookings, // Yeh data page par jayega
+            currentPage: page,
+            totalPages: totalPages,
+            limit: limit
+        });
+    } catch (err) {
+        console.error("Error fetching bookings:", err);
+        res.status(500).send("Server Error: Could not fetch bookings.");
+    }
+});
+
+
 
 
 // 
