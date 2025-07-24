@@ -115,7 +115,7 @@ const showAdminEditEventForm = async (req, res) => {
 const createAdminEvent = async (req, res) => {
   // uploader.single('image') will be middleware in the route
   try {
-    const { name, category, description, venue, date, time } = req.body;
+    const { name, category, description, venue, price, date, time } = req.body;
     let errors = [];
 
     // Basic server-side validation (schema validation will also run)
@@ -128,6 +128,7 @@ const createAdminEvent = async (req, res) => {
       errors.push({ msg: "Venue is required." });
     if (!date) errors.push({ msg: "Date is required." });
     if (!time) errors.push({ msg: "Time is required." });
+    if (!price) errors.push({ msg: "price is required." });
     if (!req.file) errors.push({ msg: "Event image is required." });
 
     if (errors.length > 0) {
@@ -154,6 +155,7 @@ const createAdminEvent = async (req, res) => {
       description,
       venue,
       date,
+      price,
       time,
       image: imagePath,
     });
@@ -191,7 +193,7 @@ const updateAdminEvent = async (req, res) => {
   }
 
   try {
-    const { name, category, description, venue, date, time } = req.body;
+    const { name, category, description, price, venue, date, time } = req.body;
     let errors = [];
 
     // Basic server-side validation
@@ -221,7 +223,7 @@ const updateAdminEvent = async (req, res) => {
       });
     }
 
-    const updateData = { name, category, description, venue, date, time };
+    const updateData = { name, category, description,price, venue, date, time };
     if (req.file) {
       updateData.image = req.file.path;
     }

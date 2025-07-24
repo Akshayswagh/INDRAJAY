@@ -25,6 +25,11 @@ const eventSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Event time is required']
   },
+   price: {
+    type: Number,
+    required: [true, 'Event price is required. Use 0 for free events.'],
+    min: [0, 'Price cannot be negative']
+  },
   category: {
     type: String,
     required: [true, 'Event category is required'],

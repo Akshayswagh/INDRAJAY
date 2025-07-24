@@ -1,6 +1,3 @@
-<%# views/admin/view_events.ejs %>
-
-
 <div class="container-fluid mt-4">
     <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
         <h1 class="mb-0"><%= title %></h1>
@@ -35,8 +32,9 @@
                                 <th>Event Name</th>
                                 <th>Category</th>
                                 <th>Venue</th>
+                                <th>Price</th>
                                 <th>Date & Time</th>
-                                <th>Created At</th>
+                                <!-- Removed "Created At" Header -->
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -55,12 +53,21 @@
                                     <td><%= event.category %></td>
                                     <td><%= event.venue %></td>
                                     <td>
+                                        <!-- Changed Price to INR (₹) -->
+                                        <% if (event.price && Number(event.price) > 0) { %>
+                                            ₹<%= Number(event.price).toFixed(2) %>
+                                        <% } else { %>
+                                            <span class="text-success fw-bold">Free</span>
+                                        <% } %>
+                                    </td>
+                                    <td>
                                         <%= new Date(event.date).toLocaleDateString() %>
                                         <br>
                                         <small class="text-muted"><%= event.time %></small>
                                     </td>
-                                    <td><%= new Date(event.createdAt).toLocaleDateString() %></td>
+                                    <!-- Removed "Created At" Data Cell -->
                                     <td>
+                                        <!-- This is the standard, correct button implementation -->
                                         <button
                                             type="button"
                                             class="btn btn-sm btn-primary me-1 edit-event-btn"
@@ -72,6 +79,7 @@
                                             data-category="<%= event.category %>"
                                             data-description="<%= event.description %>"
                                             data-venue="<%= event.venue %>"
+                                            data-price="<%= event.price %>"
                                             data-date="<%= event.date ? new Date(event.date).toISOString().split('T')[0] : '' %>"
                                             data-time="<%= event.time %>"
                                             data-image="<%= event.image %>"
@@ -102,7 +110,6 @@
             <div class="card-footer">
                 <nav aria-label="Page navigation">
                     <ul class="pagination justify-content-center mb-0">
-                         <%# ... your existing pagination ... %>
                         <% if (currentPage > 1) { %>
                             <li class="page-item"><a class="page-link" href="?page=<%= currentPage - 1 %>&limit=<%= limit %><%= currentSort ? '&sort='+currentSort : '' %>">Previous</a></li>
                         <% } else { %><li class="page-item disabled"><a class="page-link" href="#">Previous</a></li><% } %>
@@ -125,9 +132,8 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form id="editEventForm" method="POST" enctype="multipart/form-data" novalidate>
-                <%# Action will be set by JavaScript %>
                 <div class="modal-body">
-                    <input type="hidden" id="editEventId" name="eventId"> <%# Though not directly used by server if ID is in URL %>
+                    <input type="hidden" id="editEventId" name="eventId">
 
                     <div class="mb-3">
                         <label for="editEventName" class="form-label">Event Name <span class="text-danger">*</span></label>
@@ -159,6 +165,14 @@
                         <label for="editEventVenue" class="form-label">Venue <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" id="editEventVenue" name="venue" required>
                         <div class="invalid-feedback">Venue is required.</div>
+                    </div>
+                    
+                    <!-- Updated Price Label to INR -->
+                    <div class="mb-3">
+                        <label for="editEventPrice" class="form-label">Price (INR) <span class="text-danger">*</span></label>
+                        <input type="number" class="form-control" id="editEventPrice" name="price" min="0" step="0.01" value="0" required>
+                        <small class="form-text text-muted">Enter 0 for a free event.</small>
+                        <div class="invalid-feedback">Please enter a valid price (e.g., 500.50). 0 is valid for free events.</div>
                     </div>
 
                     <div class="row">
@@ -201,9 +215,9 @@
 </div>
 <!-- End Edit Event Modal -->
 
-
 <%- include('../partials/admin_footer') %>
 
+<!-- The JavaScript does not require changes for these updates -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     // --- Delete Confirmation ---
@@ -221,11 +235,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const editEventModal = editEventModalElement ? new bootstrap.Modal(editEventModalElement) : null;
     const editEventForm = document.getElementById('editEventForm');
 
-    const editEventIdEl = document.getElementById('editEventId'); // Hidden input
+    const editEventIdEl = document.getElementById('editEventId');
     const editEventNameEl = document.getElementById('editEventName');
     const editEventCategoryEl = document.getElementById('editEventCategory');
     const editEventDescriptionEl = document.getElementById('editEventDescription');
     const editEventVenueEl = document.getElementById('editEventVenue');
+    const editEventPriceEl = document.getElementById('editEventPrice');
     const editEventDateEl = document.getElementById('editEventDate');
     const editEventTimeEl = document.getElementById('editEventTime');
     const editEventImageFileEl = document.getElementById('editEventImageFile');
@@ -246,12 +261,12 @@ document.addEventListener('DOMContentLoaded', function() {
             if(editEventCategoryEl) editEventCategoryEl.value = this.dataset.category || '';
             if(editEventDescriptionEl) editEventDescriptionEl.value = this.dataset.description || '';
             if(editEventVenueEl) editEventVenueEl.value = this.dataset.venue || '';
-            if(editEventDateEl) editEventDateEl.value = this.dataset.date || ''; // Ensure data-date is YYYY-MM-DD
+            if(editEventPriceEl) editEventPriceEl.value = this.dataset.price || '0';
+            if(editEventDateEl) editEventDateEl.value = this.dataset.date || '';
             if(editEventTimeEl) editEventTimeEl.value = this.dataset.time || '';
             
-            if(editEventImageFileEl) editEventImageFileEl.value = ''; // Clear file input
+            if(editEventImageFileEl) editEventImageFileEl.value = '';
 
-            // Display current image
             const currentImageUrl = this.dataset.image;
             if (editEventCurrentImageEl && noCurrentImageTextEl) {
                 if (currentImageUrl && currentImageUrl !== 'null' && currentImageUrl !== 'undefined') {
@@ -264,20 +279,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
             
-            // Set form action
             if (editEventForm) {
                 editEventForm.action = `/admin/api/events/${eventId}?_method=PUT`;
-                editEventForm.classList.remove('was-validated'); // Reset validation state
+                editEventForm.classList.remove('was-validated');
             }
 
-            // Reset submit button state (if re-opening modal after a previous attempt)
             if (editEventSubmitButton) editEventSubmitButton.disabled = false;
             if (editButtonText) editButtonText.textContent = 'Save Changes';
             if (editSpinner) editSpinner.style.display = 'none';
         });
     });
 
-    // Handle Edit Form Submission
     if (editEventForm) {
         editEventForm.addEventListener('submit', function(event) {
             if (!editEventForm.checkValidity()) {
@@ -290,7 +302,6 @@ document.addEventListener('DOMContentLoaded', function() {
             if (editEventSubmitButton) editEventSubmitButton.disabled = true;
             if (editButtonText) editButtonText.textContent = 'Saving...';
             if (editSpinner) editSpinner.style.display = 'inline-block';
-            // Form will submit normally
         });
     }
 });

@@ -301,6 +301,8 @@
               <%= event.venue %>
             </div>
             <p class="event-description"><%= event.description %></p>
+            <p class="event-description"> &#8377;
+ <%= event.price %> Only</p>
             <!-- 
               MODIFICATION: Replaced onclick with data-* attributes.
               This is the fix for the screenshot error. It separates data from JS code.
@@ -308,7 +310,7 @@
             <button
               class="event-button"
               data-event-title="<%= event.title %>"
-              data-event-price="<%= event.price || 299 %>"
+              data-event-price="<%= event.price || 0 %>"
             >
               Get Tickets
             </button>
@@ -328,7 +330,7 @@
         <span class="close" onclick="closeModal()">×</span>
 
         <div class="modal-helpline">
-          <i class="fas fa-headset"></i> Helpline: +91 12345 67890
+          <i class="fas fa-headset"></i> Helpline: +91 9314314300
         </div>
 
         <!-- Step 1: User Details -->
@@ -469,10 +471,11 @@
       let bookingData = {};
 
       function openModal(eventName, price) {
-        bookingData = { event: eventName, pricePerTicket: parseFloat(price) };
+        bookingData = { event: title, pricePerTicket: parseFloat(price) };
         document.getElementById(
           "selectedEvent"
-        ).textContent = `Event: ${eventName}`;
+        ).textContent = `Event: ${title}`;
+        console.log(bookingData);
         document.getElementById("bookingForm").reset();
         document.getElementById("utr").value = "";
         clearAllErrors();
