@@ -1,149 +1,3 @@
-<head>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-  <link
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
-    rel="stylesheet"
-  />
-
-  <style>
-    /* Hide the close icon by default */
-    .close-icon {
-      font-size: 1.5rem;
-      line-height: 1;
-      color: #000;
-    }
-
-    .navbar-toggler .navbar-toggler-icon {
-      display: block;
-    }
-
-    /* Add the logic to hide hamburger and show the close icon when menu is opened */
-    .navbar-collapse.show .navbar-toggler-icon {
-      display: none; /* Hide hamburger icon when menu is open */
-    }
-
-    .navbar-collapse.show .close-icon {
-      display: inline-block; /* Show close icon when menu is open */
-    }
-
-    .nav-link {
-      background: #ffa500;
-    }
-
-    /* Header Styling */
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background-color: #ffffff;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .logo img {
-      height: 65px;
-    }
-
-    .contact-info {
-      display: flex;
-      gap: 20px;
-      align-items: center;
-      font-size: 14px;
-    }
-
-    .contact-item {
-      display: flex;
-      align-items: center;
-    }
-
-    .contact-item i {
-      margin-right: 5px;
-    }
-
-    .logo img.desktop-logo {
-      display: block;
-    }
-
-    .logo img.mobile-logo {
-      display: none;
-    }
-
-    /* Navbar Styling */
-    .navbar {
-      background-color: orange !important;
-    }
-
-    /* Desktop Hover Dropdown */
-    @media (min-width: 992px) {
-      .dropdown:hover .dropdown-menu {
-        display: block;
-      }
-    }
-
-    /* Responsive Styling */
-    @media (max-width: 1024px) {
-      .contact-info {
-        display: none;
-      }
-    }
-
-    @media (max-width: 768px) {
-      .header {
-        justify-content: space-between;
-      }
-
-      .contact-info {
-        display: none;
-      }
-
-      .logo img.desktop-logo {
-        display: none;
-      }
-
-      .logo img.mobile-logo {
-        display: block;
-        height: 55px;
-        margin: auto;
-      }
-
-      .navbar-nav {
-        text-align: left;
-      }
-
-      .navbar-toggler {
-        margin-left: auto;
-      }
-    }
-
-    /* Social Icons */
-    .social-icons a {
-      font-size: 18px;
-      margin-right: 10px;
-    }
-
-    @media (max-width: 992px) {
-      .social-icons {
-        display: none !important;
-      }
-    }
-    @media (max-width: 992px) {
-      .nav-link {
-        padding: 8px 25px !important;
-      }
-    }
-
-    @media (max-width: 1200px) and (min-width: 992px) {
-      .nav-link {
-        padding: 10px !important;
-      }
-    }
-  </style>
-</head>
 <!-- Header Section -->
 <div class="header px-3 py-2">
   <div class="logo">
@@ -157,16 +11,22 @@
 
   <div class="contact-info">
     <div class="contact-item">
-      <i class="fas fa-phone-alt"></i> Call Us: +91 9314314300
+      <i class="fas fa-phone"></i> Call Us: +91 9314314300
     </div>
     <div class="contact-item">
       <i class="fas fa-envelope"></i> Email Us: customercare@connectije.com
     </div>
     <div class="social-icons">
-      <a href="https://www.facebook.com/connectije"><i class="fab fa-facebook-f"></i></a>
-      <a href="https://www.instagram.com/connectije"><i class="fab fa-instagram"></i></a>
+      <a href="https://www.facebook.com/connectije"
+        ><i class="fab fa-facebook-f"></i
+      ></a>
+      <a href="https://www.instagram.com/connectije"
+        ><i class="fab fa-instagram"></i
+      ></a>
       <a href="https://x.com/connectije"><i class="fab fa-twitter"></i></a>
-      <a href="http://www.youtube.com/@connectije"><i class="fab fa-youtube"></i></a>
+      <a href="http://www.youtube.com/@connectije"
+        ><i class="fab fa-youtube"></i
+      ></a>
     </div>
   </div>
 </div>
@@ -174,6 +34,7 @@
 <!-- Navbar Section -->
 <nav class="navbar navbar-expand-xl navbar-light">
   <div class="container-fluid justify-content-end">
+    <!-- Button ab sahi kaam karega kyunki JS aur CSS sahi jagah par hain -->
     <button
       class="navbar-toggler"
       type="button"
@@ -184,8 +45,7 @@
       aria-label="Toggle navigation"
     >
       <span class="navbar-toggler-icon"></span>
-      <span class="close-icon d-none">&times;</span>
-      <!-- Close icon (×) hidden by default -->
+      <span class="close-icon">×</span>
     </button>
 
     <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
@@ -193,7 +53,7 @@
         <li class="nav-item">
           <a class="nav-link" href="/">Home</a>
         </li>
-
+      
         <li class="nav-item dropdown">
           <a
             class="nav-link dropdown-toggle"
@@ -264,27 +124,27 @@
         <li class="nav-item">
           <a class="nav-link" href="/about">About Us</a>
         </li>
-
+        <!-- ... other nav-items -->
         <li class="nav-item dropdown">
+          <!-- CORRECTED: Unique ID for dropdown -->
           <a
             class="nav-link dropdown-toggle"
             href="#"
-            id="dropdownMenu"
+            id="contactDropdown"
             data-bs-toggle="dropdown"
             aria-expanded="false"
           >
             Contact
           </a>
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenu">
+          <!-- CORRECTED: aria-labelledby points to the unique ID -->
+          <ul class="dropdown-menu" aria-labelledby="contactDropdown">
+            <li><a class="dropdown-item" href="/Contact">Contact Us</a></li>
             <li>
-              <a class="dropdown-item" href="/Contact">Contact Us</a>
+              <a class="dropdown-item" href="/enquiry"> Product Inquiry</a>
             </li>
-            <li><a class="dropdown-item" href="/enquiry"> Product Inquiry</a></li>
           </ul>
         </li>
       </ul>
     </div>
   </div>
 </nav>
-
-<script src="/js/navbar.js"></script>

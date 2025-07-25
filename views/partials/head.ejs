@@ -1,27 +1,157 @@
-<meta charset="utf-8" />
+<!-- views/partials/header.ejs -->
 <meta charset="UTF-8" />
-
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-<meta name="description" content="" />
+<meta name="description" content="Your website description" />
 <link rel="icon" type="image/png" href="/upload/favicon.png" />
 <title><%= title %></title>
+
+<!-- Bootstrap CSS (Using your local file) -->
 <link href="/css/bootstrap.min.css" rel="stylesheet" />
+
+<!-- Font Awesome (Using CDN) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+<!-- Other CSS Libraries -->
 <link href="/css/owl.carousel.css" rel="stylesheet" />
 <link href="/css/magnific-popup.css" rel="stylesheet" />
 <link href="/css/animate.css" rel="stylesheet" />
 <link href="/css/aos.css" rel="stylesheet" />
-<link href="/css/main.css" rel="stylesheet" />
-<link href="/css/all.min.css" rel="stylesheet" />
-<link rel="/stylesheet" href="css/custom.css" />
 
-<!-- Font Awesome -->
-<link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-/>
-<!-- Animate.css -->
-<link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
-/>
+<!-- Your Main & Custom CSS (Ye hamesha aakhir mein rakhein) -->
+<link href="/css/main.css" rel="stylesheet" />
+<link href="/css/custom.css" rel="stylesheet" />
+
+<style>
+  /* public/css/custom.css */
+
+.close-icon {
+  display: none;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: #000;
+}
+
+.navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
+  display: none;
+}
+
+.navbar-toggler[aria-expanded="true"] .close-icon {
+  display: inline-block;
+}
+
+.nav-link {
+  background: #ffa500;
+}
+
+/* Header Styling */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo img {
+  height: 65px;
+}
+
+.contact-info {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  font-size: 14px;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+}
+
+.contact-item i {
+  margin-right: 5px;
+}
+
+.logo img.desktop-logo {
+  display: block;
+}
+
+.logo img.mobile-logo {
+  display: none;
+}
+
+/* Navbar Styling */
+.navbar {
+  background-color: orange !important;
+}
+
+/* Desktop Hover Dropdown */
+@media (min-width: 992px) {
+  .dropdown:hover .dropdown-menu {
+    display: block;
+  }
+}
+
+/* Responsive Styling */
+@media (max-width: 1024px) {
+  .contact-info {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    justify-content: space-between;
+  }
+
+  .contact-info {
+    display: none;
+  }
+
+  .logo img.desktop-logo {
+    display: none;
+  }
+
+  .logo img.mobile-logo {
+    display: block;
+    height: 55px;
+    margin: auto;
+  }
+
+  .navbar-nav {
+    text-align: left;
+  }
+
+  .navbar-toggler {
+    margin-left: auto;
+  }
+}
+
+/* Social Icons */
+.social-icons a {
+  font-size: 18px;
+  margin-right: 10px;
+}
+
+@media (max-width: 992px) {
+  .social-icons {
+    display: none !important;
+  }
+  .nav-link {
+    padding: 8px 25px !important;
+  }
+}
+
+@media (max-width: 1200px) and (min-width: 992px) {
+  .nav-link {
+    padding: 10px !important;
+  }
+}
+
+</style>
