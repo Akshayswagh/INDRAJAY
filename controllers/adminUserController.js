@@ -144,7 +144,7 @@ const getTrustedVendorsListPage = async (req, res) => {
 
         res.render('admin/trusted_vendors', {
             title: 'Trusted Vendors',
-            activePage: 'trusted_vendors',
+            activePage :'trusted_vendors',
             vendors: trustedVendors, // Re-use 'vendors' variable name in template
             currentSort: currentSortValue,
             currentUser: req.user,

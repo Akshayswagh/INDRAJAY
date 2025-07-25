@@ -22,8 +22,7 @@ const Career = require("./models/careerModel");
 const event = require("./models/Event");
 const User = require("./models/User");
 const ConsultService = require("./models/ConsultService");
-const Booking = require('./models/Booking'); 
-
+const Booking = require("./models/Booking");
 
 // Routes
 // const userRoutes = require("./routes/userRoutes");
@@ -37,12 +36,9 @@ const {
   ensureAdminRole,
 } = require("./middlewares/adminAuthMiddleware");
 
-
-
-const adminLogisticPageRoutes = require('./routes/adminlogitsicPageRoutes');
-const adminLogisticApiRoutes = require('./routes/adminLogisticApiRoutes');
-const clientLogisticApiRoutes = require('./routes/clientLogisticApiRoutes');
-
+const adminLogisticPageRoutes = require("./routes/adminlogitsicPageRoutes");
+const adminLogisticApiRoutes = require("./routes/adminLogisticApiRoutes");
+const clientLogisticApiRoutes = require("./routes/clientLogisticApiRoutes");
 
 const publicEnquiryRoutes = require("./routes/publicEnquiryRoutes");
 const adminTrustedBuyerPageRoutes = require("./routes/adminTrustedBuyerPageRoutes");
@@ -66,7 +62,7 @@ const adminServiceApiRoutes = require("./routes/adminIndServiceApiRoutes");
 const adminExportPageRoutes = require("./routes/adminExportPageRoutes");
 const adminExportApiRoutes = require("./routes/adminExportApiRoutes");
 const clientExportRoutes = require("./routes/clientExportRoutes");
-const adminUserPageRoutes = require("./routes/adminUserPageRoutes"); 
+const adminUserPageRoutes = require("./routes/adminUserPageRoutes");
 const adminEventPageRoutes = require("./routes/adminEventPageRoutes");
 const adminEventApiRoutes = require("./routes/adminEventApiRoutes");
 const publicEventApiRoutes = require("./routes/publicEventApiRoutes"); // Your existing API router for events
@@ -77,8 +73,7 @@ const adminJobApplicationApiRoutes = require("./routes/adminJobApplicationApiRou
 
 const vendorRoutes = require("./routes/vendorRegister");
 
-
-const adminBookingRoutes = require('./routes/adminBooking');
+const adminBookingRoutes = require("./routes/adminBooking");
 // const accessVendor = require("./routes/accessVendors");
 
 connectDB();
@@ -126,14 +121,16 @@ app.use(flash());
 app.use((req, res, next) => {
   // Create a single 'messages' object for flash messages
   res.locals.messages = {
-      success_msg: req.flash('success_msg'),
-      error_msg: req.flash('error_msg'),
-      error: req.flash('error'),
-      info_msg: req.flash('info_msg')
+    success_msg: req.flash("success_msg"),
+    error_msg: req.flash("error_msg"),
+    error: req.flash("error"),
+    info_msg: req.flash("info_msg"),
   };
   // Other global variables remain the same
   res.locals.currentUser = req.session.user || null;
-  res.locals.isAdmin = !!(req.session.user && req.session.user.role === "admin");
+  res.locals.isAdmin = !!(
+    req.session.user && req.session.user.role === "admin"
+  );
   next();
 });
 
@@ -260,14 +257,12 @@ app.use("/careers", publicJobApplicationRoutes);
 app.use("/admin/job-applications", adminJobApplicationPageRoutes);
 app.use("/admin/api/job-applications", adminJobApplicationApiRoutes);
 
-
-
 // Use a prefix for all admin routes for better organization
-app.use('/admin/logistics', adminLogisticPageRoutes);
-app.use('/admin/api/logistics', adminLogisticApiRoutes);
-app.use('/logistics', clientLogisticApiRoutes);
+app.use("/admin/logistics", adminLogisticPageRoutes);
+app.use("/admin/api/logistics", adminLogisticApiRoutes);
+app.use("/logistics", clientLogisticApiRoutes);
 
-app.use('/admin/api', adminBookingRoutes); 
+app.use("/admin/api", adminBookingRoutes);
 
 // ...
 
@@ -435,7 +430,6 @@ app.get("/", async (req, res) => {
     res.render("client/home", {
       title: "Indrajay Enterprises",
       Exports,
-    
     });
     // console.log(Exports);
   } catch (error) {
@@ -448,11 +442,8 @@ app.get("/", async (req, res) => {
   }
 });
 
-
 app.get("/logistic", async (req, res) => {
-
-    res.render("client/logistic", { title: "Indrajay Enterprises" });
-  
+  res.render("client/logistic", { title: "Indrajay Enterprises" });
 });
 
 // Fruits
@@ -716,83 +707,83 @@ app.get("/events", async (req, res) => {
   }
 });
 
-
-
 // API Endpoint to create a new booking (CREATE)
-app.post('/api/bookings', async (req, res) => {
-    try {
-        // The data comes from the `fetch` call in your frontend script
-        const bookingData = req.body;
-        
-        console.log('Received booking data:', bookingData);
+app.post("/api/bookings", async (req, res) => {
+  try {
+    // The data comes from the `fetch` call in your frontend script
+    const bookingData = req.body;
 
-        // Create a new booking document using the Mongoose model
-        const newBooking = new Booking({
-            event: bookingData.event,
-            name: bookingData.name,
-            email: bookingData.email,
-            phone: bookingData.phone,
-            address: bookingData.address,
-            tickets: bookingData.tickets,
-            totalAmount: bookingData.totalAmount,
-            utr: bookingData.utr
-            // isVerified is false by default
-        });
+    console.log("Received booking data:", bookingData);
 
-        // Save the new booking to the database
-        await newBooking.save();
+    // Create a new booking document using the Mongoose model
+    const newBooking = new Booking({
+      event: bookingData.event,
+      name: bookingData.name,
+      email: bookingData.email,
+      phone: bookingData.phone,
+      address: bookingData.address,
+      tickets: bookingData.tickets,
+      totalAmount: bookingData.totalAmount,
+      utr: bookingData.utr,
+      // isVerified is false by default
+    });
 
-        // Send a success response back to the frontend
-        res.status(201).json({ message: 'Booking received and is awaiting verification.' });
+    // Save the new booking to the database
+    await newBooking.save();
 
-    } catch (err) {
-        console.error('Error saving booking:', err);
-        // Handle potential duplicate UTR error
-        if (err.code === 11000) {
-             return res.status(400).json({ message: 'This Transaction ID (UTR) has already been used.' });
-        }
-        res.status(500).json({ message: 'An error occurred on the server.' });
+    // Send a success response back to the frontend
+    res
+      .status(201)
+      .json({ message: "Booking received and is awaiting verification." });
+  } catch (err) {
+    console.error("Error saving booking:", err);
+    // Handle potential duplicate UTR error
+    if (err.code === 11000) {
+      return res
+        .status(400)
+        .json({ message: "This Transaction ID (UTR) has already been used." });
     }
+    res.status(500).json({ message: "An error occurred on the server." });
+  }
 });
-
-
 
 // --- BOOKINGS MANAGEMENT ---
 
 // READ all bookings with pagination
-app.get('/admin/bookings', async (req, res) => {
-    try {
-        // Pagination ke liye settings
-        const page = parseInt(req.query.page) || 1;
-        const limit = 10; // Ek page par 10 bookings dikhayenge
-        const skip = (page - 1) * limit;
+app.get("/admin/bookings", async (req, res) => {
+  try {
+    // Pagination ke liye settings
+    const page = parseInt(req.query.page) || 1;
+    const limit = 10; // Ek page par 10 bookings dikhayenge
+    const skip = (page - 1) * limit;
 
-        // 1. Database se saari bookings fetch karo (naye se purane order me)
-        const bookings = await Booking.find().sort({ bookingDate: -1 }).skip(skip).limit(limit);
-        
-        // Pagination ke liye total bookings count karo
-        const totalBookings = await Booking.countDocuments();
-        const totalPages = Math.ceil(totalBookings / limit);
+    // 1. Database se saari bookings fetch karo (naye se purane order me)
+    const bookings = await Booking.find()
+      .sort({ bookingDate: -1 })
+      .skip(skip)
+      .limit(limit);
 
-        // 2. 'admin/bookings_list.ejs' page ko render karo
-        //    aur usme 'bookings' ka data aur pagination ki info bhej do.
-        res.render('admin/eventBookings', {
-            title: 'Manage Bookings',
-            bookings: bookings, // Yeh data page par jayega
-            currentPage: page,
-            totalPages: totalPages,
-            limit: limit
-        });
-    } catch (err) {
-        console.error("Error fetching bookings:", err);
-        res.status(500).send("Server Error: Could not fetch bookings.");
-    }
+    // Pagination ke liye total bookings count karo
+    const totalBookings = await Booking.countDocuments();
+    const totalPages = Math.ceil(totalBookings / limit);
+
+    // 2. 'admin/bookings_list.ejs' page ko render karo
+    //    aur usme 'bookings' ka data aur pagination ki info bhej do.
+    res.render("admin/eventBookings", {
+      title: "Manage Bookings",
+      bookings: bookings, // Yeh data page par jayega
+      currentPage: page,
+      totalPages: totalPages,
+      limit: limit,
+      activePage: "event_bookings",
+    });
+  } catch (err) {
+    console.error("Error fetching bookings:", err);
+    res.status(500).send("Server Error: Could not fetch bookings.");
+  }
 });
 
-
-
-
-// 
+//
 app.get("/careManagement", async (req, res) => {
   try {
     const care = await careManagement.find().sort({ created_at: -1 });
@@ -873,7 +864,6 @@ app.get("/is", async (req, res) => {
     res.status(500).send("server error");
   }
 });
-
 
 // admin dashboard route
 app.get("/admin", ensureAuthenticated, ensureAdminRole, async (req, res) => {

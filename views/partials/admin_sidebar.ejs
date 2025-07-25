@@ -25,37 +25,32 @@
       <span><i class="fas fa-users me-2"></i>Users</span>
       <i class="fas fa-chevron-down"></i>
     </a>
-    <div
-      class="collapse <%= (typeof activePage !== 'undefined' && (activePage === 'view_users' || activePage === 'view_vendors' || activePage === 'view_admins')) ? 'show' : '' %>"
-      id="userSubmenu"
-    >
-      <!-- <a
-        href="/admin/users"
-        class="list-group-item list-group-item-action list-group-item-dark p-3 ps-5 <%= (typeof activePage !== 'undefined' && activePage === 'view_users') ? 'active' : '' %>"
-      >
-        <i class="fas fa-user-friends me-2"></i>View Users
-      </a> -->
-      <a
-        href="/admin/trusted-vendors"
-        class="list-group-item list-group-item-action list-group-item-dark p-3 ps-5 <%= (typeof activePage !== 'undefined' && activePage === 'trusted_vendors') ? 'active' : '' %>"
-      >
-        <i class="fas fa-store me-2"></i>Trusted Vendors
-      </a>
+    <!-- Pehle, duplicate block ko hatayein. Sirf ek div rakhein. -->
+<div
+  class="collapse <%= (typeof activePage !== 'undefined' && (activePage === 'view_users' || activePage === 'view_vendors' || activePage === 'view_admins' || activePage === 'trusted_vendors')) ? 'show' : '' %>"
+  id="userSubmenu"
+>
+  <a
+    href="/admin/trusted-vendors"
+    class="list-group-item list-group-item-action list-group-item-dark p-3 ps-5 <%= (typeof activePage !== 'undefined' && activePage === 'trusted_vendors') ? 'active' : '' %>"
+  >
+    <i class="fas fa-store me-2"></i>Trusted Vendors
+  </a>
 
-      <a
-        href="/admin/vendors"
-        class="list-group-item list-group-item-action list-group-item-dark p-3 ps-5 <%= (typeof activePage !== 'undefined' && activePage === 'view_vendors') ? 'active' : '' %>"
-      >
-        <i class="fas fa-store me-2"></i>View Vendors
-      </a>
+  <a
+    href="/admin/vendors"
+    class="list-group-item list-group-item-action list-group-item-dark p-3 ps-5 <%= (typeof activePage !== 'undefined' && activePage === 'view_vendors') ? 'active' : '' %>"
+  >
+    <i class="fas fa-store me-2"></i>View Vendors
+  </a>
 
-      <a
-        href="/admin/admins"
-        class="list-group-item list-group-item-action list-group-item-dark p-3 ps-5 <%= (typeof activePage !== 'undefined' && activePage === 'view_admins') ? 'active' : '' %>"
-      >
-        <i class="fas fa-user-shield me-2"></i>View Admins
-      </a>
-    </div>
+  <a
+    href="/admin/admins"
+    class="list-group-item list-group-item-action list-group-item-dark p-3 ps-5 <%= (typeof activePage !== 'undefined' && activePage === 'view_admins') ? 'active' : '' %>"
+  >
+    <i class="fas fa-user-shield me-2"></i>View Admins
+  </a>
+</div>
 
     <!-- Export Submenu -->
     <a
@@ -100,7 +95,7 @@
       <i class="fas fa-chevron-down"></i>
     </a>
     <div
-      class="collapse <%= (typeof activePage !== 'undefined' && (activePage === 'add_event' || activePage === 'view_events' || activePage === 'edit_event')) ? 'show' : '' %>"
+      class="collapse <%= (typeof activePage !== 'undefined' && (activePage === 'add_event' || activePage === 'view_events' || activePage === 'edit_event' || activePage === 'event_bookings')) ? 'show' : '' %>"
       id="eventSubmenu"
     >
       <a
@@ -117,7 +112,7 @@
       </a>
       <a
         href="/admin/bookings"
-        class="list-group-item list-group-item-action list-group-item-dark p-3 ps-5 <%= (typeof activePage !== 'undefined' && activePage === '') ? 'active' : '' %>"
+        class="list-group-item list-group-item-action list-group-item-dark p-3 ps-5 <%= (typeof activePage !== 'undefined' && activePage === 'event_bookings') ? 'active' : '' %>"
       >
         <i class="fas fa-list-alt me-2"></i>Event Bookings
       </a>
