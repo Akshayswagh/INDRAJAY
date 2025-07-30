@@ -23,11 +23,9 @@ const event = require("./models/Event");
 const User = require("./models/User");
 const ConsultService = require("./models/ConsultService");
 const Booking = require("./models/Booking");
+const Popup = require("./models/Popup"); 
 
-// Routes
-// const userRoutes = require("./routes/userRoutes");
 
-// okay
 
 // --- Routers ---
 const adminAuthRoutes = require("./routes/adminAuthRoutes");
@@ -74,6 +72,7 @@ const adminJobApplicationApiRoutes = require("./routes/adminJobApplicationApiRou
 const vendorRoutes = require("./routes/vendorRegister");
 
 const adminBookingRoutes = require("./routes/adminBooking");
+const popupRoutes = require('./routes/popupRoutes');
 // const accessVendor = require("./routes/accessVendors");
 
 connectDB();
@@ -264,11 +263,9 @@ app.use("/logistics", clientLogisticApiRoutes);
 
 app.use("/admin/api", adminBookingRoutes);
 
-// ...
-
-// app.use("/admin/vendors", accessVendor);
-
 app.use("/api/vendor", vendorRoutes);
+
+app.use('/admin/popups', popupRoutes)
 
 // Admin creation route
 
@@ -355,13 +352,6 @@ app.get("/register-vendor", async (req, res) => {
   });
 });
 
-// log in vendor
-// app.get("/login-vendor", async (req, res) => {
-//   res.render("client/login-vendor", {
-//     title: "Vendor Login | Indrajay Enterprises",
-//   });
-// });
-
 // Admin auth Routes
 // register admin
 app.get("/register-admin", async (req, res) => {
@@ -377,60 +367,19 @@ app.get("/login-admin", async (req, res) => {
   });
 });
 
-// password forgot
-// app.get("/forgot-password", async (req, res) => {
-//   res.render("client/forgot-password", {
-//     title: "Password forgot| Indrajay Enterprises",
-//   });
-// });
-
-// // Serve reset password page
-// app.get("/reset-password/:token", async (req, res) => {
-//   try {
-//     const token = req.params.token;
-
-//     // `Check `if token exists and is valid
-//     const tokenDoc = await PasswordResetToken.findOne({ token }).populate(
-//       "userId"
-//     );
-
-//     if (!tokenDoc) {
-//       return res.render("client/reset-password", {
-//         title: "Reset Password | Indrajay Enterprises",
-//         valid: false,
-//       });
-//     }
-
-//     // Check if token has expired
-//     const valid = new Date(tokenDoc.expiresAt) > new Date();
-
-//     if (!valid) {
-//       // Optionally delete expired tokens
-//       await PasswordResetToken.deleteOne({ _id: tokenDoc._id });
-//     }
-
-//     res.render("client/reset-password", {
-//       title: "Reset Password | Indrajay Enterprises",
-//       valid,
-//       token: valid ? token : null,
-//     });
-//   } catch (error) {
-//     console.error("Password reset error:", error);
-//     res.render("client/reset-password", {
-//       title: "Reset Password | Indrajay Enterprises",
-//       valid: false,
-//     });
-//   }
-// });
-
 // Home Page Rendering
 app.get("/", async (req, res) => {
   try {
     const Exports = await Export.find(); // fetch all Exports
+    const popup = await Popup.findOne({ is_active: true })
+      .sort({ created_at: -1 })
+      .lean();
     res.render("client/home", {
       title: "Indrajay Enterprises",
       Exports,
+      popup,
     });
+
     // console.log(Exports);
   } catch (error) {
     console.error("Error fetching Exports:", error.message);
@@ -438,6 +387,7 @@ app.get("/", async (req, res) => {
     res.render("client/home", {
       title: "Indrajay Enterprises",
       Exports: [],
+      popup: null, // ✅ Add popup null to avoid undefined
     });
   }
 });

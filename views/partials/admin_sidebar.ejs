@@ -26,31 +26,31 @@
       <i class="fas fa-chevron-down"></i>
     </a>
     <!-- Pehle, duplicate block ko hatayein. Sirf ek div rakhein. -->
-<div
-  class="collapse <%= (typeof activePage !== 'undefined' && (activePage === 'view_users' || activePage === 'view_vendors' || activePage === 'view_admins' || activePage === 'trusted_vendors')) ? 'show' : '' %>"
-  id="userSubmenu"
->
-  <a
-    href="/admin/trusted-vendors"
-    class="list-group-item list-group-item-action list-group-item-dark p-3 ps-5 <%= (typeof activePage !== 'undefined' && activePage === 'trusted_vendors') ? 'active' : '' %>"
-  >
-    <i class="fas fa-store me-2"></i>Trusted Vendors
-  </a>
+    <div
+      class="collapse <%= (typeof activePage !== 'undefined' && (activePage === 'view_users' || activePage === 'view_vendors' || activePage === 'view_admins' || activePage === 'trusted_vendors')) ? 'show' : '' %>"
+      id="userSubmenu"
+    >
+      <a
+        href="/admin/trusted-vendors"
+        class="list-group-item list-group-item-action list-group-item-dark p-3 ps-5 <%= (typeof activePage !== 'undefined' && activePage === 'trusted_vendors') ? 'active' : '' %>"
+      >
+        <i class="fas fa-store me-2"></i>Trusted Vendors
+      </a>
 
-  <a
-    href="/admin/vendors"
-    class="list-group-item list-group-item-action list-group-item-dark p-3 ps-5 <%= (typeof activePage !== 'undefined' && activePage === 'view_vendors') ? 'active' : '' %>"
-  >
-    <i class="fas fa-store me-2"></i>View Vendors
-  </a>
+      <a
+        href="/admin/vendors"
+        class="list-group-item list-group-item-action list-group-item-dark p-3 ps-5 <%= (typeof activePage !== 'undefined' && activePage === 'view_vendors') ? 'active' : '' %>"
+      >
+        <i class="fas fa-store me-2"></i>View Vendors
+      </a>
 
-  <a
-    href="/admin/admins"
-    class="list-group-item list-group-item-action list-group-item-dark p-3 ps-5 <%= (typeof activePage !== 'undefined' && activePage === 'view_admins') ? 'active' : '' %>"
-  >
-    <i class="fas fa-user-shield me-2"></i>View Admins
-  </a>
-</div>
+      <a
+        href="/admin/admins"
+        class="list-group-item list-group-item-action list-group-item-dark p-3 ps-5 <%= (typeof activePage !== 'undefined' && activePage === 'view_admins') ? 'active' : '' %>"
+      >
+        <i class="fas fa-user-shield me-2"></i>View Admins
+      </a>
+    </div>
 
     <!-- Export Submenu -->
     <a
@@ -272,6 +272,41 @@
     >
       <i class="fas fa-file-signature me-2"></i>Job Applications
     </a>
+
+    <!-- ============================================= -->
+    <!-- START: NEW POPUPS SUBMENU -->
+    <!-- ============================================= -->
+    <a
+      class="list-group-item list-group-item-action list-group-item-dark p-3 d-flex justify-content-between align-items-center"
+      data-bs-toggle="collapse"
+      href="#popupSubmenu"
+      role="button"
+      aria-expanded="<%= (typeof activePage !== 'undefined' && (activePage === 'add_popup' || activePage === 'view_popups')) ? 'true' : 'false' %>"
+      aria-controls="popupSubmenu"
+    >
+      <span><i class="fas fa-window-restore me-2"></i>Popups</span>
+      <i class="fas fa-chevron-down"></i>
+    </a>
+    <div
+      class="collapse <%= (typeof activePage !== 'undefined' && (activePage === 'add_popup' || activePage === 'view_popups')) ? 'show' : '' %>"
+      id="popupSubmenu"
+    >
+      <a
+        href="/admin/popups/add"
+        class="list-group-item list-group-item-action list-group-item-dark p-3 ps-5 <%= (typeof activePage !== 'undefined' && activePage === 'add_popup') ? 'active' : '' %>"
+      >
+        <i class="fas fa-plus-circle me-2"></i>Add Popup
+      </a>
+      <a
+        href="/admin/popups"
+        class="list-group-item list-group-item-action list-group-item-dark p-3 ps-5 <%= (typeof activePage !== 'undefined' && activePage === 'view_popups') ? 'active' : '' %>"
+      >
+        <i class="fas fa-tasks me-2"></i>Manage Popups
+      </a>
+    </div>
+    <!-- ============================================= -->
+    <!-- END: NEW POPUPS SUBMENU -->
+    <!-- ============================================= -->
   </div>
 </div>
 <!-- Add this at the bottom of your sidebar.ejs or layout.ejs -->

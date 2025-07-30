@@ -13,9 +13,64 @@
         position: absolute;
         bottom: 10px;
       }
+
+      /* popup  */
+      .popup-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.65);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+      }
+
+      .popup-content {
+        background: #fff;
+        padding: 4px;
+        border-radius: 10px;
+        max-width: 500px;
+        width: 90%;
+        position: relative;
+        text-align: center;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+      }
+
+      .popup-content img {
+        width: 100%;
+        height: auto;
+        border-radius: 8px;
+      }
+
+      .close-popup {
+        position: absolute;
+        top: -10px;
+        right: -10px;
+        background: #000;
+        color: #fff;
+        border: none;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        font-size: 20px;
+        cursor: pointer;
+      }
     </style>
   </head>
   <body>
+    <% if (popup) { %>
+  <div id="popupModal" class="popup-overlay">
+    <div class="popup-content">
+      <button id="closePopup" class="close-popup">&times;</button>
+      <img src="<%= popup.image_url %>" alt="Popup Banner" />
+    </div>
+  </div>
+<% } %>
+
+
     <%- include('../partials/navbar'); %>
 
     <main class="main-container">
@@ -24,7 +79,7 @@
         <div class="item">
           <img src="upload/s1.jpg" loading="lazy" />
           <div class="desc">
-            <h1>Great opportunity for adventure & travels</h1>
+            <h1>Domestic & Exports</h1>
 
             <a class="btn1" href="/contact">Contact Now</a>
           </div>
@@ -59,10 +114,6 @@
         </div>
       </div>
       <!-- slider section ends here -->
-
-      <!-- booking form section starts here -->
-
-      <!-- booking form section ends here -->
 
       <!--what we offer our premium products  -->
       <div class="home_products py-5 bg-grey">
@@ -161,7 +212,7 @@
               data-aos-duration="700"
             >
               <div class="img">
-                <img class="w-100" src="upload/pulses.jpg" loading="lazy" />
+                <img class="w-100" src="upload/coconut.jpg" loading="lazy" />
                 <span class="btn"><i class="fas fa-link"></i></span>
               </div>
               <h4>Coconuts <i class="fa fa-arrow-right"></i></h4>
@@ -181,7 +232,7 @@
                 />
                 <span class="btn"><i class="fas fa-link"></i></span>
               </div>
-              <h4>Chemiacals<i class="fa fa-arrow-right"></i></h4>
+              <h4>Chemicals<i class="fa fa-arrow-right"></i></h4>
             </a>
           </div>
         </div>
@@ -448,8 +499,8 @@
                   and flawless event management. From stunning routes to
                   well-planned corporate activities, every detail was handled
                   with care and professionalism. They don’t just organize
-                  trips—they create unforgettable journeys. Highly
-                  recommended for travel and event experiences.
+                  trips—they create unforgettable journeys. Highly recommended
+                  for travel and event experiences.
                 </p>
               </div>
               <div class="testimonial-content">
@@ -470,4 +521,16 @@
 
     <%- include('../partials/footer'); %> <%- include('../partials/scripts'); %>
   </body>
+  <script>
+      document.addEventListener("DOMContentLoaded", function () {
+    const popup = document.getElementById("popupModal");
+    const closeBtn = document.getElementById("closePopup");
+
+    if (popup && closeBtn) {
+      closeBtn.addEventListener("click", function () {
+        popup.style.display = "none";
+      });
+    }
+  });
+  </script>
 </html>
