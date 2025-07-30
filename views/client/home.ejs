@@ -62,22 +62,19 @@
   </head>
   <body>
     <% if (popup) { %>
-  <div id="popupModal" class="popup-overlay">
-    <div class="popup-content">
-      <button id="closePopup" class="close-popup">&times;</button>
-      <img src="<%= popup.image_url %>" alt="Popup Banner" />
+    <div id="popupModal" class="popup-overlay">
+      <div class="popup-content">
+        <button id="closePopup" class="close-popup">&times;</button>
+        <img src="<%= popup.image_url %>" alt="Popup Banner" />
+      </div>
     </div>
-  </div>
-<% } %>
-
-
-    <%- include('../partials/navbar'); %>
+    <% } %> <%- include('../partials/navbar'); %>
 
     <main class="main-container">
       <!--slider section starts here  -->
       <div class="owl-slide owl-carousel">
         <div class="item">
-          <img src="upload/s1.jpg" loading="lazy" />
+          <img src="upload/sliders/domestic and export.jpg" loading="lazy" />
           <div class="desc">
             <h1>Domestic & Exports</h1>
 
@@ -85,30 +82,47 @@
           </div>
         </div>
         <div class="item">
-          <img src="upload/s2.jpg" loading="lazy" />
+          <img src="upload/sliders/travel and adv.jpg" loading="lazy" />
           <div class="desc">
-            <h1>Great opportunity for adventure & travels</h1>
+            <h1>Adventure and Travel</h1>
             <a class="btn1" href="/contact">Contact Now</a>
           </div>
         </div>
         <div class="item">
-          <img src="upload/s3.jpg" loading="lazy" />
+          <img src="upload/sliders/event management.jpg" loading="lazy" />
           <div class="desc">
-            <h1>Great opportunity for adventure & travels</h1>
+            <h1>Event Management</h1>
             <a class="btn1" href="/contact">Contact Now</a>
           </div>
         </div>
         <div class="item">
-          <img src="upload/s4.jpg" loading="lazy" />
+          <img src="upload/sliders/transport & logistic.jpg" loading="lazy" />
           <div class="desc">
-            <h1>Great opportunity for adventure & travels</h1>
+            <h1>Transport & Logistics</h1>
             <a class="btn1" href="/contact">Contact Now</a>
           </div>
         </div>
         <div class="item">
-          <img src="upload/s5.jpg" loading="lazy" />
+          <img src="upload/sliders/care management.jpg" loading="lazy" />
           <div class="desc">
-            <h1>Great opportunity for adventure & travels</h1>
+            <h1>Care management</h1>
+            <a class="btn1" href="/contact">Contact Now</a>
+          </div>
+        </div>
+        <div class="item">
+          <img
+            src="/public/upload/sliders/industrial and corp.jpg"
+            loading="lazy"
+          />
+          <div class="desc">
+            <h1>Industrial and Corporate Services</h1>
+            <a class="btn1" href="/contact">Contact Now</a>
+          </div>
+        </div>
+        <div class="item">
+          <img src="/public/upload/sliders/consultant.jpg" loading="lazy" />
+          <div class="desc">
+            <h1>Consultancy services</h1>
             <a class="btn1" href="/contact">Contact Now</a>
           </div>
         </div>
@@ -522,15 +536,15 @@
     <%- include('../partials/footer'); %> <%- include('../partials/scripts'); %>
   </body>
   <script>
-      document.addEventListener("DOMContentLoaded", function () {
-    const popup = document.getElementById("popupModal");
-    const closeBtn = document.getElementById("closePopup");
+    document.addEventListener("DOMContentLoaded", function () {
+      const popup = document.getElementById("popupModal");
+      const closeBtn = document.getElementById("closePopup");
 
-    if (popup && closeBtn) {
-      closeBtn.addEventListener("click", function () {
-        popup.style.display = "none";
-      });
-    }
-  });
+      if (popup && closeBtn) {
+        closeBtn.addEventListener("click", function () {
+          popup.style.display = "none";
+        });
+      }
+    });
   </script>
 </html>
