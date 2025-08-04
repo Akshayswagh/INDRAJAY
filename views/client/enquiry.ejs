@@ -2,13 +2,21 @@
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><%= typeof title !== 'undefined' ? title : 'Submit an Enquiry' %></title>
+    <title>
+      <%= typeof title !== 'undefined' ? title : 'Submit an Enquiry' %>
+    </title>
     <%- include('../partials/head'); %>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&display=swap"
+      rel="stylesheet"
+    />
 
     <style>
       body {
@@ -26,12 +34,43 @@
         min-height: 100vh;
         width: 100%;
       }
-      .ph-title-section { text-align: center; margin-bottom: 30px; }
-      .ph-main-title { font-family: "Merriweather", serif; color: #386641; font-size: 2.2rem; font-weight: 700; margin-bottom: 20px; }
-      .ph-decorative-divider { display: flex; align-items: center; justify-content: center; margin: 0 auto 30px auto; max-width: 400px; }
-      .ph-decorative-divider .ph-line { flex-grow: 1; height: 1px; background-color: #c0a062; border-top: 1px dashed #c0a062; }
-      .ph-decorative-divider .ph-logo-image { height: 50px; margin: 0 15px; }
-      .form-instructions { text-align: center; font-size: 0.95em; color: #555; margin-bottom: 25px; max-width: 700px; margin-left: auto; margin-right: auto; }
+      .ph-title-section {
+        text-align: center;
+        margin-bottom: 30px;
+      }
+      .ph-main-title {
+        font-family: "Merriweather", serif;
+        color: #386641;
+        font-size: 2.2rem;
+        font-weight: 700;
+        margin-bottom: 20px;
+      }
+      .ph-decorative-divider {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 30px auto;
+        max-width: 400px;
+      }
+      .ph-decorative-divider .ph-line {
+        flex-grow: 1;
+        height: 1px;
+        background-color: #c0a062;
+        border-top: 1px dashed #c0a062;
+      }
+      .ph-decorative-divider .ph-logo-image {
+        height: 50px;
+        margin: 0 15px;
+      }
+      .form-instructions {
+        text-align: center;
+        font-size: 0.95em;
+        color: #555;
+        margin-bottom: 25px;
+        max-width: 700px;
+        margin-left: auto;
+        margin-right: auto;
+      }
 
       .enquiry-form-container {
         background-color: #ffffff;
@@ -45,178 +84,354 @@
         margin-left: auto;
         margin-right: auto;
       }
-      .form-label { margin-bottom: 6px; font-weight: 500; font-size: 0.9em; }
-      .required-asterisk { color: #dc3545; font-weight: normal; margin-left: 2px; }
-      .submit-button-container { margin-top: 25px; text-align: center; }
-      .submit-button { background-color: #f4a00d; color: #fff; padding: 12px 30px; border: none; border-radius: 6px; cursor: pointer; font-size: 1.05em; font-weight: 500; transition: background-color 0.3s ease; }
-      .submit-button:hover { background-color: #e0930c; }
-      .submit-button:disabled { background-color: #f9c775; cursor: not-allowed; }
-      .submit-button .spinner-border { vertical-align: text-bottom; }
+      .form-label {
+        margin-bottom: 6px;
+        font-weight: 500;
+        font-size: 0.9em;
+      }
+      .required-asterisk {
+        color: #dc3545;
+        font-weight: normal;
+        margin-left: 2px;
+      }
+      .submit-button-container {
+        margin-top: 25px;
+        text-align: center;
+      }
+      .submit-button {
+        background-color: #f4a00d;
+        color: #fff;
+        padding: 12px 30px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 1.05em;
+        font-weight: 500;
+        transition: background-color 0.3s ease;
+      }
+      .submit-button:hover {
+        background-color: #e0930c;
+      }
+      .submit-button:disabled {
+        background-color: #f9c775;
+        cursor: not-allowed;
+      }
+      .submit-button .spinner-border {
+        vertical-align: text-bottom;
+      }
 
-      @media (max-width: 768px) { /* ... your existing media queries ... */ }
-      @media (max-width: 576px) { /* ... your existing media queries ... */ }
+      @media (max-width: 768px) {
+        /* ... your existing media queries ... */
+      }
+      @media (max-width: 576px) {
+        /* ... your existing media queries ... */
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <%- include('../partials/navbar'); %>
 
     <div class="inquiry-page-wrapper">
-        <%# The Bootstrap .container class itself is designed to be centered if it's a direct child of body
-            or within a full-width container. If inquiry-page-wrapper is full width,
-            the .container will center its content based on its predefined max-widths for breakpoints.
-            The enquiry-form-container then centers itself within this .container using mx-auto.
-        %>
-        <div class="container">
-            <div class="ph-title-section">
-                <h1 class="ph-main-title">Do You Have any order ?</h1>
-                <div class="ph-decorative-divider">
-                    <span class="ph-line"></span>
-                    <img src="/upload/logo.jpg" alt="Company Logo" class="ph-logo-image" />
-                    <span class="ph-line"></span>
-                </div>
+      <%# The Bootstrap .container class itself is designed to be centered if
+      it's a direct child of body or within a full-width container. If
+      inquiry-page-wrapper is full width, the .container will center its content
+      based on its predefined max-widths for breakpoints. The
+      enquiry-form-container then centers itself within this .container using
+      mx-auto. %>
+      <div class="container">
+        <div class="ph-title-section">
+          <h1 class="ph-main-title">Do You Have any order ?</h1>
+          <div class="ph-decorative-divider">
+            <span class="ph-line"></span>
+            <img
+              src="/upload/logo.jpg"
+              alt="Company Logo"
+              class="ph-logo-image"
+            />
+            <span class="ph-line"></span>
+          </div>
+        </div>
+
+        <p class="form-instructions">
+          Please fill in the form below completely. After review, our sales
+          associates will contact you.
+        </p>
+
+        <div class="row justify-content-center">
+          <%# This helps center the messages if they are narrower %>
+          <div class="col-lg-10 col-xl-8">
+            <%# include('../partials/messages'); %>
+          </div>
+        </div>
+
+        <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+        <div class="row justify-content-center">
+          <%# Center the error block %>
+          <div class="col-lg-10 col-xl-8">
+            <div
+              class="alert alert-danger alert-dismissible fade show"
+              role="alert"
+            >
+              <strong>Please correct the following errors:</strong>
+              <ul>
+                <% errors.forEach(function(error) { %>
+                <li><%= error.msg || error %></li>
+                <% }); %>
+              </ul>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="alert"
+                aria-label="Close"
+              ></button>
+            </div>
+          </div>
+        </div>
+        <% } %> <%# The enquiry-form-container will now be centered within the
+        .container due to its mx-auto (implicitly via Bootstrap .container
+        behavior or explicit style) and its own max-width. %>
+        <div class="enquiry-form-container">
+          <form
+            id="enquiryForm"
+            action="/public/enquiry/submit-enquiry"
+            method="POST"
+            novalidate
+          >
+            <div class="row g-3 mb-3">
+              <div class="col-md-6">
+                <label for="yourName" class="form-label"
+                  >Your Name <span class="required-asterisk">*</span></label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="yourName"
+                  name="yourName"
+                  value="<%= typeof formData !== 'undefined' && formData.yourName ? formData.yourName : '' %>"
+                  required
+                />
+                <div class="invalid-feedback">Your name is required.</div>
+              </div>
+              <div class="col-md-6">
+                <label for="country" class="form-label"
+                  >Country <span class="required-asterisk">*</span></label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="country"
+                  name="country"
+                  value="<%= typeof formData !== 'undefined' && formData.country ? formData.country : '' %>"
+                  required
+                />
+                <div class="invalid-feedback">Country is required.</div>
+              </div>
             </div>
 
-            <p class="form-instructions">
-                Please fill in the form below completely. After review, our sales
-                associates will contact you.
-            </p>
-
-            <div class="row justify-content-center"> <%# This helps center the messages if they are narrower %>
-                <div class="col-lg-10 col-xl-8">
-                   <%# include('../partials/messages'); %>
+            <div class="row g-3 mb-3">
+              <div class="col-md-6">
+                <label for="companyName" class="form-label"
+                  >Company Name <span class="required-asterisk">*</span></label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="companyName"
+                  name="companyName"
+                  value="<%= typeof formData !== 'undefined' && formData.companyName ? formData.companyName : '' %>"
+                  required
+                />
+                <div class="invalid-feedback">Company name is required.</div>
+              </div>
+              <div class="col-md-6">
+                <label for="companyWebsite" class="form-label"
+                  >Company Website</label
+                >
+                <input
+                  type="url"
+                  class="form-control"
+                  id="companyWebsite"
+                  name="companyWebsite"
+                  placeholder="https://example.com"
+                  value="<%= typeof formData !== 'undefined' && formData.companyWebsite ? formData.companyWebsite : '' %>"
+                />
+                <div class="invalid-feedback">
+                  Please enter a valid URL (e.g., https://example.com).
                 </div>
+              </div>
             </div>
 
-            <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
-                <div class="row justify-content-center"> <%# Center the error block %>
-                    <div class="col-lg-10 col-xl-8">
-                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            <strong>Please correct the following errors:</strong>
-                            <ul>
-                                <% errors.forEach(function(error) { %>
-                                    <li><%= error.msg || error %></li>
-                                <% }); %>
-                            </ul>
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    </div>
-                </div>
-            <% } %>
-
-            <%# The enquiry-form-container will now be centered within the .container due to its mx-auto (implicitly via Bootstrap .container behavior or explicit style)
-                and its own max-width.
-            %>
-            <div class="enquiry-form-container">
-                <form id="enquiryForm" action="/public/enquiry/submit-enquiry" method="POST" novalidate>
-                    <div class="row g-3 mb-3">
-                        <div class="col-md-6">
-                            <label for="yourName" class="form-label">Your Name <span class="required-asterisk">*</span></label>
-                            <input type="text" class="form-control" id="yourName" name="yourName" value="<%= typeof formData !== 'undefined' && formData.yourName ? formData.yourName : '' %>" required />
-                            <div class="invalid-feedback">Your name is required.</div>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="country" class="form-label">Country <span class="required-asterisk">*</span></label>
-                            <input type="text" class="form-control" id="country" name="country" value="<%= typeof formData !== 'undefined' && formData.country ? formData.country : '' %>" required />
-                            <div class="invalid-feedback">Country is required.</div>
-                        </div>
-                    </div>
-
-                    <div class="row g-3 mb-3">
-                        <div class="col-md-6">
-                            <label for="companyName" class="form-label">Company Name <span class="required-asterisk">*</span></label>
-                            <input type="text" class="form-control" id="companyName" name="companyName" value="<%= typeof formData !== 'undefined' && formData.companyName ? formData.companyName : '' %>" required />
-                            <div class="invalid-feedback">Company name is required.</div>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="companyWebsite" class="form-label">Company Website</label>
-                            <input type="url" class="form-control" id="companyWebsite" name="companyWebsite" placeholder="https://example.com" value="<%= typeof formData !== 'undefined' && formData.companyWebsite ? formData.companyWebsite : '' %>" />
-                            <div class="invalid-feedback">Please enter a valid URL (e.g., https://example.com).</div>
-                        </div>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="companyAddress" class="form-label">Company Address <span class="required-asterisk">*</span></label>
-                        <input type="text" class="form-control" id="companyAddress" name="companyAddress" value="<%= typeof formData !== 'undefined' && formData.companyAddress ? formData.companyAddress : '' %>" required />
-                        <div class="invalid-feedback">Company address is required.</div>
-                    </div>
-
-                    <div class="row g-3 mb-3">
-                        <div class="col-md-6">
-                            <label for="phoneCall" class="form-label">Phone Call <span class="required-asterisk">*</span></label>
-                            <input type="tel" class="form-control" id="phoneCall" name="phoneCall" value="<%= typeof formData !== 'undefined' && formData.phoneCall ? formData.phoneCall : '' %>" required />
-                            <div class="invalid-feedback">A valid phone number is required.</div>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="email" class="form-label">Email <span class="required-asterisk">*</span></label>
-                            <input type="email" class="form-control" id="email" name="email" value="<%= typeof formData !== 'undefined' && formData.email ? formData.email : '' %>" required />
-                            <div class="invalid-feedback">Please enter a valid email address.</div>
-                        </div>
-                    </div>
-
-                    <div class="row g-3 mb-3">
-                        <div class="col-md-5">
-                            <label for="productNeeded" class="form-label">Name of Product Needed <span class="required-asterisk">*</span></label>
-                            <input type="text" class="form-control" id="productNeeded" name="productNeeded" value="<%= typeof formData !== 'undefined' && formData.productNeeded ? formData.productNeeded : '' %>" required />
-                            <div class="invalid-feedback">Product name is required.</div>
-                        </div>
-                        <div class="col-md-3">
-                            <label for="amountOfOrderKg" class="form-label">Amount of Order (kg) <span class="required-asterisk">*</span></label>
-                            <input type="text" class="form-control" id="amountOfOrderKg" name="amountOfOrderKg" value="<%= typeof formData !== 'undefined' && formData.amountOfOrderKg ? formData.amountOfOrderKg : '' %>" required />
-                            <div class="invalid-feedback">Order amount is required.</div>
-                        </div>
-                        <div class="col-md-4">
-                            <label for="preferredDate" class="form-label">Preferred date to receive order <span class="required-asterisk">*</span></label>
-                            <input type="date" class="form-control" id="preferredDate" name="preferredDate" value="<%= typeof formData !== 'undefined' && formData.preferredDate ? new Date(formData.preferredDate).toISOString().split('T')[0] : '' %>" required />
-                            <div class="invalid-feedback">Preferred date is required.</div>
-                        </div>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="message" class="form-label">Message</label>
-                        <textarea class="form-control" id="message" name="message" rows="5"><%= typeof formData !== 'undefined' && formData.message ? formData.message : '' %></textarea>
-                    </div>
-
-                    <div class="submit-button-container">
-                        <button type="submit" class="btn submit-button" id="publicEnquirySubmitBtn">
-                            <span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true" style="display: none;"></span>
-                            <span class="button-text">Send Enquiry</span>
-                        </button>
-                    </div>
-                </form>
+            <div class="mb-3">
+              <label for="companyAddress" class="form-label"
+                >Company Address <span class="required-asterisk">*</span></label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="companyAddress"
+                name="companyAddress"
+                value="<%= typeof formData !== 'undefined' && formData.companyAddress ? formData.companyAddress : '' %>"
+                required
+              />
+              <div class="invalid-feedback">Company address is required.</div>
             </div>
-        </div> <!-- End .container -->
-    </div> <!-- End .inquiry-page-wrapper -->
 
-    <%- include('../partials/footer'); %>
-    <%- include('../partials/scripts'); %>
+            <div class="row g-3 mb-3">
+              <div class="col-md-6">
+                <label for="phoneCall" class="form-label"
+                  >Phone Call <span class="required-asterisk">*</span></label
+                >
+                <input
+                  type="tel"
+                  class="form-control"
+                  id="phoneCall"
+                  name="phoneCall"
+                  value="<%= typeof formData !== 'undefined' && formData.phoneCall ? formData.phoneCall : '' %>"
+                  pattern="^[6-9]\d{9}$"
+                  maxlength="10"
+                  minlength="10"
+                  required
+                  title="Please enter a valid 10-digit Indian mobile number starting with 6, 7, 8, or 9"
+                />
+                <div class="invalid-feedback">
+                  Please enter a valid 10-digit Indian mobile number.
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <label for="email" class="form-label"
+                  >Email <span class="required-asterisk">*</span></label
+                >
+                <input
+                  type="email"
+                  class="form-control"
+                  id="email"
+                  name="email"
+                  value="<%= typeof formData !== 'undefined' && formData.email ? formData.email : '' %>"
+                  required
+                />
+                <div class="invalid-feedback">
+                  Please enter a valid email address.
+                </div>
+              </div>
+            </div>
+
+            <div class="row g-3 mb-3">
+              <div class="col-md-5">
+                <label for="productNeeded" class="form-label"
+                  >Name of Product Needed
+                  <span class="required-asterisk">*</span></label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="productNeeded"
+                  name="productNeeded"
+                  value="<%= typeof formData !== 'undefined' && formData.productNeeded ? formData.productNeeded : '' %>"
+                  required
+                />
+                <div class="invalid-feedback">Product name is required.</div>
+              </div>
+              <div class="col-md-3">
+                <label for="amountOfOrderKg" class="form-label"
+                  >Amount of Order (kg)
+                  <span class="required-asterisk">*</span></label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="amountOfOrderKg"
+                  name="amountOfOrderKg"
+                  value="<%= typeof formData !== 'undefined' && formData.amountOfOrderKg ? formData.amountOfOrderKg : '' %>"
+                  required
+                />
+                <div class="invalid-feedback">Order amount is required.</div>
+              </div>
+              <div class="col-md-4">
+                <label for="preferredDate" class="form-label"
+                  >Preferred date to receive order
+                  <span class="required-asterisk">*</span></label
+                >
+                <input
+                  type="date"
+                  class="form-control"
+                  id="preferredDate"
+                  name="preferredDate"
+                  value="<%= typeof formData !== 'undefined' && formData.preferredDate ? new Date(formData.preferredDate).toISOString().split('T')[0] : '' %>"
+                  required
+                />
+                <div class="invalid-feedback">Preferred date is required.</div>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="message" class="form-label">Message</label>
+              <textarea
+                class="form-control"
+                id="message"
+                name="message"
+                rows="5"
+              >
+<%= typeof formData !== 'undefined' && formData.message ? formData.message : '' %></textarea
+              >
+            </div>
+
+            <div class="submit-button-container">
+              <button
+                type="submit"
+                class="btn submit-button"
+                id="publicEnquirySubmitBtn"
+              >
+                <span
+                  class="spinner-border spinner-border-sm me-1"
+                  role="status"
+                  aria-hidden="true"
+                  style="display: none"
+                ></span>
+                <span class="button-text">Send Enquiry</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <!-- End .container -->
+    </div>
+    <!-- End .inquiry-page-wrapper -->
+
+    <%- include('../partials/footer'); %> <%- include('../partials/scripts'); %>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const form = document.getElementById('enquiryForm'); // Changed ID from detailedEnquiryForm to match your new form ID
-            const submitButton = document.getElementById('publicEnquirySubmitBtn');
+      document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById("enquiryForm"); // Changed ID from detailedEnquiryForm to match your new form ID
+        const submitButton = document.getElementById("publicEnquirySubmitBtn");
 
-            if (form && submitButton) {
-                const buttonText = submitButton.querySelector('.button-text');
-                const spinner = submitButton.querySelector('.spinner-border');
+        if (form && submitButton) {
+          const buttonText = submitButton.querySelector(".button-text");
+          const spinner = submitButton.querySelector(".spinner-border");
 
-                form.addEventListener('submit', function (event) {
-                    if (!form.checkValidity()) {
-                        event.preventDefault();
-                        event.stopPropagation();
-                        form.classList.add('was-validated');
-                        const firstInvalidField = form.querySelector('.form-control:invalid, .form-select:invalid');
-                        if (firstInvalidField) {
-                            firstInvalidField.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                            firstInvalidField.focus();
-                        }
-                        return;
-                    }
-                    submitButton.disabled = true;
-                    if (buttonText) buttonText.textContent = 'Sending...';
-                    if (spinner) spinner.style.display = 'inline-block';
+          form.addEventListener("submit", function (event) {
+            if (!form.checkValidity()) {
+              event.preventDefault();
+              event.stopPropagation();
+              form.classList.add("was-validated");
+              const firstInvalidField = form.querySelector(
+                ".form-control:invalid, .form-select:invalid"
+              );
+              if (firstInvalidField) {
+                firstInvalidField.scrollIntoView({
+                  behavior: "smooth",
+                  block: "center",
                 });
+                firstInvalidField.focus();
+              }
+              return;
             }
-        });
+            submitButton.disabled = true;
+            if (buttonText) buttonText.textContent = "Sending...";
+            if (spinner) spinner.style.display = "inline-block";
+          });
+        }
+      });
     </script>
-</body>
+  </body>
 </html>
