@@ -6,79 +6,6 @@ const cloudinary = require('../config/cloudinaryConfig');
 
 const isValidId = (id) => mongoose.Types.ObjectId.isValid(id);
 
-// === PUBLIC: SUBMIT JOB APPLICATION ===
-// const submitPublicJobApplication = async (req, res) => {
-//     console.log("[JobAppCtrl DEBUG] submitPublicJobApplication called.");
-//     console.log("[JobAppCtrl DEBUG] req.params:", req.params);
-//     console.log("[JobAppCtrl DEBUG] req.body:", req.body);
-//     console.log("[JobAppCtrl DEBUG] req.file:", req.file);
-
-//     const { jobId } = req.params; // Get jobId from URL parameter
-//     const {
-//         applicantName, applicantEmail, applicantPhone, gender,
-//         appliedForPosition, startDate, address, coverLetter
-//     } = req.body;
-
-//     if (!isValidId(jobId)) {
-//         if(req.flash) req.flash('error_msg', 'Invalid job reference for application.');
-//         return res.status(400).redirect(req.headers.referer || '/careers');
-//     }
-
-//     let errors = [];
-//     if (!applicantName) errors.push({ msg: "Full name is required." });
-//     if (!applicantEmail) errors.push({ msg: "Email is required." });
-//     // Add more server-side validation for other fields from your form
-//     if (!req.file) errors.push({ msg: "Resume file is required." });
-//     if (!appliedForPosition) errors.push({msg: "Position applied for is required."}); // Should be pre-filled
-
-//     if (errors.length > 0) {
-//         console.log("[JobAppCtrl DEBUG] Validation errors on submit:", errors);
-//         if (req.flash) {
-//             req.flash('error_validation_application', JSON.stringify(errors));
-//             req.flash('error_form_data_application', JSON.stringify(req.body));
-//         }
-//         // Redirect back to the specific job page or main careers page
-//         return res.status(400).redirect(req.headers.referer || `/careers`);
-//     }
-
-//     try {
-//         const job = await Career.findById(jobId);
-//         if (!job) {
-//             console.log(`[JobAppCtrl DEBUG] Job with ID ${jobId} not found for application.`);
-//             if(req.flash) req.flash('error_msg', 'The job you are applying for no longer exists.');
-//             return res.status(404).redirect('/careers');
-//         }
-
-//         const newApplication = new JobApplication({
-//             jobId: jobId,
-//             jobRoleAppliedFor: appliedForPosition, // or job.role for consistency
-//             applicantName, applicantEmail, applicantPhone, gender, startDate, address, coverLetter,
-//             resumePath: req.file.path,       // from CloudinaryStorage
-//             resumePublicId: req.file.filename // from CloudinaryStorage
-//         });
-
-//         await newApplication.save();
-//         console.log("[JobAppCtrl DEBUG] Job application saved:", newApplication._id);
-//         // if(req.flash) req.flash('success_msg', 'Your application has been submitted successfully!');
-//         res.redirect('/application-success'); // Create a thank you page
-
-//     } catch (err) {
-//         console.error("[JobAppCtrl DEBUG] Error submitting job application:", err.message, err.stack);
-//         if (req.file && req.file.filename) { // Cleanup Cloudinary if DB save fails
-//             try { await cloudinary.uploader.destroy(req.file.filename); }
-//             catch (cdnErr) { console.error("[JobAppCtrl DEBUG] Error cleaning up Cloudinary:", cdnErr); }
-//         }
-//         let errorMessages = ['An error occurred while submitting your application.'];
-//         if (err.name === "ValidationError") {
-//             errorMessages = Object.values(err.errors).map((val) => val.message);
-//         }
-//         if(req.flash) {
-//             req.flash('error_validation_application', JSON.stringify(errorMessages.map(msg => ({msg}))));
-//             req.flash('error_form_data_application', JSON.stringify(req.body));
-//         }
-//         res.status(500).redirect(req.headers.referer || '/careers');
-//     }
-// };
 
 const submitPublicJobApplication = async (req, res) => {
     // console.log("[JobAppCtrl DEBUG] submitPublicJobApplication called.");
@@ -211,9 +138,7 @@ const submitPublicJobApplication = async (req, res) => {
         if (req.flash) {
             // For general errors, flash a simple message or the first one
             req.flash('error_msg', errorMessagesForClient[0].msg);
-            // If you want to pass structured errors back for traditional forms (more complex to handle in EJS)
-            // req.flash('error_validation_application', JSON.stringify(errorMessagesForClient));
-            // req.flash('error_form_data_application', JSON.stringify(req.body));
+          
         }
         // console.log("[JobAppCtrl DEBUG] Redirecting from catch block for traditional form.");
         return res.status(500).redirect(req.headers.referer || '/careers');

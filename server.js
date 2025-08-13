@@ -24,7 +24,7 @@ const User = require("./models/User");
 const ConsultService = require("./models/ConsultService");
 const Booking = require("./models/Booking");
 const Popup = require("./models/Popup"); 
-
+const Vendor = require("./models/VendorModel"); 
 
 
 // --- Routers ---
@@ -299,51 +299,6 @@ app.post("/create-admin", async (req, res) => {
   }
 });
 
-// app.post("/submit-form", async (req, res) => {
-//   const token = req.body["g-recaptcha-response"];
-
-//   if (!token) {
-//     return res.status(400).send("Please complete the reCAPTCHA");
-//   }
-
-//   try {
-//     const response = await axios.post(
-//       `https://www.google.com/recaptcha/api/siteverify`,
-//       null,
-//       {
-//         params: {
-//           secret: process.env.SECRET_KEY,
-//           response: token,
-//         },
-//       }
-//     );
-
-//     const data = response.data;
-
-//     if (data.success) {
-//       return res.send("✅ CAPTCHA verified, form submitted successfully!");
-//     } else {
-//       return res.status(400).send("❌ CAPTCHA verification failed");
-//     }
-//   } catch (err) {
-//     console.error("Error verifying reCAPTCHA:", err);
-//     return res.status(500).send("Server error during CAPTCHA verification");
-//   }
-// });
-
-// register user
-// app.get("/register-user", async (req, res) => {
-//   res.render("client/register-user", {
-//     title: "User Register | Indrajay Enterprises",
-//   });
-// });
-
-// // log in user
-// app.get("/login-user", async (req, res) => {
-//   res.render("client/login-user", {
-//     title: "User Login | Indrajay Enterprises",
-//   });
-// });
 
 // register vendor
 app.get("/register-vendor", async (req, res) => {
@@ -817,30 +772,27 @@ app.get("/is", async (req, res) => {
 
 // admin dashboard route
 app.get("/admin", ensureAuthenticated, ensureAdminRole, async (req, res) => {
-  // Make it async if you need to fetch data for the dashboard
   try {
-    // OPTIONAL: Fetch any data you want to display on the dashboard
-    // For example, counts of users, vendors, etc.
-    // const totalUsers = await User.countDocuments({ role: 'user' });
-    // const totalVendors = await User.countDocuments({ role: 'vendor' });
-    // const recentActivity = await ActivityLog.find().sort({ createdAt: -1 }).limit(5);
+    // --- CHANGE IS HERE ---
+    // Fetch the total count of documents in the 'vendors' collection
+    const vendorCount = await Vendor.countDocuments();
+    // You could also fetch other data here, for example:
+    // const trustedVendorCount = await Vendor.countDocuments({ isTrusted: true });
 
     res.render("admin/dashboard", {
       // Render the EJS view
-      title: "Admin Dashboard", // Passed to your main.ejs layout and navbar.ejs
-      activePage: "dashboard", // Used by sidebar.ejs to highlight the active link
-      // Pass any fetched data to the template:
-      // totalUsers: totalUsers,
-      // totalVendors: totalVendors,
-      // recentActivity: recentActivity,
-      // user: req.user // If verifyToken adds user object to req, you can pass it
+      title: "Admin Dashboard",
+      activePage: "dashboard",
+      
+      // --- PASS THE COUNT TO THE EJS FILE ---
+      vendorCount: vendorCount, // Pass the fetched count
+      // trustedVendorCount: trustedVendorCount, // You can pass other data too
+
+      // user: req.user 
     });
   } catch (error) {
     console.error("Error rendering admin dashboard:", error);
-    // Render an error page or send an error response
     res.status(500).send("Error loading dashboard. Please try again later.");
-    // Or, you could render an error view:
-    // res.render('errorPage', { title: 'Error', message: 'Could not load dashboard.'});
   }
 });
 

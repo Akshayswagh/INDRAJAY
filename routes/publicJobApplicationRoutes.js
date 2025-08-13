@@ -11,14 +11,6 @@ const resumeUploader = require('../config/multerResumeConfig'); // Path to your 
 // resumeUploader is now the multer instance itself, ready to use its .single() method.
 router.post('/apply/:jobId', resumeUploader.single('resumeFile'), jobApplicationController.submitPublicJobApplication);
 
-// You'd also have GET routes here to display job listings and the application form.
-// Example:
-// const careerController = require('../controllers/careerController'); // Assuming you have this
-// router.get('/', careerController.getPublicJobsPage);
-// router.get('/:jobId/apply', careerController.showApplicationFormPage);
-
-
-
 // GET /careers/application-success
 router.get('/application-success', (req, res) => {
     // Render the EJS template

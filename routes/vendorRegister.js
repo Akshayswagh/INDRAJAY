@@ -65,21 +65,5 @@ router.post(
     }
 );
 
-// Optional: Add a global error handler in your app.js for Multer errors
-// if you don't handle them directly in the route.
-/*
-// In app.js or server.js:
-app.use((err, req, res, next) => {
-  if (err instanceof multer.MulterError) { // Specifically for Multer's own errors
-    return res.status(400).json({ message: `File upload error: ${err.field ? err.field + ': ' : ''}${err.message}` });
-  } else if (err.status && err.message.startsWith("Only PDF files")) { // Custom error from fileFilter
-     return res.status(err.status).json({ message: err.message });
-  } else if (err) {
-    console.error("Global error handler:", err);
-    return res.status(err.status || 500).json({ message: err.message || "An unexpected server error occurred." });
-  }
-  next();
-});
-*/
 
 module.exports = router;

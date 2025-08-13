@@ -20,8 +20,5 @@ router.post('/login', adminAuthController.processAdminLogin);
 // GET /admin/auth/logout - Handle Admin Logout
 router.get('/logout', adminAuthController.adminLogout);
 
-// Optional Admin Registration Routes
-// router.get('/register', forwardAuthenticatedAdmin, adminAuthController.showAdminRegisterPage);
-// router.post('/register', adminAuthController.processAdminRegister);
 
 module.exports = router;

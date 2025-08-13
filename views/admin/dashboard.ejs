@@ -3,24 +3,7 @@
 <p>Welcome to the Admin Panel. Use the sidebar to navigate.</p>
 
 <div class="row">
-    <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card border-start border-primary border-4 shadow h-100 py-2">
-            <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="text-xs fw-bold text-primary text-uppercase mb-1">
-                            Total Users</div>
-                        <div class="h5 mb-0 fw-bold text-gray-800">
-                            <%= typeof totalUsers !== 'undefined' ? totalUsers : 'N/A' %>
-                        </div>
-                    </div>
-                    <div class="col-auto">
-                        <i class="fas fa-users fa-2x text-gray-300"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    
     <div class="col-xl-3 col-md-6 mb-4">
         <div class="card border-start border-success border-4 shadow h-100 py-2">
             <div class="card-body">
@@ -29,7 +12,7 @@
                         <div class="text-xs fw-bold text-success text-uppercase mb-1">
                             Total Vendors</div>
                         <div class="h5 mb-0 fw-bold text-gray-800">
-                             <%= typeof totalVendors !== 'undefined' ? totalVendors : 'N/A' %>
+                             <%= typeof vendorCount  !== 'undefined' ? vendorCount  : 'N/A' %>
                         </div>
                     </div>
                     <div class="col-auto">

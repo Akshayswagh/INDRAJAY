@@ -13,33 +13,6 @@ const getSortCriteria = (sortQuery) => {
     return { sortCriteria: criteria, currentSortValue: value };
 };
 
-// Display list of all 'user' role users in Admin Panel
-// const getAdminUsersListPage = async (req, res) => {
-//     try {
-//         const { sortCriteria, currentSortValue } = getSortCriteria(req.query.sort);
-
-//         const usersData = await User.find({ role: "user" })
-//             .sort(sortCriteria)
-//             .lean();
-
-//         res.render('admin/view_users', { // Your EJS template for listing 'user' role
-//             title: 'Manage Users',
-//             activePage: 'view_users',
-//             users: usersData,
-//             currentSort: currentSortValue,
-//             currentUser: req.user || { name: 'Admin' }, // From auth middleware
-//             messages: { // From connect-flash middleware
-//                 success_msg: req.flash ? req.flash('success_msg') : [],
-//                 error_msg: req.flash ? req.flash('error_msg') : [],
-//             }
-//         });
-//     } catch (error) {
-//         console.error("Error fetching 'user' role users for admin list:", error);
-//         if(req.flash) req.flash('error_msg', 'Could not load users.');
-//         res.redirect(req.headers.referer || '/admin/dashboard');
-//     }
-// };
-
 const deleteVendorFromAdmin = async (req, res) => {
     try {
         const vendorId = req.params.id;
@@ -226,5 +199,4 @@ module.exports = {
     untrustVendor,
     getTrustedVendorsListPage,
 
-    // ... other user management functions for admin ...
 };
