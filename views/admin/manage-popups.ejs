@@ -17,7 +17,6 @@
         </div>
     </div>
  
-
     <div class="card shadow-sm">
         <div class="card-header">
             <h5 class="mb-0">Popups List</h5>
@@ -53,6 +52,7 @@
                                     </td>
                                     <td><%= new Date(popup.created_at).toLocaleString() %></td>
                                     <td>
+                                        <!-- ==================== 1. EDIT BUTTON UPDATED ==================== -->
                                         <button
                                             type="button"
                                             class="btn btn-sm btn-primary me-1 edit-popup-btn"
@@ -63,6 +63,8 @@
                                             data-title="<%= popup.title %>"
                                             data-image="<%= popup.image_url %>"
                                             data-is-active="<%= popup.is_active %>"
+                                            data-link-url="<%= popup.link_url || '' %>"
+                                            data-open-in-new-tab="<%= popup.open_in_new_tab %>"
                                         >
                                             <i class="fas fa-edit"></i>
                                         </button>
@@ -109,6 +111,7 @@
                 <h5 class="modal-title" id="editPopupModalLabel">Edit Popup</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+            <!-- ==================== 2. MODAL HTML UPDATED ==================== -->
             <form id="editPopupForm" method="POST" enctype="multipart/form-data">
                 <div class="modal-body">
                     <input type="hidden" id="editPopupId" name="popupId">
@@ -118,7 +121,19 @@
                         <input type="text" class="form-control" id="editPopupTitle" name="title" required>
                     </div>
 
-                   
+                    <hr class="my-4">
+                    <h6 class="mb-3">Link Settings (Optional)</h6>
+
+                    <div class="mb-3">
+                        <label for="editLinkUrl" class="form-label">Link URL</label>
+                        <input type="text" class="form-control" id="editLinkUrl" name="link_url" placeholder="e.g., /products/sale or https://example.com">
+                    </div>
+
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="editOpenInNewTab" name="open_in_new_tab">
+                        <label class="form-check-label" for="editOpenInNewTab">Open link in a new tab</label>
+                    </div>
+                    <hr class="my-4">
 
                      <div class="mb-3 form-check form-switch">
                         <input class="form-check-input" type="checkbox" id="editIsActive" name="is_active">
@@ -126,7 +141,7 @@
                         <small class="form-text d-block text-muted">Making this popup active will deactivate any other active popup.</small>
                     </div>
 
-                    <div class="row align-items-end">
+                    <div class="row align-items-end mt-4">
                         <div class="col-md-8 mb-3">
                             <label for="editPopupImageFile" class="form-label">New Banner Image (Optional)</label>
                             <input type="file" class="form-control" id="editPopupImageFile" name="bannerImage" accept="image/png, image/jpeg, image/gif, image/webp">
@@ -137,7 +152,6 @@
                             <img id="editPopupCurrentImage" src="" alt="Current Image" class="img-thumbnail" style="max-height: 100px;">
                         </div>
                     </div>
-
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -149,8 +163,9 @@
 </div>
 <!-- End Edit Popup Modal -->
 
-<%- include('../partials/admin_footer') %> <%# Adjust path to your footer partial %>
+<%- include('../partials/admin_footer') %>
 
+<!-- ==================== 3. JAVASCRIPT UPDATED ==================== -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     // --- Delete Confirmation ---
@@ -171,6 +186,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const editIsActiveEl = document.getElementById('editIsActive');
         const editPopupImageFileEl = document.getElementById('editPopupImageFile');
         const editPopupCurrentImageEl = document.getElementById('editPopupCurrentImage');
+        // Get new elements
+        const editLinkUrlEl = document.getElementById('editLinkUrl');
+        const editOpenInNewTabEl = document.getElementById('editOpenInNewTab');
 
         document.querySelectorAll('.edit-popup-btn').forEach(button => {
             button.addEventListener('click', function() {
@@ -180,9 +198,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 editPopupIdEl.value = popupId;
                 editPopupTitleEl.value = this.dataset.title || '';
                 editPopupCurrentImageEl.src = this.dataset.image || '';
-                
-                // Set checkbox state
                 editIsActiveEl.checked = (this.dataset.isActive === 'true');
+                
+                // Populate new link setting fields
+                editLinkUrlEl.value = this.dataset.linkUrl || '';
+                editOpenInNewTabEl.checked = (this.dataset.openInNewTab === 'true');
 
                 // Clear the file input
                 editPopupImageFileEl.value = '';

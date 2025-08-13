@@ -1,5 +1,3 @@
-// routes/popup.js
-
 const express = require("express");
 const router = express.Router();
 const Popup = require("../models/Popup"); // Adjust path if needed
@@ -22,9 +20,9 @@ const getPublicId = (url) => {
 };
 
 // GET /popups - List all popups with pagination and sorting
+// --- NO CHANGES NEEDED HERE ---
 router.get("/", async (req, res) => {
   try {
-    // --- Ye aapka pagination aur sorting ka logic hai ---
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
     const sortOrder = req.query.sort === "asc" ? 1 : -1;
@@ -38,15 +36,14 @@ router.get("/", async (req, res) => {
     const totalPopups = await Popup.countDocuments();
     const totalPages = Math.ceil(totalPopups / limit);
 
-    // --- Yahan hum saare variables ko render mein pass kar rahe hain ---
     res.render("admin/manage-popups", {
       title: "Manage Popups",
-      popups: popups, // Database se aaye popups
-      currentPage: page, // Current page number
-      totalPages: totalPages, // Total pages
-      limit: limit, // Items per page
-      currentSort: req.query.sort || "desc", // Current sort order
-      activePage: "view_popups", // <<--- YEH LINE ADD KI GAYI HAI
+      popups: popups,
+      currentPage: page,
+      totalPages: totalPages,
+      limit: limit,
+      currentSort: req.query.sort || "desc",
+      activePage: "view_popups",
     });
   } catch (error) {
     console.error("Error fetching popups:", error);
@@ -55,40 +52,43 @@ router.get("/", async (req, res) => {
 });
 
 // GET /popups/add - Show form to add a new popup
+// --- NO CHANGES NEEDED HERE ---
 router.get("/add", (req, res) => {
   res.render("admin/add-popup", {
     title: "Add New Popup",
-    activePage: "add_popup", // <--- Add this line
+    activePage: "add_popup",
   });
 });
 
 // POST /popups - Create a new popup
+// --- UPDATED ROUTE ---
 router.post("/", upload.single("bannerImage"), async (req, res) => {
   try {
-    const { title, description } = req.body;
+    const { title, description, link_url } = req.body; // <-- ADDED link_url
     const isActive = req.body.is_active === "on";
+    const openInNewTab = req.body.open_in_new_tab === "on"; // <-- ADDED for checkbox
 
-    // If this new popup is set to active, deactivate all others
     if (isActive) {
       await Popup.updateMany({}, { is_active: false });
     }
 
     if (!req.file) {
-      // Handle case where no image is uploaded
       req.flash("error", "Banner image is required.");
       return res.redirect("/admin/popups/add");
     }
 
     const newPopup = new Popup({
       title,
-      description,
-      image_url: req.file.path, // Cloudinary URL
-      image_public_id: getPublicId(req.file.path), // Store public_id for deletion
+      // description is not in the new schema, so it's not saved
+      image_url: req.file.path,
+      image_public_id: getPublicId(req.file.path),
       is_active: isActive,
+      link_url: link_url, // <-- ADDED
+      open_in_new_tab: openInNewTab, // <-- ADDED
     });
 
     await newPopup.save();
-    req.flash("success", "Popup created successfully!"); // Optional: for success messages
+    req.flash("success", "Popup created successfully!");
     res.redirect("/admin/popups");
   } catch (error) {
     console.error(error);
@@ -98,18 +98,21 @@ router.post("/", upload.single("bannerImage"), async (req, res) => {
 });
 
 // PUT /api/popups/:id - Update an existing popup
+// --- UPDATED ROUTE ---
 router.put("/api/:id", upload.single("bannerImage"), async (req, res) => {
   try {
-    const { title, description } = req.body;
+    const { title, description, link_url } = req.body; // <-- ADDED link_url
     const isActive = req.body.is_active === "on";
+    const openInNewTab = req.body.open_in_new_tab === "on"; // <-- ADDED for checkbox
 
     let updateData = {
       title,
-      description,
+      // description is not in the new schema
       is_active: isActive,
+      link_url: link_url, // <-- ADDED
+      open_in_new_tab: openInNewTab, // <-- ADDED
     };
 
-    // If this popup is being activated, deactivate all others first.
     if (isActive) {
       await Popup.updateMany(
         { _id: { $ne: req.params.id } },
@@ -117,12 +120,10 @@ router.put("/api/:id", upload.single("bannerImage"), async (req, res) => {
       );
     }
 
-    // If a new image is uploaded, update the image URL and public_id
     if (req.file) {
       updateData.image_url = req.file.path;
       updateData.image_public_id = getPublicId(req.file.path);
 
-      // Optional but recommended: Delete old image from Cloudinary
       const oldPopup = await Popup.findById(req.params.id);
       if (oldPopup && oldPopup.image_public_id) {
         const cloudinary = require("cloudinary").v2;
@@ -142,6 +143,7 @@ router.put("/api/:id", upload.single("bannerImage"), async (req, res) => {
 });
 
 // DELETE /api/popups/:id - Delete a popup
+// --- NO CHANGES NEEDED HERE ---
 router.delete("/api/:id", async (req, res) => {
   try {
     const popup = await Popup.findById(req.params.id);
@@ -150,18 +152,17 @@ router.delete("/api/:id", async (req, res) => {
       return res.redirect("/admin/popups");
     }
 
-    // Delete image from Cloudinary
     if (popup.image_public_id) {
       const cloudinary = require("cloudinary").v2;
       await cloudinary.uploader.destroy(popup.image_public_id);
     }
 
-    // Delete popup from database
     await Popup.findByIdAndDelete(req.params.id);
 
     req.flash("success", "Popup deleted successfully.");
     res.redirect("/admin/popups");
-  } catch (error) {
+  } catch (error)
+  {
     console.error("Delete Error:", error);
     req.flash("error", "Failed to delete popup.");
     res.redirect("/admin/popups");

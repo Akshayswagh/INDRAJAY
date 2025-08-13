@@ -8,8 +8,7 @@ const connectDB = async () => {
     }
 
     await mongoose.connect(process.env.MONGO_URI, {
-      
-      serverSelectionTimeoutMS: 10000, // wait up to 10 seconds
+      serverSelectionTimeoutMS: 30000,
     });
 
     console.log("✅ MongoDB Connected Successfully");
@@ -19,11 +18,17 @@ const connectDB = async () => {
     // Log specific error reasons
     if (error.name === "MongoNetworkError") {
       console.error("🔌 Network error: Could not reach MongoDB server.");
-      console.error("📡 Check your internet, firewall, or IP whitelist in MongoDB Atlas.");
+      console.error(
+        "📡 Check your internet, firewall, or IP whitelist in MongoDB Atlas."
+      );
     } else if (error.name === "MongooseServerSelectionError") {
-      console.error("⛔ Server selection error: Unable to connect to MongoDB cluster.");
+      console.error(
+        "⛔ Server selection error: Unable to connect to MongoDB cluster."
+      );
     } else if (error.message.includes("authentication failed")) {
-      console.error("🔐 Authentication failed: Check your MongoDB credentials.");
+      console.error(
+        "🔐 Authentication failed: Check your MongoDB credentials."
+      );
     }
 
     // Full error details
